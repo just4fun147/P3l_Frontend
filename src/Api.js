@@ -8,6 +8,12 @@ const headers = {
   apikey: "1234567890",
 };
 
+const cookies = new Cookies();
+const headersAuth = {
+  "Content-Type": "application/json",
+  apikey: "1234567890",
+  Authorization: "Bearer " + cookies.get("token"),
+};
 function DoLogin(status) {
   const setAuth = useSetRecoilState(authenticated);
   setAuth((check) => status);
@@ -27,10 +33,7 @@ export const auth = async (email, password) => {
       }
     )
     .then((response) => {
-      const cookies = new Cookies();
       cookies.set("token", response.data.OUT_DATA.token);
-      // DoLogin(true);
-      // console.log("test");
       window.location = "/home";
     })
     .catch((error) => {
@@ -47,16 +50,30 @@ export const check = () => {
   }
 };
 
-export const logged = () => {
-  const cookies = new Cookies();
-  const token = cookies.get("token");
-  if (token !== undefined || token !== null) {
-    window.location = "/home";
-  }
+export const logout = () => {
+  console.log(cookies.get("token"));
+  axios
+    .post(
+      process.env.REACT_APP_BASEURL + "logouts",
+      {
+        user_agent:
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+      },
+      {
+        headers: headersAuth,
+      }
+    )
+    .then((response) => {
+      cookies.remove("token");
+      window.location = "/";
+    })
+    .catch((error) => {
+      // alert(error.response.data.OUT_STAT);
+      console.log(error.response.data.OUT_STAT);
+    });
 };
 
 export const token = () => {
-  const cookies = new Cookies();
   const token = cookies.get("token");
   // console.log(token);
   return token;
