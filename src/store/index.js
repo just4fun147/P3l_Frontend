@@ -4,6 +4,7 @@ const authenticated = atom({
   key: "authenticated",
   default: {
     check: false,
+    user: { name: "Pandu" },
   },
 });
 

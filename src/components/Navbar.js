@@ -3,8 +3,11 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Button from "react-bootstrap/Button";
+import { token } from "../Api";
+import React, { useState } from "react";
 
 function BasicExample() {
+  const [tokens, setTokens] = useState(token());
   return (
     <Navbar
       expand="lg"
@@ -31,12 +34,21 @@ function BasicExample() {
             </NavDropdown>
           </Nav>
           <Nav className="justify-content-end" style={{ width: "100%" }}>
-            <Button
-              href="/login"
-              style={{ backgroundColor: "#FBBC05", color: "#0C1738" }}
-            >
-              <b>Login</b>
-            </Button>
+            {tokens ? (
+              <Button
+                href="/login"
+                style={{ backgroundColor: "#FBBC05", color: "#0C1738" }}
+              >
+                <b>NAMA</b>
+              </Button>
+            ) : (
+              <Button
+                href="/login"
+                style={{ backgroundColor: "#FBBC05", color: "#0C1738" }}
+              >
+                <b>Login</b>
+              </Button>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>

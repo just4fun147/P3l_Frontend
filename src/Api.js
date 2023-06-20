@@ -1,12 +1,17 @@
-import { data } from "autoprefixer";
 import axios from "axios";
 import Cookies from "universal-cookie";
+import { atom, selector, useRecoilState, useSetRecoilState } from "recoil";
+import { authenticated } from "./store";
 
 const headers = {
   "Content-Type": "application/json",
   apikey: "1234567890",
 };
 
+function DoLogin(status) {
+  const setAuth = useSetRecoilState(authenticated);
+  setAuth((check) => status);
+}
 export const auth = async (email, password) => {
   axios
     .post(
@@ -23,12 +28,14 @@ export const auth = async (email, password) => {
     )
     .then((response) => {
       const cookies = new Cookies();
-      cookies.set("token", response.data.OUT_DATA.token, { path: "/" });
-      console.log(cookies.get("token"));
+      cookies.set("token", response.data.OUT_DATA.token);
+      // DoLogin(true);
+      // console.log("test");
       window.location = "/home";
     })
     .catch((error) => {
-      alert(error.response.data.OUT_STAT);
+      // alert(error.response.data.OUT_STAT);
+      // console.log(error.response.data.OUT_STAT);
     });
 };
 
@@ -51,6 +58,6 @@ export const logged = () => {
 export const token = () => {
   const cookies = new Cookies();
   const token = cookies.get("token");
-  console.log(token);
+  // console.log(token);
   return token;
 };

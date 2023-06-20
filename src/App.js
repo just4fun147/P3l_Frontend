@@ -7,6 +7,9 @@ import Test from "./pages/Test";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
+import Authenticated from "./components/middleware/Authenticated";
+import Guest from "./components/middleware/Guest";
+import { Fragment } from "react";
 
 function App() {
   return (
@@ -18,9 +21,30 @@ function App() {
         <Router>
           <Routes>
             <Route path="/" element={<LandingPage />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/test" element={<Test />} />
-            <Route path="/login" element={<Login />} />
+            <Route
+              path="/home"
+              element={
+                <Authenticated>
+                  <Home />
+                </Authenticated>
+              }
+            ></Route>
+            <Route
+              path="/test"
+              element={
+                <Authenticated>
+                  <Test />
+                </Authenticated>
+              }
+            ></Route>
+            <Route
+              path="/login"
+              element={
+                <Guest>
+                  <Login />
+                </Guest>
+              }
+            ></Route>
             <Route path="/signup" element={<Register />} />
           </Routes>
         </Router>

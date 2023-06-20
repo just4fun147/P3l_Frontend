@@ -1,17 +1,10 @@
 import logo from ".././assets/apple_logo_10-t2.jpg";
-import { auth, token } from ".././Api";
-import { useEffect, useState } from "react";
+import { auth } from ".././Api";
+import { useState } from "react";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [tokens, setTokens] = useState(token());
-  useEffect(() => {
-    if (tokens === undefined) {
-    } else {
-      window.location = "/home";
-    }
-  }, []);
   return (
     <>
       <div style={{ padding: "2% 5% 0 5%" }}>
