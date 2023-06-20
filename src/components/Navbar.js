@@ -5,6 +5,7 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import Button from "react-bootstrap/Button";
 import { token, logout } from "../Api";
 import React, { useState } from "react";
+import { FaUser } from "react-icons/fa";
 
 function BasicExample() {
   const [tokens, setTokens] = useState(token());
@@ -40,23 +41,35 @@ function BasicExample() {
             <></>
           )}
 
-          <Nav className="justify-content-end" style={{ width: "100%" }}>
-            {tokens ? (
-              <Button
-                onClick={() => logout()}
-                style={{ backgroundColor: "#FBBC05", color: "#0C1738" }}
-              >
-                <b>Logout</b>
-              </Button>
-            ) : (
+          {tokens ? (
+            <Nav className="justify-content-end" style={{ width: "100%" }}>
+              <Nav.Link disabled style={{ color: "white", opacity: "0.8" }}>
+                Nama
+              </Nav.Link>
+              <NavDropdown title={<FaUser></FaUser>}>
+                <NavDropdown.Item href="#action/3.1">Edit</NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.2">
+                  Another action
+                </NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.3">
+                  Something
+                </NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item onClick={() => logout()}>
+                  Logout
+                </NavDropdown.Item>
+              </NavDropdown>
+            </Nav>
+          ) : (
+            <Nav className="justify-content-end" style={{ width: "100%" }}>
               <Button
                 href="/login"
                 style={{ backgroundColor: "#FBBC05", color: "#0C1738" }}
               >
                 <b>Login</b>
               </Button>
-            )}
-          </Nav>
+            </Nav>
+          )}
         </Navbar.Collapse>
       </Container>
     </Navbar>

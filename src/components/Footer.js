@@ -1,5 +1,5 @@
 import "./Footer.css";
-import { FaInstagram, FaLinkedin, FaGoogle } from "react-icons/fa";
+import { FaInstagram, FaLinkedin, FaGoogle, FaGithub } from "react-icons/fa";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 const Footer = () => {
@@ -12,17 +12,17 @@ const Footer = () => {
         </p>
         <ul className="socials">
           <li>
-            <a href="#">
-              <FaGoogle size={30} color="#DB4437" />
+            <a href="https://github.com/just4fun147" target="_blank">
+              <FaGithub size={30} />
             </a>
           </li>
           <li>
-            <a href="#">
+            <a href="https://www.instagram.com/pandu_windito" target="_blank">
               <FaInstagram size={30} color="#C13584" />
             </a>
           </li>
           <li>
-            <a href="#">
+            <a href="https://www.linkedin.com/in/panduwindito" target="_blank">
               <FaLinkedin size={30} color="#0077B5" />
             </a>
           </li>
@@ -30,21 +30,11 @@ const Footer = () => {
       </div>
       <div className="footer-bottom">
         <p>
-          copyright &copy; <a href="#">Pandu Windito</a>{" "}
+          copyright &copy;{" "}
+          <a href="https://www.instagram.com/pandu_windito" target="_blank">
+            Pandu Windito 2023
+          </a>{" "}
         </p>
-        <div className="footer-menu">
-          <ul className="f-menu">
-            <li>
-              <a href="">Home</a>
-            </li>
-            <li>
-              <a href="">About</a>
-            </li>
-            <li>
-              <a href="">Contact</a>
-            </li>
-          </ul>
-        </div>
       </div>
     </footer>
   );

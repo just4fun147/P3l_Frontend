@@ -2,6 +2,12 @@ import axios from "axios";
 import Cookies from "universal-cookie";
 import { atom, selector, useRecoilState, useSetRecoilState } from "recoil";
 import { authenticated } from "./store";
+import {
+  browserName,
+  osName,
+  deviceType,
+  osVersion,
+} from "react-device-detect";
 
 const headers = {
   "Content-Type": "application/json",
@@ -26,7 +32,7 @@ export const auth = async (email, password) => {
         email: email,
         password: password,
         user_agent:
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+          browserName + " " + osName + " " + osVersion + " " + deviceType,
       },
       {
         headers: headers,
@@ -57,7 +63,7 @@ export const logout = () => {
       process.env.REACT_APP_BASEURL + "logouts",
       {
         user_agent:
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+          browserName + " " + osName + " " + osVersion + " " + deviceType,
       },
       {
         headers: headersAuth,
