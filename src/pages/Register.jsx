@@ -5,8 +5,22 @@ const Register = () => {
     <>
       <div style={{ padding: "2% 5% 0 5%" }}>
         <div className="row mb-5 d-flex ">
-          <div className="col-md-7" style={{ padding: "0" }}>
-            <img src={logo} alt="Logo" style={{ width: "100%" }}></img>
+          <div
+            className="col-md-7"
+            style={{
+              padding: "0",
+              backgroundColor: "red",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              overflow: "hidden",
+            }}
+          >
+            <img
+              src={logo}
+              alt="Logo"
+              style={{ minWidth: "100%", flexShrink: "0", minHeight: "100%" }}
+            ></img>
           </div>
           <div
             className="col-md-5 d-flex"
@@ -100,13 +114,13 @@ const Register = () => {
                 className="btn btn-primary rounded-pill mb-1"
                 name="login"
                 style={{
-                  width: "40%",
-                  minWidth: "250px",
+                  width: "20%",
+                  minWidth: "100px",
                   backgroundColor: "#0C1738",
                   fontFamily: "Ubuntu",
                   fontWeight: "bold",
                   right: "0",
-                  marginLeft: "40%",
+                  marginLeft: "75%",
                 }}
               >
                 Register

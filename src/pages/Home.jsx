@@ -1,5 +1,9 @@
-import image1 from "../assets/home.jpg";
+import image1 from "../assets/fhd.png";
+import { name } from "../Api";
+import React, { useState } from "react";
+
 const Home = () => {
+  const [names, setNames] = useState(name());
   return (
     <>
       <div className="mt-3">
@@ -11,7 +15,9 @@ const Home = () => {
                 // style={{ backgroundColor: "red" }}
               ></div>
               <div className="col-md-7">
-                <h1 style={{ textAlign: "left" }}>Welcome NAMA👋!</h1>
+                <h1 style={{ textAlign: "right", marginRight: "10%" }}>
+                  Welcome {names}!
+                </h1>
                 <h3 style={{ textAlign: "right", marginRight: "10%" }}>
                   ---Tagline---
                 </h3>

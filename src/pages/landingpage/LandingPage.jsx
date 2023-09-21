@@ -1,20 +1,24 @@
-import logo from ".././assets/apple_logo_10-t2.jpg";
-
+import logo from "../../assets/fhdtrans.png";
+import superior from "../../assets/superior.jpg";
+import double from "../../assets/double.jpg";
+import ballroom from "../../assets/ballroom.jpg";
+import CarouselHome from "../../components/CarouselHome";
+import "./Landingpage.css";
+import SearchCard from "../../components/common/SearchCard";
 const LandingPage = () => {
   return (
     <>
-      <div className="mb-5">
-        <img
-          src={logo}
-          alt="logo"
-          style={{ width: "100%", overflow: "hidden" }}
-        ></img>
+      <div className="container mb-5 mt-5" style={{ borderRadius: "25px" }}>
+        <CarouselHome style={{ borderRadius: "25px" }} />
+      </div>
+      <div className="container mt-5 mb-5" style={{ width: "75%" }}>
+        <SearchCard />
       </div>
       <p
         className="mb-5"
         style={{ fontWeight: "bold", fontSize: "2rem", color: "black" }}
       >
-        Layanan Kami
+        Our Service
       </p>
       <div
         class="row  mr-5"
@@ -39,25 +43,24 @@ const LandingPage = () => {
               <div>
                 <div className="">
                   <img
-                    src={logo}
+                    src={superior}
                     alt=""
                     srcset=""
                     style={{
                       width: "100%",
                       borderRadius: "25px",
                       backgroundColor: "white",
+                      height: "224px",
                     }}
                   ></img>
                 </div>
               </div>
-              <h5 className="fw-bold mt-4">Event</h5>
+              <h5 className="fw-bold mt-4">Personal Reservation</h5>
               <div
                 style={{
                   textAlign: "left",
                 }}
-              >
-                <p style={{ alignText: "right" }}>testing</p>
-              </div>
+              ></div>
             </div>
           </a>
         </div>
@@ -75,25 +78,24 @@ const LandingPage = () => {
               <div>
                 <div className="">
                   <img
-                    src={logo}
+                    src={double}
                     alt=""
                     srcset=""
                     style={{
                       width: "100%",
                       borderRadius: "25px",
                       backgroundColor: "white",
+                      height: "224px",
                     }}
                   ></img>
                 </div>
               </div>
-              <h5 className="fw-bold mt-4">Event</h5>
+              <h5 className="fw-bold mt-4">Group Reservation</h5>
               <div
                 style={{
                   textAlign: "left",
                 }}
-              >
-                <p style={{ alignText: "right" }}>testing</p>
-              </div>
+              ></div>
             </div>
           </a>
         </div>
@@ -111,25 +113,24 @@ const LandingPage = () => {
               <div>
                 <div className="">
                   <img
-                    src={logo}
+                    src={ballroom}
                     alt=""
                     srcset=""
                     style={{
                       width: "100%",
                       borderRadius: "25px",
                       backgroundColor: "white",
+                      height: "224px",
                     }}
                   ></img>
                 </div>
               </div>
-              <h5 className="fw-bold mt-4">Event</h5>
+              <h5 className="fw-bold mt-4">Meeting Room</h5>
               <div
                 style={{
                   textAlign: "left",
                 }}
-              >
-                <p style={{ alignText: "right" }}>testing</p>
-              </div>
+              ></div>
             </div>
           </a>
         </div>

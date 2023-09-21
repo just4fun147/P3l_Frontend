@@ -3,12 +3,15 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Button from "react-bootstrap/Button";
-import { token, logout } from "../Api";
+import { token, logout, name } from "../Api";
 import React, { useState } from "react";
 import { FaUser } from "react-icons/fa";
+import logo from "../assets/logo.png";
 
 function BasicExample() {
   const [tokens, setTokens] = useState(token());
+  const [names, setNames] = useState(name());
+  const path = window.location.pathname === "/login";
   return (
     <Navbar
       expand="lg"
@@ -16,7 +19,9 @@ function BasicExample() {
       style={{ backgroundColor: "#0C1738" }}
     >
       <Container>
-        <Navbar.Brand href="/">Pandu Windito</Navbar.Brand>
+        <Navbar.Brand href="/" style={{ height: "75px" }}>
+          <img src={logo} alt="logo.png" style={{ height: "75px" }} />
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           {tokens ? (
@@ -42,12 +47,12 @@ function BasicExample() {
           )}
 
           {tokens ? (
-            <Nav className="justify-content-end" style={{ width: "100%" }}>
+            <Nav className=" justify-content-end" style={{ width: "100%" }}>
               <Nav.Link disabled style={{ color: "white", opacity: "0.8" }}>
-                Nama
+                {names}
               </Nav.Link>
               <NavDropdown title={<FaUser></FaUser>}>
-                <NavDropdown.Item href="#action/3.1">Edit</NavDropdown.Item>
+                <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2">
                   Another action
                 </NavDropdown.Item>
@@ -61,14 +66,33 @@ function BasicExample() {
               </NavDropdown>
             </Nav>
           ) : (
-            <Nav className="justify-content-end" style={{ width: "100%" }}>
-              <Button
-                href="/login"
-                style={{ backgroundColor: "#FBBC05", color: "#0C1738" }}
-              >
-                <b>Login</b>
-              </Button>
-            </Nav>
+            <>
+              {path ? (
+                <Nav className="justify-content-end" style={{ width: "100%" }}>
+                  <Button
+                    href="/signup"
+                    style={{
+                      backgroundColor: "#FBBC05",
+                      color: "#0C1738",
+                    }}
+                  >
+                    <b>Signup</b>
+                  </Button>
+                </Nav>
+              ) : (
+                <Nav className="justify-content-end" style={{ width: "100%" }}>
+                  <Button
+                    href="/login"
+                    style={{
+                      backgroundColor: "#FBBC05",
+                      color: "#0C1738",
+                    }}
+                  >
+                    <b>Login</b>
+                  </Button>
+                </Nav>
+              )}
+            </>
           )}
         </Navbar.Collapse>
       </Container>

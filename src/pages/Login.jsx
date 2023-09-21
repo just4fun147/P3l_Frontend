@@ -1,5 +1,5 @@
 import logo from ".././assets/apple_logo_10-t2.jpg";
-import { auth } from ".././Api";
+import { auth } from "../Api";
 import { useState } from "react";
 
 const Login = () => {
@@ -7,10 +7,24 @@ const Login = () => {
   const [password, setPassword] = useState("");
   return (
     <>
-      <div style={{ padding: "2% 5% 0 5%" }}>
+      <div style={{ padding: "2% 5% 0 5%", width: "100%" }}>
         <div className="row mb-5 d-flex ">
-          <div className="col-md-7" style={{ padding: "0" }}>
-            <img src={logo} alt="Logo" style={{ width: "100%" }}></img>
+          <div
+            className="col-md-7"
+            style={{
+              padding: "0",
+              backgroundColor: "red",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              overflow: "hidden",
+            }}
+          >
+            <img
+              src={logo}
+              alt="Logo"
+              style={{ minWidth: "100%", flexShrink: "0", minHeight: "100%" }}
+            ></img>
           </div>
           <div
             className="col-md-5 d-flex  justify-content-center"
@@ -19,7 +33,7 @@ const Login = () => {
               padding: "10% 5% 0 5%",
             }}
           >
-            <div style={{ width: "100%" }}>
+            <div className="mb-5" style={{ width: "100%" }}>
               <p style={{ color: "white" }}>Selamat Datang</p>
               <p style={{ color: "white" }}>Silahkan Masuk Untuk Melanjutkan</p>
               <input
@@ -38,7 +52,7 @@ const Login = () => {
                 }}
               ></input>
               <input
-                type="text"
+                type="password"
                 placeholder="Password"
                 className="form-control rounded-pill mt-2"
                 onInput={(e) => setPassword(e.target.value)}

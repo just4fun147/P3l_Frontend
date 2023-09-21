@@ -15,7 +15,7 @@ const headers = {
 };
 
 const cookies = new Cookies();
-const headersAuth = {
+export const headersAuth = {
   "Content-Type": "application/json",
   apikey: "1234567890",
   Authorization: "Bearer " + cookies.get("token"),
@@ -40,11 +40,33 @@ export const auth = async (email, password) => {
     )
     .then((response) => {
       cookies.set("token", response.data.OUT_DATA.token);
+      cookies.set("name", response.data.OUT_DATA.name);
       window.location = "/home";
     })
     .catch((error) => {
       // alert(error.response.data.OUT_STAT);
       // console.log(error.response.data.OUT_STAT);
+    });
+};
+
+export const authUser = async () => {
+  axios
+    .post(
+      process.env.REACT_APP_BASEURL + "authUser",
+      {},
+      {
+        headers: headersAuth,
+      }
+    )
+    .then((response) => {
+      const temp = "abc";
+      // console.log(response.data.OUT_DATA[0].name);
+      console.log(temp);
+      return temp;
+    })
+    .catch((error) => {
+      // alert(error.response.data.OUT_STAT);
+      console.log(error.response.data.OUT_STAT);
     });
 };
 
@@ -71,6 +93,7 @@ export const logout = () => {
     )
     .then((response) => {
       cookies.remove("token");
+      cookies.remove("name");
       window.location = "/";
     })
     .catch((error) => {
@@ -83,4 +106,10 @@ export const token = () => {
   const token = cookies.get("token");
   // console.log(token);
   return token;
+};
+
+export const name = () => {
+  const name = cookies.get("name");
+  // console.log(token);
+  return name;
 };

@@ -2,11 +2,12 @@ import "./App.css";
 import Navigationbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import LandingPage from "./pages/LandingPage";
+import LandingPage from "./pages/landingpage/LandingPage";
 import Test from "./pages/Test";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
+import Profile from "./pages/Profile";
 import Authenticated from "./components/middleware/Authenticated";
 import Guest from "./components/middleware/Guest";
 import { Fragment } from "react";
@@ -38,6 +39,14 @@ function App() {
               }
             ></Route>
             <Route
+              path="/profile"
+              element={
+                <Authenticated>
+                  <Profile />
+                </Authenticated>
+              }
+            ></Route>
+            <Route
               path="/login"
               element={
                 <Guest>
@@ -45,7 +54,14 @@ function App() {
                 </Guest>
               }
             ></Route>
-            <Route path="/signup" element={<Register />} />
+            <Route
+              path="/signup"
+              element={
+                <Guest>
+                  <Register />
+                </Guest>
+              }
+            ></Route>
           </Routes>
         </Router>
       </div>
