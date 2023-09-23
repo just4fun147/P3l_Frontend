@@ -30,109 +30,103 @@ const LandingPage = () => {
         }}
       >
         <div className="col">
-          <a href="#" style={{ textDecoration: "none" }}>
-            <div
-              className="card shadow-lg col ml-3 mb-3"
-              style={{
-                padding: "50px",
-                borderRadius: "25px",
-                width: "100%",
-                minWidth: "300px",
-              }}
-            >
-              <div>
-                <div className="">
-                  <img
-                    src={superior}
-                    alt=""
-                    srcset=""
-                    style={{
-                      width: "100%",
-                      borderRadius: "25px",
-                      backgroundColor: "white",
-                      height: "224px",
-                    }}
-                  ></img>
-                </div>
+          <div
+            className="card shadow-lg col ml-3 mb-3"
+            style={{
+              padding: "50px",
+              borderRadius: "25px",
+              width: "100%",
+              minWidth: "300px",
+            }}
+          >
+            <div>
+              <div className="">
+                <img
+                  src={superior}
+                  alt=""
+                  srcset=""
+                  style={{
+                    width: "100%",
+                    borderRadius: "25px",
+                    backgroundColor: "white",
+                    height: "224px",
+                  }}
+                ></img>
               </div>
-              <h5 className="fw-bold mt-4">Personal Reservation</h5>
-              <div
-                style={{
-                  textAlign: "left",
-                }}
-              ></div>
             </div>
-          </a>
+            <h5 className="fw-bold mt-4">Personal Reservation</h5>
+            <div
+              style={{
+                textAlign: "left",
+              }}
+            ></div>
+          </div>
         </div>
         <div className="col">
-          <a href="#" style={{ textDecoration: "none" }}>
-            <div
-              className="card shadow-lg col ml-3 mb-3"
-              style={{
-                padding: "50px",
-                borderRadius: "25px",
-                width: "100%",
-                minWidth: "300px",
-              }}
-            >
-              <div>
-                <div className="">
-                  <img
-                    src={double}
-                    alt=""
-                    srcset=""
-                    style={{
-                      width: "100%",
-                      borderRadius: "25px",
-                      backgroundColor: "white",
-                      height: "224px",
-                    }}
-                  ></img>
-                </div>
+          <div
+            className="card shadow-lg col ml-3 mb-3"
+            style={{
+              padding: "50px",
+              borderRadius: "25px",
+              width: "100%",
+              minWidth: "300px",
+            }}
+          >
+            <div>
+              <div className="">
+                <img
+                  src={double}
+                  alt=""
+                  srcset=""
+                  style={{
+                    width: "100%",
+                    borderRadius: "25px",
+                    backgroundColor: "white",
+                    height: "224px",
+                  }}
+                ></img>
               </div>
-              <h5 className="fw-bold mt-4">Group Reservation</h5>
-              <div
-                style={{
-                  textAlign: "left",
-                }}
-              ></div>
             </div>
-          </a>
+            <h5 className="fw-bold mt-4">Group Reservation</h5>
+            <div
+              style={{
+                textAlign: "left",
+              }}
+            ></div>
+          </div>
         </div>
         <div className="col">
-          <a href="#" style={{ textDecoration: "none" }}>
-            <div
-              className="card shadow-lg col ml-3 mb-3"
-              style={{
-                padding: "50px",
-                borderRadius: "25px",
-                width: "100%",
-                minWidth: "300px",
-              }}
-            >
-              <div>
-                <div className="">
-                  <img
-                    src={ballroom}
-                    alt=""
-                    srcset=""
-                    style={{
-                      width: "100%",
-                      borderRadius: "25px",
-                      backgroundColor: "white",
-                      height: "224px",
-                    }}
-                  ></img>
-                </div>
+          <div
+            className="card shadow-lg col ml-3 mb-3"
+            style={{
+              padding: "50px",
+              borderRadius: "25px",
+              width: "100%",
+              minWidth: "300px",
+            }}
+          >
+            <div>
+              <div className="">
+                <img
+                  src={ballroom}
+                  alt=""
+                  srcset=""
+                  style={{
+                    width: "100%",
+                    borderRadius: "25px",
+                    backgroundColor: "white",
+                    height: "224px",
+                  }}
+                ></img>
               </div>
-              <h5 className="fw-bold mt-4">Meeting Room</h5>
-              <div
-                style={{
-                  textAlign: "left",
-                }}
-              ></div>
             </div>
-          </a>
+            <h5 className="fw-bold mt-4">Meeting Room</h5>
+            <div
+              style={{
+                textAlign: "left",
+              }}
+            ></div>
+          </div>
         </div>
       </div>
     </>

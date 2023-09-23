@@ -1,4 +1,4 @@
-import logo from ".././assets/apple_logo_10-t2.jpg";
+import logo from ".././assets/logo.png";
 import { auth } from "../Api";
 import { useState } from "react";
 
@@ -18,24 +18,30 @@ const Login = () => {
               justifyContent: "center",
               alignItems: "center",
               overflow: "hidden",
+              height: "50%",
             }}
           >
             <img
               src={logo}
               alt="Logo"
-              style={{ minWidth: "100%", flexShrink: "0", minHeight: "100%" }}
+              style={{
+                width: "825px",
+                height: "440px",
+                flexShrink: "0",
+                objectFit: "cover",
+              }}
             ></img>
           </div>
           <div
             className="col-md-5 d-flex  justify-content-center"
             style={{
               backgroundColor: "#313131",
-              padding: "10% 5% 0 5%",
+              padding: "5% 5% 0 5%",
             }}
           >
             <div className="mb-5" style={{ width: "100%" }}>
-              <p style={{ color: "white" }}>Selamat Datang</p>
-              <p style={{ color: "white" }}>Silahkan Masuk Untuk Melanjutkan</p>
+              <p style={{ color: "white" }}>Welcome</p>
+              <p style={{ color: "white" }}>Please Login To Continue</p>
               <input
                 type="text"
                 placeholder="Email"

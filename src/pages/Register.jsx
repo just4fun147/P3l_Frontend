@@ -1,4 +1,4 @@
-import logo from ".././assets/apple_logo_10-t2.jpg";
+import logo from ".././assets/logo.png";
 
 const Register = () => {
   return (
@@ -14,12 +14,18 @@ const Register = () => {
               justifyContent: "center",
               alignItems: "center",
               overflow: "hidden",
+              height: "50%",
             }}
           >
             <img
               src={logo}
               alt="Logo"
-              style={{ minWidth: "100%", flexShrink: "0", minHeight: "100%" }}
+              style={{
+                width: "825px",
+                height: "890px",
+                flexShrink: "0",
+                objectFit: "cover",
+              }}
             ></img>
           </div>
           <div
@@ -31,12 +37,29 @@ const Register = () => {
           >
             <div style={{ width: "100%" }}>
               <h5 className="mb-2" style={{ color: "white" }}>
-                Registrasi
+                Registration
               </h5>
-              <p style={{ textAlign: "left", color: "white" }}>Nama Lengkap</p>
+              <p style={{ textAlign: "left", color: "white" }}>Full Name</p>
               <input
                 type="text"
-                placeholder="Nama Lengkap"
+                placeholder="Markus Libert"
+                className="form-control mb-3"
+                style={{
+                  width: "100%",
+                  minWidth: "250px",
+                  display: "block",
+                  marginRight: "auto",
+                  marginLeft: "auto",
+                  backgroundColor: "#D9D9D9",
+                  borderRadius: "5px",
+                }}
+              ></input>
+              <p style={{ textAlign: "left", color: "white" }}>
+                Residential Identity
+              </p>
+              <input
+                type="text"
+                placeholder="33022123213122"
                 className="form-control mb-3"
                 style={{
                   width: "100%",
@@ -51,7 +74,7 @@ const Register = () => {
               <p style={{ textAlign: "left", color: "white" }}>Email</p>
               <input
                 type="text"
-                placeholder="Email"
+                placeholder="gmail@gmail.com"
                 className="form-control mb-3"
                 style={{
                   width: "100%",
@@ -63,10 +86,40 @@ const Register = () => {
                   borderRadius: "5px",
                 }}
               ></input>
-              <p style={{ textAlign: "left", color: "white" }}>No Handphone</p>
+              <p style={{ textAlign: "left", color: "white" }}>Password</p>
               <input
                 type="text"
-                placeholder="No Handphone"
+                placeholder="Password"
+                className="form-control mb-3"
+                style={{
+                  width: "100%",
+                  minWidth: "250px",
+                  display: "block",
+                  marginRight: "auto",
+                  marginLeft: "auto",
+                  backgroundColor: "#D9D9D9",
+                  borderRadius: "5px",
+                }}
+              ></input>
+              <p style={{ textAlign: "left", color: "white" }}>Address</p>
+              <input
+                type="text"
+                placeholder="Garuda Street 34, Yogyakarta"
+                className="form-control mb-3"
+                style={{
+                  width: "100%",
+                  minWidth: "250px",
+                  display: "block",
+                  marginRight: "auto",
+                  marginLeft: "auto",
+                  backgroundColor: "#D9D9D9",
+                  borderRadius: "5px",
+                }}
+              ></input>
+              <p style={{ textAlign: "left", color: "white" }}>Phone Number</p>
+              <input
+                type="text"
+                placeholder="081xxxxxxx"
                 className="form-control mb-3"
                 style={{
                   width: "100%",

@@ -1,10 +1,19 @@
 import Card from "react-bootstrap/Card";
-import { FaLocationDot, FaCalendar, FaMoon } from "react-icons/fa6";
+import {
+  FaUserGroup,
+  FaCalendar,
+  FaMoon,
+  FaChild,
+  FaMinus,
+  FaPlus,
+} from "react-icons/fa6";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { useState, useEffect } from "react";
+import Button from "react-bootstrap/Button";
 
 const SearchCard = () => {
+  // date
   const now = new Date();
   const [endDate, setEndDate] = useState(
     new Date(new Date(now).setDate(now.getDate() + 1)).toDateString()
@@ -26,36 +35,14 @@ const SearchCard = () => {
     document.getElementById("date-input").valueAsDate = startDate;
   }, []);
 
+  // person
+  const [adult, setAdult] = useState(0);
+  const [child, setChild] = useState(0);
+
   return (
     <div style={{ width: "80%", marginRight: "auto", marginLeft: "auto" }}>
       <Card style={{ padding: "1rem" }}>
-        <p style={{ textAlign: "left", marginBottom: "0px" }}>
-          City or Hotel Name
-        </p>
-        <div style={{ position: "relative" }}>
-          <FaLocationDot
-            style={{
-              height: "1.5rem",
-              width: "1.5rem",
-              padding: "4px",
-              position: "absolute",
-              boxSizing: "border-box",
-              top: "50%",
-              left: "2px",
-              transform: "translateY(-50%)",
-            }}
-          />
-          <input
-            style={{
-              width: "100%",
-              border: "solid 1px #BFC9D9",
-              borderRadius: "5px",
-              height: "2.5rem",
-              paddingLeft: "1.5rem",
-            }}
-          ></input>
-        </div>
-        <div className="row mt-3">
+        <div className="row">
           <div className="col-4">
             <p style={{ textAlign: "left", marginBottom: "0px" }}>Check-in</p>
             <div className="mt-3" style={{ position: "relative" }}>
@@ -149,6 +136,107 @@ const SearchCard = () => {
             <p style={{ textAlign: "left", marginBottom: "0px" }}>Check-out</p>
             <div className="mt-3">
               <p style={{ textAlign: "left" }}>{endDate}</p>
+            </div>
+          </div>
+        </div>
+        {/* seaction */}
+        <div className="row mt-3">
+          <div className="col-4">
+            <div className="row">
+              <p style={{ textAlign: "left", marginBottom: "0px" }}>
+                <FaUserGroup style={{ marginRight: "5px" }} />
+                Adult
+              </p>
+            </div>
+            <div
+              className="row mt-3"
+              style={{ position: "relative", justifyContent: "center" }}
+            >
+              <div className="col-2">
+                {adult > 0 ? (
+                  <FaMinus
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      setAdult(adult - 1);
+                    }}
+                  />
+                ) : (
+                  <FaMinus />
+                )}
+              </div>
+              <div className="col-2">
+                <Card style={{ width: "fit-content", padding: "5px" }}>
+                  {adult}
+                </Card>
+              </div>
+              <div className="col-2">
+                {adult < 30 ? (
+                  <FaPlus
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      setAdult(adult + 1);
+                    }}
+                  />
+                ) : (
+                  <FaPlus />
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="col-4">
+            <div className="row">
+              <p style={{ textAlign: "left", marginBottom: "0px" }}>
+                <FaChild style={{ marginRight: "5px" }} />
+                Child
+              </p>
+            </div>
+            <div
+              className="row mt-3"
+              style={{ position: "relative", justifyContent: "center" }}
+            >
+              <div className="col-2">
+                {child > 0 ? (
+                  <FaMinus
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      setChild(child - 1);
+                    }}
+                  />
+                ) : (
+                  <FaMinus />
+                )}
+              </div>
+              <div className="col-2">
+                <Card style={{ width: "fit-content", padding: "5px" }}>
+                  {child}
+                </Card>
+              </div>
+              <div className="col-2">
+                {child < 30 ? (
+                  <FaPlus
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      setChild(child + 1);
+                    }}
+                  />
+                ) : (
+                  <FaPlus />
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="col-4">
+            <div className="mt-3">
+              <Button
+                href="/signup"
+                style={{
+                  backgroundColor: "#FBBC05",
+                  color: "#0C1738",
+                  width: "100%",
+                }}
+              >
+                <b>Search</b>
+              </Button>
             </div>
           </div>
         </div>
