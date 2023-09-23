@@ -113,3 +113,9 @@ export const name = () => {
   // console.log(token);
   return name;
 };
+
+export const role = () => {
+  const name = cookies.get("role");
+  // console.log(token);
+  return name;
+};

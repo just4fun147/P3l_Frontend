@@ -9,6 +9,11 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Authenticated from "./components/middleware/Authenticated";
+import AdminAuth from "./components/middleware/AdminAuth";
+import FOAuth from "./components/middleware/FOAuth";
+import GMAuth from "./components/middleware/GMAuth";
+import OwnerAuth from "./components/middleware/OwnerAuth";
+import SMAuth from "./components/middleware/SMAuth";
 import Guest from "./components/middleware/Guest";
 import { Fragment } from "react";
 
@@ -23,18 +28,10 @@ function App() {
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route
-              path="/home"
+              path="/search"
               element={
                 <Authenticated>
                   <Home />
-                </Authenticated>
-              }
-            ></Route>
-            <Route
-              path="/test"
-              element={
-                <Authenticated>
-                  <Test />
                 </Authenticated>
               }
             ></Route>
