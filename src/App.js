@@ -1,13 +1,18 @@
+// Utils
 import "./App.css";
-import Navigationbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Fragment } from "react";
+// PARTIAL
+import Navigationbar from "./components/Navbar";
+// PAGES
 import LandingPage from "./pages/landingpage/LandingPage";
-import Test from "./pages/Test";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
+import RoomManagement from "./pages/Admin/Room";
+// AUTH
 import Authenticated from "./components/middleware/Authenticated";
 import AdminAuth from "./components/middleware/AdminAuth";
 import FOAuth from "./components/middleware/FOAuth";
@@ -15,7 +20,6 @@ import GMAuth from "./components/middleware/GMAuth";
 import OwnerAuth from "./components/middleware/OwnerAuth";
 import SMAuth from "./components/middleware/SMAuth";
 import Guest from "./components/middleware/Guest";
-import { Fragment } from "react";
 
 function App() {
   return (
@@ -26,15 +30,10 @@ function App() {
       <div className="body">
         <Router>
           <Routes>
+            {/* UNIVERSAL */}
             <Route path="/" element={<LandingPage />} />
-            <Route
-              path="/search"
-              element={
-                <Authenticated>
-                  <Home />
-                </Authenticated>
-              }
-            ></Route>
+            {/* AUTH */}
+            {/* Consumen */}
             <Route
               path="/profile"
               element={
@@ -43,6 +42,15 @@ function App() {
                 </Authenticated>
               }
             ></Route>
+            <Route
+              path="/search"
+              element={
+                <Authenticated>
+                  <Home />
+                </Authenticated>
+              }
+            ></Route>
+            {/* GUEST */}
             <Route
               path="/login"
               element={
@@ -57,6 +65,15 @@ function App() {
                 <Guest>
                   <Register />
                 </Guest>
+              }
+            ></Route>
+            {/* ADMIN */}
+            <Route
+              path="/room-management"
+              element={
+                // <AdminAuth>
+                <RoomManagement />
+                // </AdminAuth>
               }
             ></Route>
           </Routes>
