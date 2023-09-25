@@ -17,18 +17,20 @@ import Profile from "./pages/Profile";
 import RoomManagement from "./pages/Admin/Room";
 import AddRoom from "./pages/Admin/AddRoom";
 import EditRoom from "./pages/Admin/EditRoom";
-// Season
+// SM Season
 import SeasonManagement from "./pages/SM/Season/Season";
 import AddSeason from "./pages/SM/Season/AddSeason";
 import EditSeason from "./pages/SM/Season/EditSeason";
-// Promo
+// SM Promo
 import PromoManagement from "./pages/SM/Promo/Promo";
 import AddPromo from "./pages/SM/Promo/AddPromo";
 import EditPromo from "./pages/SM/Promo/EditPromo";
-// Add On
+// SM Add On
 import FacilityManagement from "./pages/SM/Facility/Facility";
 import AddFacility from "./pages/SM/Facility/AddFacility";
 import EditFacility from "./pages/SM/Facility/EditFacility";
+// SM Reservation
+import ReservationManagement from "./pages/SM/Reservation";
 
 // Report
 import NewCustReport from "./pages/Report/NewCustReport";
@@ -187,6 +189,14 @@ function App() {
               element={
                 // <AdminAuth>
                 <EditFacility />
+                // </AdminAuth>
+              }
+            ></Route>
+            <Route
+              path="/reservation-management"
+              element={
+                // <AdminAuth>
+                <ReservationManagement />
                 // </AdminAuth>
               }
             ></Route>

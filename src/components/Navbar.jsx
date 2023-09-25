@@ -126,17 +126,7 @@ function BasicExample() {
                         <Nav.Link href="/room">Season</Nav.Link>
                         <Nav.Link href="/test">Facility</Nav.Link>
                         <Nav.Link href="/test">Promo</Nav.Link>
-                        <NavDropdown
-                          title="Reservation"
-                          id="basic-nav-dropdown"
-                        >
-                          <NavDropdown.Item href="#action/3.1">
-                            Group
-                          </NavDropdown.Item>
-                          <NavDropdown.Item href="#action/3.2">
-                            Personal
-                          </NavDropdown.Item>
-                        </NavDropdown>
+                        <Nav.Link href="/test">Reservation</Nav.Link>
                       </Nav>
                     ) : (
                       <>
