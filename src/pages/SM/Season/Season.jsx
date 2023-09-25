@@ -29,17 +29,33 @@ const SeasonManagement = () => {
           </Button>
         </Modal.Body>
       </Modal>
-      <div className="container mt-3">
-        <div
-          className="row mb-3"
-          style={{ justifyContent: "end", marginRight: "0.25rem" }}
-        >
-          <Button
-            href="/season-management/add"
-            style={{ width: "fit-content" }}
-          >
-            Add Season
-          </Button>
+      <div className="container mt-5">
+        <div className="row mb-3">
+          <div className="col-10">
+            <input
+              type="text"
+              placeholder="Search Season By Name"
+              className="form-control mb-3"
+              style={{
+                width: "100%",
+                minWidth: "250px",
+                display: "block",
+                marginRight: "auto",
+                marginLeft: "auto",
+                backgroundColor: "#D9D9D9",
+                borderRadius: "5px",
+                lineHeight: "0.25",
+              }}
+            ></input>
+          </div>
+          <div className="col-2">
+            <Button
+              href="/season-management/add"
+              style={{ width: "fit-content" }}
+            >
+              Add Season
+            </Button>
+          </div>
         </div>
         <Table striped bordered hover>
           <thead>
