@@ -25,6 +25,10 @@ import EditSeason from "./pages/SM/Season/EditSeason";
 import PromoManagement from "./pages/SM/Promo/Promo";
 import AddPromo from "./pages/SM/Promo/AddPromo";
 import EditPromo from "./pages/SM/Promo/EditPromo";
+// Add On
+import FacilityManagement from "./pages/SM/Facility/Facility";
+import AddFacility from "./pages/SM/Facility/AddFacility";
+import EditFacility from "./pages/SM/Facility/EditFacility";
 
 // Report
 import NewCustReport from "./pages/Report/NewCustReport";
@@ -159,6 +163,30 @@ function App() {
               element={
                 // <AdminAuth>
                 <EditPromo />
+                // </AdminAuth>
+              }
+            ></Route>
+            <Route
+              path="/facility-management"
+              element={
+                // <AdminAuth>
+                <FacilityManagement />
+                // </AdminAuth>
+              }
+            ></Route>
+            <Route
+              path="/facility-management/add"
+              element={
+                // <AdminAuth>
+                <AddFacility />
+                // </AdminAuth>
+              }
+            ></Route>
+            <Route
+              path="/facility-management/edit"
+              element={
+                // <AdminAuth>
+                <EditFacility />
                 // </AdminAuth>
               }
             ></Route>
