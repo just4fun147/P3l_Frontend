@@ -1,17 +1,26 @@
 // Utils
 import "./App.css";
-import Footer from "./components/Footer";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Fragment } from "react";
+
 // PARTIAL
 import Navigationbar from "./components/Navbar";
+import Footer from "./components/Footer";
+
 // PAGES
 import LandingPage from "./pages/landingpage/LandingPage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
+// ADMIN
 import RoomManagement from "./pages/Admin/Room";
+// Report
+import NewCustReport from "./pages/Report/NewCustReport";
+import GuestReport from "./pages/Report/GuestReport";
+import MonthlyReport from "./pages/Report/MonthlyReport";
+import LoyalCustReport from "./pages/Report/LoyalCustReport";
+
 // AUTH
 import Authenticated from "./components/middleware/Authenticated";
 import AdminAuth from "./components/middleware/AdminAuth";
@@ -73,6 +82,39 @@ function App() {
               element={
                 // <AdminAuth>
                 <RoomManagement />
+                // </AdminAuth>
+              }
+            ></Route>
+            {/* Owner */}
+            <Route
+              path="/report/new-customer"
+              element={
+                // <AdminAuth>
+                <NewCustReport />
+                // </AdminAuth>
+              }
+            ></Route>
+            <Route
+              path="/report/guest"
+              element={
+                // <AdminAuth>
+                <GuestReport />
+                // </AdminAuth>
+              }
+            ></Route>
+            <Route
+              path="/report/monthly"
+              element={
+                // <AdminAuth>
+                <MonthlyReport />
+                // </AdminAuth>
+              }
+            ></Route>
+            <Route
+              path="/report/loyal-customer"
+              element={
+                // <AdminAuth>
+                <LoyalCustReport />
                 // </AdminAuth>
               }
             ></Route>
