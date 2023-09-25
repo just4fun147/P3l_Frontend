@@ -17,6 +17,10 @@ import Profile from "./pages/Profile";
 import RoomManagement from "./pages/Admin/Room";
 import AddRoom from "./pages/Admin/AddRoom";
 import EditRoom from "./pages/Admin/EditRoom";
+// Season
+import SeasonManagement from "./pages/SM/Season/Season";
+import AddSeason from "./pages/SM/Season/AddSeason";
+import EditSeason from "./pages/SM/Season/EditSeason";
 // Report
 import NewCustReport from "./pages/Report/NewCustReport";
 import GuestReport from "./pages/Report/GuestReport";
@@ -43,6 +47,7 @@ function App() {
           <Routes>
             {/* UNIVERSAL */}
             <Route path="/" element={<LandingPage />} />
+
             {/* AUTH */}
             {/* Consumen */}
             <Route
@@ -100,6 +105,31 @@ function App() {
               element={
                 // <AdminAuth>
                 <EditRoom />
+                // </AdminAuth>
+              }
+            ></Route>
+            {/* SM */}
+            <Route
+              path="/season-management"
+              element={
+                // <AdminAuth>
+                <SeasonManagement />
+                // </AdminAuth>
+              }
+            ></Route>
+            <Route
+              path="/season-management/add"
+              element={
+                // <AdminAuth>
+                <AddSeason />
+                // </AdminAuth>
+              }
+            ></Route>
+            <Route
+              path="/season-management/edit"
+              element={
+                // <AdminAuth>
+                <EditSeason />
                 // </AdminAuth>
               }
             ></Route>
