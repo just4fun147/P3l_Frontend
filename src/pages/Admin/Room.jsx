@@ -34,7 +34,9 @@ const RoomManagement = () => {
           className="row mb-3"
           style={{ justifyContent: "end", marginRight: "0.25rem" }}
         >
-          <Button style={{ width: "fit-content" }}>Add Room</Button>
+          <Button href="/room-management/add" style={{ width: "fit-content" }}>
+            Add Room
+          </Button>
         </div>
         <Table striped bordered hover>
           <thead>
@@ -51,7 +53,7 @@ const RoomManagement = () => {
               <td> 123</td>
               <td> suit</td>
               <td>
-                <Button>Edit</Button>
+                <Button href="/room-management/edit">Edit</Button>
                 <Button
                   variant="danger"
                   style={{ marginLeft: "1rem" }}

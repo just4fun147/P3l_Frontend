@@ -15,6 +15,8 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 // ADMIN
 import RoomManagement from "./pages/Admin/Room";
+import AddRoom from "./pages/Admin/AddRoom";
+import EditRoom from "./pages/Admin/EditRoom";
 // Report
 import NewCustReport from "./pages/Report/NewCustReport";
 import GuestReport from "./pages/Report/GuestReport";
@@ -82,6 +84,22 @@ function App() {
               element={
                 // <AdminAuth>
                 <RoomManagement />
+                // </AdminAuth>
+              }
+            ></Route>
+            <Route
+              path="/room-management/add"
+              element={
+                // <AdminAuth>
+                <AddRoom />
+                // </AdminAuth>
+              }
+            ></Route>
+            <Route
+              path="/room-management/edit"
+              element={
+                // <AdminAuth>
+                <EditRoom />
                 // </AdminAuth>
               }
             ></Route>
