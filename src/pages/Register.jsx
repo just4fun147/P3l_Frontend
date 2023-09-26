@@ -131,7 +131,7 @@ const Register = () => {
                   borderRadius: "5px",
                 }}
               ></input>
-              <p style={{ textAlign: "left", color: "white" }}>Tanggal Lahir</p>
+              <p style={{ textAlign: "left", color: "white" }}>Birth Of Date</p>
               <input
                 type="date"
                 placeholder="Email"

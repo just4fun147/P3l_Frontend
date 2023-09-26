@@ -64,34 +64,34 @@ function App() {
             <Route
               path="/profile"
               element={
-                <Authenticated>
-                  <Profile />
-                </Authenticated>
+                // <Authenticated>
+                <Profile />
+                // </Authenticated>
               }
             ></Route>
             <Route
               path="/search"
               element={
-                <Authenticated>
-                  <Home />
-                </Authenticated>
+                // <Authenticated>
+                <Home />
+                // </Authenticated>
               }
             ></Route>
             {/* GUEST */}
             <Route
               path="/login"
               element={
-                <Guest>
-                  <Login />
-                </Guest>
+                // <Guest>
+                <Login />
+                // </Guest>
               }
             ></Route>
             <Route
               path="/signup"
               element={
-                <Guest>
-                  <Register />
-                </Guest>
+                // <Guest>
+                <Register />
+                // </Guest>
               }
             ></Route>
             {/* ADMIN */}

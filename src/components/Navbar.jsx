@@ -38,7 +38,7 @@ function BasicExample() {
                 width: "100%",
                 minWidth: "250px",
                 display: "block",
-                textAlign: "center",
+                textAlign: "start",
                 marginBottom: "5%",
               }}
             ></input>
@@ -53,7 +53,7 @@ function BasicExample() {
                 minWidth: "250px",
                 display: "block",
                 marginBottom: "5%",
-                textAlign: "center",
+                textAlign: "start",
               }}
             ></input>
             <b>Confirm New Password</b>
@@ -66,7 +66,7 @@ function BasicExample() {
                 width: "100%",
                 minWidth: "250px",
                 display: "block",
-                textAlign: "center",
+                textAlign: "start",
               }}
             ></input>
           </Container>
@@ -98,14 +98,14 @@ function BasicExample() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             {/* ADMIN */}
-            {roles == process.env.REACT_APP_ADMIN ? (
+            {roles === process.env.REACT_APP_ADMIN ? (
               <Nav className="ml-auto">
                 <Nav.Link href="/room">Room</Nav.Link>
               </Nav>
             ) : (
               // OWNER
               <>
-                {roles == process.env.REACT_APP_OWNER ? (
+                {roles === process.env.REACT_APP_OWNER ? (
                   <Nav className="ml-auto">
                     <NavDropdown title="Report" id="basic-nav-dropdown">
                       <NavDropdown.Item href="#action/3.1">
@@ -121,7 +121,7 @@ function BasicExample() {
                   </Nav>
                 ) : (
                   <>
-                    {roles == process.env.REACT_APP_SM ? (
+                    {roles === process.env.REACT_APP_SM ? (
                       <Nav className="ml-auto">
                         <Nav.Link href="/room">Season</Nav.Link>
                         <Nav.Link href="/test">Facility</Nav.Link>
@@ -130,7 +130,7 @@ function BasicExample() {
                       </Nav>
                     ) : (
                       <>
-                        {roles == process.env.REACT_APP_GM ? (
+                        {roles === process.env.REACT_APP_GM ? (
                           <Nav className="ml-auto">
                             <NavDropdown title="Report" id="basic-nav-dropdown">
                               <NavDropdown.Item href="#action/3.1">
@@ -149,13 +149,13 @@ function BasicExample() {
                           </Nav>
                         ) : (
                           <>
-                            {roles == process.env.REACT_APP_FO ? (
+                            {roles === process.env.REACT_APP_FO ? (
                               <Nav className="ml-auto">
                                 <Nav.Link href="/room">Reservation</Nav.Link>
                               </Nav>
                             ) : (
                               <>
-                                {roles == process.env.REACT_APP_CONSUMEN ? (
+                                {roles === process.env.REACT_APP_CONSUMEN ? (
                                   <Nav
                                     className="ml-auto"
                                     style={{ width: "100%" }}
@@ -187,7 +187,7 @@ function BasicExample() {
                   {names}
                 </Nav.Link>
                 <NavDropdown title={<FaUser></FaUser>}>
-                  {roles == process.env.REACT_APP_CONSUMEN ? (
+                  {roles === process.env.REACT_APP_CONSUMEN ? (
                     <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
                   ) : (
                     <></>
