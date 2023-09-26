@@ -161,7 +161,16 @@ const ReservationManagement = () => {
               </Button>
             </ButtonGroup>
           </div>
-          <div className="col-4"></div>
+        </div>
+        <div className="container">
+          <div className="row mb-3" style={{ justifyContent: "end" }}>
+            <Button
+              href="/reservation-management/add-group"
+              style={{ width: "fit-content" }}
+            >
+              Create Group Reservation
+            </Button>
+          </div>
         </div>
         {/* GROUP TABLE */}
         {isGroup ? (
@@ -193,6 +202,13 @@ const ReservationManagement = () => {
                       }}
                     >
                       Cancel
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      href="/reservation-management/edit-group"
+                      style={{ marginLeft: "1rem" }}
+                    >
+                      Edit
                     </Button>
 
                     <Button

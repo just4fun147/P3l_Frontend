@@ -30,7 +30,8 @@ import FacilityManagement from "./pages/SM/Facility/Facility";
 import AddFacility from "./pages/SM/Facility/AddFacility";
 import EditFacility from "./pages/SM/Facility/EditFacility";
 // SM Reservation
-import ReservationManagement from "./pages/SM/Reservation";
+import ReservationManagement from "./pages/SM/Reservation/Reservation";
+import AddReservationGroup from "./pages/SM/Reservation/AddReservationGroup";
 
 // Report
 import NewCustReport from "./pages/Report/NewCustReport";
@@ -197,6 +198,14 @@ function App() {
               element={
                 // <AdminAuth>
                 <ReservationManagement />
+                // </AdminAuth>
+              }
+            ></Route>
+            <Route
+              path="/reservation-management/add-group"
+              element={
+                // <AdminAuth>
+                <AddReservationGroup />
                 // </AdminAuth>
               }
             ></Route>
