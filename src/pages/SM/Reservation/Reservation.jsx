@@ -265,6 +265,9 @@ const ReservationManagement = () => {
                       Cancel
                     </Button>
 
+                    <Button variant="secondary" style={{ marginLeft: "1rem" }}>
+                      Edit
+                    </Button>
                     <Button
                       onClick={() => {
                         setSelectedName("Personal Confirm");

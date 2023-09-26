@@ -32,6 +32,7 @@ import EditFacility from "./pages/SM/Facility/EditFacility";
 // SM Reservation
 import ReservationManagement from "./pages/SM/Reservation/Reservation";
 import AddReservationGroup from "./pages/SM/Reservation/AddReservationGroup";
+import EditReservationGroup from "./pages/SM/Reservation/EditReservationGroup";
 
 // Report
 import NewCustReport from "./pages/Report/NewCustReport";
@@ -206,6 +207,14 @@ function App() {
               element={
                 // <AdminAuth>
                 <AddReservationGroup />
+                // </AdminAuth>
+              }
+            ></Route>
+            <Route
+              path="/reservation-management/edit-group"
+              element={
+                // <AdminAuth>
+                <EditReservationGroup />
                 // </AdminAuth>
               }
             ></Route>
