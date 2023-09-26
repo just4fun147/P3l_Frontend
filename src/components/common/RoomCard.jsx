@@ -63,7 +63,7 @@ const RoomCard = (props) => {
             </div>
             <div className="row" style={{ justifyContent: "end" }}>
               <Button
-                href="/login"
+                href="/room-detail"
                 style={{
                   backgroundColor: "#FBBC05",
                   color: "#0C1738",

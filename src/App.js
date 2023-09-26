@@ -1,6 +1,11 @@
 // Utils
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { Fragment } from "react";
 
 // PARTIAL
@@ -13,6 +18,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
+import RoomDetail from "./pages/RoomDetail";
 // ADMIN
 import RoomManagement from "./pages/Admin/Room";
 import AddRoom from "./pages/Admin/AddRoom";
@@ -60,7 +66,8 @@ function App() {
           <Routes>
             {/* UNIVERSAL */}
             <Route path="/" element={<LandingPage />} />
-
+            <Route path="/room-detail" element={<RoomDetail />} />
+            <Route path="/search" element={<Home />}></Route>
             {/* AUTH */}
             {/* Consumen */}
             <Route
@@ -71,14 +78,7 @@ function App() {
                 // </Authenticated>
               }
             ></Route>
-            <Route
-              path="/search"
-              element={
-                // <Authenticated>
-                <Home />
-                // </Authenticated>
-              }
-            ></Route>
+
             {/* GUEST */}
             <Route
               path="/login"
@@ -251,6 +251,7 @@ function App() {
                 // </AdminAuth>
               }
             ></Route>
+            <Route path="*" element={<Navigate replace to="/" />} />
           </Routes>
         </Router>
       </div>
