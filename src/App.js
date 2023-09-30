@@ -22,6 +22,7 @@ import RoomDetail from "./pages/RoomDetail";
 // CUSTOMER
 import Booking from "./pages/Customer/Booking/Booking";
 import MyReservation from "./pages/Customer/Reservation/MyReservation";
+import Receipt from "./pages/Customer/Receipt/Receipt";
 // ADMIN
 import RoomManagement from "./pages/Admin/Room";
 import AddRoom from "./pages/Admin/AddRoom";
@@ -94,6 +95,14 @@ function App() {
               element={
                 // <Authenticated>
                 <MyReservation />
+                // </Authenticated>
+              }
+            ></Route>
+            <Route
+              path="/my-receipt"
+              element={
+                // <Authenticated>
+                <Receipt />
                 // </Authenticated>
               }
             ></Route>
