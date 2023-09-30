@@ -19,6 +19,9 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import RoomDetail from "./pages/RoomDetail";
+// CUSTOMER
+import Booking from "./pages/Customer/Booking/Booking";
+import MyReservation from "./pages/Customer/Reservation/MyReservation";
 // ADMIN
 import RoomManagement from "./pages/Admin/Room";
 import AddRoom from "./pages/Admin/AddRoom";
@@ -69,12 +72,28 @@ function App() {
             <Route path="/room-detail" element={<RoomDetail />} />
             <Route path="/search" element={<Home />}></Route>
             {/* AUTH */}
-            {/* Consumen */}
+            {/* Customer */}
             <Route
               path="/profile"
               element={
                 // <Authenticated>
                 <Profile />
+                // </Authenticated>
+              }
+            ></Route>
+            <Route
+              path="/booking-confirmation"
+              element={
+                // <Authenticated>
+                <Booking />
+                // </Authenticated>
+              }
+            ></Route>
+            <Route
+              path="/my-reservation"
+              element={
+                // <Authenticated>
+                <MyReservation />
                 // </Authenticated>
               }
             ></Route>

@@ -1,0 +1,4 @@
+My reservation page : 
+    status 0 = unpaid
+    status 1 = paid
+    status 3 = success
