@@ -10,8 +10,13 @@ const MyReservationItem = (props) => {
             <p>Adult : xx | Child : xx</p>
           </div>
           <div className="col-3">
-            <Button style={{ width: "100%" }}>Bill</Button>
-            <Button style={{ width: "100%", marginTop: "1rem" }}>
+            <Button style={{ width: "100%" }} href="/my-bill">
+              Bill
+            </Button>
+            <Button
+              style={{ width: "100%", marginTop: "1rem" }}
+              href="/my-receipt"
+            >
               Receipt
             </Button>
           </div>

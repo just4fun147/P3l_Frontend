@@ -17,7 +17,7 @@ const ReceiptComponent = () => {
           Telp. (0274) 487711
         </p>
         <hr style={{ border: "3px solid black" }} />
-        <b>Invoice</b>
+        <b>INVOICE</b>
         <hr style={{ border: "3px solid black" }} />
       </div>
       {/* tanggal */}
@@ -61,7 +61,7 @@ const ReceiptComponent = () => {
       </div>
       {/*  */}
       <hr style={{ border: "3px solid black" }} />
-      <b>Detail</b>
+      <b>DETAIL</b>
       <hr style={{ border: "3px solid black" }} />
       {/* DETAIL */}
       <div className="container row" style={{ textAlign: "start" }}>
@@ -82,7 +82,7 @@ const ReceiptComponent = () => {
       </div>
       {/*  */}
       <hr style={{ border: "3px solid black" }} />
-      <b>Kamar</b>
+      <b>KAMAR</b>
       <hr style={{ border: "3px solid black" }} />
       {/* KAMAR */}
       <div className="container mb-5 mt-3">
@@ -167,7 +167,7 @@ const ReceiptComponent = () => {
       </div>
       {/*  */}
       <hr style={{ border: "3px solid black" }} />
-      <b>Layanan</b>
+      <b>LAYANAN</b>
       <hr style={{ border: "3px solid black" }} />
       {/* LAYANAN */}
       <div className="container mt-3">
@@ -232,7 +232,7 @@ const ReceiptComponent = () => {
                 colSpan={4}
                 style={{ borderColor: "black", border: "1px solid" }}
               >
-                Total
+                TOTAL
               </td>
               <td style={{ borderColor: "black", border: "1px solid" }}>
                 Rp225.000
