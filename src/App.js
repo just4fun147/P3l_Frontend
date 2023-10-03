@@ -24,6 +24,7 @@ import Booking from "./pages/Customer/Booking/Booking";
 import MyReservation from "./pages/Customer/Reservation/MyReservation";
 import Receipt from "./pages/Customer/Receipt/Receipt";
 import Bill from "./pages/Customer/Receipt/Bill";
+import GroupBill from "./pages/Customer/Receipt/GroupBill";
 // ADMIN
 import RoomManagement from "./pages/Admin/Room";
 import AddRoom from "./pages/Admin/AddRoom";
@@ -92,7 +93,7 @@ function App() {
               }
             ></Route>
             <Route
-              path="/my-reservation"
+              path="/my-reservation/p"
               element={
                 // <Authenticated>
                 <MyReservation />
@@ -100,7 +101,7 @@ function App() {
               }
             ></Route>
             <Route
-              path="/my-receipt"
+              path="/my-receipt/p"
               element={
                 // <Authenticated>
                 <Receipt />
@@ -108,10 +109,18 @@ function App() {
               }
             ></Route>
             <Route
-              path="/my-bill"
+              path="/my-bill/p"
               element={
                 // <Authenticated>
                 <Bill />
+                // </Authenticated>
+              }
+            ></Route>
+            <Route
+              path="/my-bill/g"
+              element={
+                // <Authenticated>
+                <GroupBill />
                 // </Authenticated>
               }
             ></Route>

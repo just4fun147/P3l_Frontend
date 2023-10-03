@@ -40,6 +40,9 @@ const Receipt = () => {
           paddingTop: "3rem",
           paddingBottom: "3rem",
           backgroundColor: "white",
+          minWidth: "1320px",
+          minHeight: "1334px",
+          overflow: "scroll",
         }}
         id="report"
       >

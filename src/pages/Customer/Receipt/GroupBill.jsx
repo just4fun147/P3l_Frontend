@@ -1,8 +1,8 @@
 import JsPDF from "jspdf";
 import Button from "react-bootstrap/Button";
-import BillComponent from "../../../components/Receipt/BillComponent";
+import GroupBillComponent from "../../../components/Receipt/GroupBillComponent";
 import html2canvas from "html2canvas";
-const Bill = () => {
+const GroupBill = () => {
   const generatePDF = () => {
     const input = document.getElementById("report");
     html2canvas(input).then((canvas) => {
@@ -34,22 +34,22 @@ const Bill = () => {
       <div
         className="container mt-5 mb-3"
         style={{
-          width: "100%",
           paddingRight: "5rem",
           paddingLeft: "5rem",
           paddingTop: "3rem",
           paddingBottom: "3rem",
           backgroundColor: "white",
+          width: "100%",
           minWidth: "1320px",
           minHeight: "1334px",
           overflow: "scroll",
         }}
         id="report"
       >
-        <BillComponent />
+        <GroupBillComponent />
       </div>
     </>
   );
 };
 
-export default Bill;
+export default GroupBill;
