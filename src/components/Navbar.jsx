@@ -100,7 +100,7 @@ function BasicExample() {
             {/* ADMIN */}
             {roles === process.env.REACT_APP_ADMIN ? (
               <Nav className="ml-auto">
-                <Nav.Link href="/room">Room</Nav.Link>
+                <Nav.Link href="/room-management">Room</Nav.Link>
               </Nav>
             ) : (
               // OWNER

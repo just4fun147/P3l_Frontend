@@ -54,6 +54,7 @@ import LoyalCustReport from "./pages/Report/LoyalCustReport";
 
 // AUTH
 import Authenticated from "./components/middleware/Authenticated";
+import Universal from "./components/middleware/Universal";
 import AdminAuth from "./components/middleware/AdminAuth";
 import FOAuth from "./components/middleware/FOAuth";
 import GMAuth from "./components/middleware/GMAuth";
@@ -71,9 +72,30 @@ function App() {
         <Router>
           <Routes>
             {/* UNIVERSAL */}
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/room-detail" element={<RoomDetail />} />
-            <Route path="/search" element={<Home />}></Route>
+            <Route
+              path="/"
+              element={
+                <Universal>
+                  <LandingPage />
+                </Universal>
+              }
+            />
+            <Route
+              path="/room-detail"
+              element={
+                <Universal>
+                  <RoomDetail />{" "}
+                </Universal>
+              }
+            />
+            <Route
+              path="/search"
+              element={
+                <Universal>
+                  <Home />
+                </Universal>
+              }
+            ></Route>
             {/* AUTH */}
             {/* Customer */}
             <Route
@@ -129,34 +151,34 @@ function App() {
             <Route
               path="/login"
               element={
-                // <Guest>
-                <Login />
-                // </Guest>
+                <Guest>
+                  <Login />
+                </Guest>
               }
             ></Route>
             <Route
               path="/signup"
               element={
-                // <Guest>
-                <Register />
-                // </Guest>
+                <Guest>
+                  <Register />
+                </Guest>
               }
             ></Route>
             {/* ADMIN */}
             <Route
               path="/room-management"
               element={
-                // <AdminAuth>
-                <RoomManagement />
-                // </AdminAuth>
+                <AdminAuth>
+                  <RoomManagement />
+                </AdminAuth>
               }
             ></Route>
             <Route
               path="/room-management/add"
               element={
-                // <AdminAuth>
-                <AddRoom />
-                // </AdminAuth>
+                <AdminAuth>
+                  <AddRoom />
+                </AdminAuth>
               }
             ></Route>
             <Route

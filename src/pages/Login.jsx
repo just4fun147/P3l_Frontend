@@ -25,7 +25,7 @@ const Login = () => {
               src={logo}
               alt="Logo"
               style={{
-                width: "825px",
+                width: "100%",
                 height: "440px",
                 flexShrink: "0",
                 objectFit: "cover",

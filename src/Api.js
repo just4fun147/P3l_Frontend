@@ -41,7 +41,25 @@ export const auth = async (email, password) => {
     .then((response) => {
       cookies.set("token", response.data.OUT_DATA.token);
       cookies.set("name", response.data.OUT_DATA.name);
-      window.location = "/home";
+      cookies.set("role", response.data.OUT_DATA.role);
+      if (response.data.OUT_DATA.role === process.env.REACT_APP_CONSUMEN) {
+        window.location = "/";
+      }
+      if (response.data.OUT_DATA.role === process.env.REACT_APP_ADMIN) {
+        window.location = "/room-management";
+      }
+      if (response.data.OUT_DATA.role === process.env.REACT_APP_OWNER) {
+        window.location = "/";
+      }
+      if (response.data.OUT_DATA.role === process.env.REACT_APP_SM) {
+        window.location = "/";
+      }
+      if (response.data.OUT_DATA.role === process.env.REACT_APP_GM) {
+        window.location = "/";
+      }
+      if (response.data.OUT_DATA.role === process.env.REACT_APP_FO) {
+        window.location = "/";
+      }
     })
     .catch((error) => {
       // alert(error.response.data.OUT_STAT);
@@ -115,7 +133,7 @@ export const name = () => {
 };
 
 export const role = () => {
-  const name = cookies.get("role");
+  const role = cookies.get("role");
   // console.log(token);
-  return name;
+  return role;
 };
