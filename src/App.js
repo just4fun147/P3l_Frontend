@@ -182,11 +182,11 @@ function App() {
               }
             ></Route>
             <Route
-              path="/room-management/edit"
+              path="/room-management/edit/:id"
               element={
-                // <AdminAuth>
-                <EditRoom />
-                // </AdminAuth>
+                <AdminAuth>
+                  <EditRoom />
+                </AdminAuth>
               }
             ></Route>
             {/* SM */}

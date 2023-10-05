@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import React, { useEffect, useState } from "react";
 import Loading from "../../components/Loading";
+import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import { headersAuth } from "../../Api";
 
@@ -102,8 +103,39 @@ const RoomManagement = () => {
     getRoom();
   }, []);
 
+  const deleteRoom = () => {
+    handleClose();
+    setLoadings(true);
+    return new Promise((resolve) => {
+      axios
+        .post(
+          process.env.REACT_APP_BASEURL + "rooms/delete",
+          {
+            id: selectedId,
+          },
+          {
+            headers: headersAuth,
+          }
+        )
+        .then((response) => {
+          toast.success(response.data.OUT_MESS, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+          getRoom();
+        })
+        .catch((error) => {
+          toast.error(error.response.data.OUT_MESS, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+          getRoom();
+        });
+    });
+  };
+
   return (
     <>
+      <ToastContainer />
+
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Are You Sure Want To Delete {selectedName}</Modal.Title>
@@ -115,7 +147,7 @@ const RoomManagement = () => {
           <Button
             variant="danger"
             style={{ marginLeft: "1rem" }}
-            onClick={handleClose}
+            onClick={() => deleteRoom()}
           >
             Confirm
           </Button>
@@ -169,12 +201,20 @@ const RoomManagement = () => {
                     <td> {room.room_number} </td>
                     <td> {room.type_name}</td>
                     <td>
-                      <Button href="/room-management/edit">Edit</Button>
+                      <Button
+                        // href=""
+                        onClick={() => {
+                          window.location.href = `/room-management/edit/${room.id}`;
+                        }}
+                      >
+                        Edit
+                      </Button>
                       <Button
                         variant="danger"
                         style={{ marginLeft: "1rem" }}
                         onClick={() => {
-                          setSelectedName("123");
+                          setSelectedName(room.room_number);
+                          setSelectedId(room.id);
                           handleShow();
                         }}
                       >

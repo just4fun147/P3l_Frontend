@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Loading from "../../components/Loading";
 import { toast, ToastContainer } from "react-toastify";
+import { type } from "@testing-library/user-event/dist/type";
 
 const AddRoom = () => {
   const [show, setShow] = useState(false);
@@ -36,6 +37,46 @@ const AddRoom = () => {
       handleShow();
     }
   };
+  const createRoom = () => {
+    handleClose();
+    setLoading(true);
+    let s = true;
+    let d = true;
+    if (isSmoking !== "1") {
+      s = false;
+    }
+    if (isDouble !== "1") {
+      s = false;
+    }
+    return new Promise((resolve) => {
+      axios
+        .post(
+          process.env.REACT_APP_BASEURL + "rooms/create",
+          {
+            room_number: roomNumber,
+            type_name: typeName,
+            is_smoking: s,
+            is_double: d,
+          },
+          {
+            headers: headersAuth,
+          }
+        )
+        .then((response) => {
+          toast.success(response.data.OUT_MESS, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+          setLoading(true);
+          setTimeout((window.location.href = "/room-management"), 5000);
+        })
+        .catch((error) => {
+          toast.error(error.response.data.OUT_MESS, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+          reset();
+        });
+    });
+  };
   const getRoomType = (search) => {
     return new Promise((resolve) => {
       axios
@@ -47,7 +88,6 @@ const AddRoom = () => {
           }
         )
         .then((response) => {
-          console.log("fetch");
           setRooms(response.data.OUT_DATA);
           setTypeName(response.data.OUT_DATA[0].type_name);
           setLoading(false);
@@ -56,6 +96,13 @@ const AddRoom = () => {
           console.log(error);
         });
     });
+  };
+  const reset = () => {
+    setRoomNumber();
+    setTypeName();
+    setIsSmoking();
+    setIsDouble("0");
+    getRoomType();
   };
 
   useEffect(() => {
@@ -86,7 +133,7 @@ const AddRoom = () => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button style={{ marginLeft: "1rem" }} onClick={handleClose}>
+          <Button style={{ marginLeft: "1rem" }} onClick={() => createRoom()}>
             Confirm
           </Button>
         </Modal.Footer>
