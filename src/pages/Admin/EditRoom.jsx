@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import { headersAuth } from "../../Api";
 import axios from "axios";
 import Loading from "../../components/Loading";
+import { toast, ToastContainer } from "react-toastify";
 
 const Edit = () => {
   const [show, setShow] = useState(false);
@@ -18,7 +19,28 @@ const Edit = () => {
   const [typeName, setTypeName] = useState();
   const [isSmoking, setIsSmoking] = useState();
   const [isDouble, setIsDouble] = useState("0");
+  const [rooms, setRooms] = useState();
+  const [search, setSearch] = useState("");
 
+  const getRoomType = () => {
+    return new Promise((resolve) => {
+      axios
+        .post(
+          process.env.REACT_APP_BASEURL + "rooms-type",
+          { room_number: null },
+          {
+            headers: headersAuth,
+          }
+        )
+        .then((response) => {
+          setRooms(response.data.OUT_DATA);
+          setTypeName(response.data.OUT_DATA[0].type_name);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
+  };
   const getRoom = () => {
     return new Promise((resolve) => {
       axios
@@ -32,46 +54,115 @@ const Edit = () => {
         .then((response) => {
           setRoomNumber(response.data.OUT_DATA[0].room_number);
           setTypeName(response.data.OUT_DATA[0].type_name);
-          // setIsSmoking(response.data.OUT_DATA[0].type_name);
-          // setTypeName(response.data.OUT_DATA[0].type_name);
-
-          setTimeout(setLoading(false), 5000);
-          console.log(roomNumber);
+          if (response.data.OUT_DATA[0].is_smoking) {
+            setIsSmoking("1");
+          } else {
+            setIsSmoking("0");
+          }
+          if (response.data.OUT_DATA[0].is_double) {
+            setIsDouble("1");
+          } else {
+            setIsDouble("0");
+          }
+          setLoading(false);
+          if (isSmoking === "1") {
+            document.getElementById("inline-radio-1").checked = true;
+          } else {
+            document.getElementById("inline-radio-1").checked = true;
+          }
         })
         .catch((error) => {
           console.log(error);
         });
     });
   };
-  useEffect(() => {
+
+  const editRoom = () => {
+    handleClose();
+    setLoading(true);
+    let s = true;
+    let d = true;
+    if (isSmoking !== "1") {
+      s = false;
+    }
+    if (isDouble !== "1") {
+      s = false;
+    }
+    return new Promise((resolve) => {
+      axios
+        .post(
+          process.env.REACT_APP_BASEURL + "rooms/edit",
+          {
+            id: ids,
+            room_number: roomNumber,
+            type_name: typeName,
+            is_smoking: s,
+            is_double: d,
+          },
+          {
+            headers: headersAuth,
+          }
+        )
+        .then((response) => {
+          toast.success(response.data.OUT_MESS, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+          setLoading(true);
+          setTimeout((window.location.href = "/room-management"), 5000);
+        })
+        .catch((error) => {
+          toast.error(error.response.data.OUT_MESS, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+          reset();
+        });
+    });
+  };
+  const reset = () => {
+    setRoomNumber();
+    setTypeName();
+    setIsSmoking();
+    setIsDouble("0");
+    getRoomType();
+  };
+  const getFunction = async () => {
+    getRoomType();
     getRoom();
+  };
+  useEffect(() => {
+    getFunction();
   }, []);
 
   return (
     <>
+      <ToastContainer />
+
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Are You Sure The Data Is Correct?</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <p>
-            Room Number : <b>123</b>
+            Room Number : <b>{roomNumber}</b>
           </p>
           <p>
-            Room Type : <b>Superior</b>
+            Room Type : <b>{typeName}</b>
           </p>
           <p>
-            <b>Smoking Room</b>
+            {isSmoking === "1" ? <b>Smoking Room</b> : <b>Non Smoking Room</b>}
           </p>
-          <p>
-            Bed Type : <b>Single</b>
-          </p>
+          <p>Bed Type : {isDouble === "1" ? <b>Double</b> : <b>Single</b>}</p>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button style={{ marginLeft: "1rem" }} onClick={handleClose}>
+          <Button
+            style={{ marginLeft: "1rem" }}
+            onClick={() => {
+              editRoom();
+            }}
+          >
             Confirm
           </Button>
         </Modal.Footer>
@@ -105,6 +196,8 @@ const Edit = () => {
                   borderRadius: "5px",
                   lineHeight: "0.25",
                 }}
+                value={roomNumber}
+                onInput={(e) => setRoomNumber(e.target.value)}
               ></input>
               <p style={{ textAlign: "left" }}>Room Type</p>
               <select
@@ -118,8 +211,12 @@ const Edit = () => {
                   borderRadius: "5px",
                   lineHeight: "0.25",
                 }}
+                onChange={(e) => setTypeName(e.target.value)}
               >
-                <option value="">Superior</option>
+                <option value={typeName}>{typeName}</option>
+                {rooms.map((room) => (
+                  <option value={room.type_name}>{room.type_name}</option>
+                ))}
               </select>
 
               <Form className="mt-4" style={{ textAlign: "start" }}>
@@ -130,6 +227,7 @@ const Edit = () => {
                     name="group1"
                     type="radio"
                     id="inline-radio-1"
+                    onClick={() => setIsSmoking("1")}
                   />
                   <Form.Check
                     inline
@@ -137,6 +235,7 @@ const Edit = () => {
                     name="group1"
                     type="radio"
                     id="inline-radio-2"
+                    onClick={() => setIsSmoking("0")}
                   />
                 </div>
               </Form>
@@ -152,8 +251,19 @@ const Edit = () => {
                   borderRadius: "5px",
                   lineHeight: "0.25",
                 }}
+                onChange={(e) => setIsDouble(e.target.value)}
               >
-                <option value="">Single</option>
+                {isDouble === "0" ? (
+                  <>
+                    <option value="0">Single</option>
+                    <option value="1">Double</option>
+                  </>
+                ) : (
+                  <>
+                    <option value="1">Double</option>
+                    <option value="0">Single</option>
+                  </>
+                )}
               </select>
               <div
                 className="row mt-3"

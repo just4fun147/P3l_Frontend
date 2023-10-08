@@ -9891,6 +9891,11 @@ url-parse@^1.5.3:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
 
+use-debounce@^9.0.4:
+  version "9.0.4"
+  resolved "https://registry.npmjs.org/use-debounce/-/use-debounce-9.0.4.tgz"
+  integrity sha512-6X8H/mikbrt0XE8e+JXRtZ8yYVvKkdYRfmIhWZYsP8rcNs9hk3APV8Ua2mFkKRLcJKVdnX2/Vwrmg2GWKUQEaQ==
+
 use-deep-compare-effect@^1.4.0:
   version "1.8.1"
   resolved "https://registry.npmjs.org/use-deep-compare-effect/-/use-deep-compare-effect-1.8.1.tgz"

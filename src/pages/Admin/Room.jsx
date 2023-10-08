@@ -7,6 +7,7 @@ import Loading from "../../components/Loading";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import { headersAuth } from "../../Api";
+import { useDebounce } from "use-debounce";
 
 const RoomManagement = () => {
   const [show, setShow] = useState(false);
@@ -15,8 +16,11 @@ const RoomManagement = () => {
   const [items, setItems] = useState([]);
   const [selectedName, setSelectedName] = useState("");
   const [selectedId, setSelectedId] = useState("");
+  const [search, setSearch] = useState("");
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
+
+  const [debounceValue] = useDebounce(search, 2000);
 
   const changePage = (search, url) => {
     setLoadings(true);
@@ -59,13 +63,14 @@ const RoomManagement = () => {
     });
   };
 
-  const getRoom = (search) => {
+  const getRoom = () => {
     setLoadings(true);
+    setRooms();
     return new Promise((resolve) => {
       axios
         .post(
           process.env.REACT_APP_BASEURL + "rooms",
-          { room_number: search },
+          { room_number: debounceValue },
           {
             headers: headersAuth,
           }
@@ -95,13 +100,14 @@ const RoomManagement = () => {
           setLoadings(false);
         })
         .catch((error) => {
-          console.log(error);
+          setLoadings(false);
+          setRooms("0");
         });
     });
   };
   useEffect(() => {
     getRoom();
-  }, []);
+  }, [debounceValue]);
 
   const deleteRoom = () => {
     handleClose();
@@ -154,39 +160,41 @@ const RoomManagement = () => {
         </Modal.Body>
       </Modal>
       <div className="container mt-5">
+        <div className="row mb-3">
+          <div className="col-10">
+            <input
+              type="text"
+              placeholder="Search Room By Name"
+              className="form-control mb-3"
+              style={{
+                width: "100%",
+                minWidth: "250px",
+                display: "block",
+                marginRight: "auto",
+                marginLeft: "auto",
+                backgroundColor: "#D9D9D9",
+                borderRadius: "5px",
+                lineHeight: "0.25",
+              }}
+              onInput={(e) => setSearch(e.target.value)}
+              value={search}
+            ></input>
+          </div>
+          <div className="col-2">
+            <Button
+              href="/room-management/add"
+              style={{ width: "fit-content" }}
+            >
+              Add Room
+            </Button>
+          </div>
+        </div>
         {loadings ? (
           <>
             <Loading />
           </>
         ) : (
           <>
-            <div className="row mb-3">
-              <div className="col-10">
-                <input
-                  type="text"
-                  placeholder="Search Room By Name"
-                  className="form-control mb-3"
-                  style={{
-                    width: "100%",
-                    minWidth: "250px",
-                    display: "block",
-                    marginRight: "auto",
-                    marginLeft: "auto",
-                    backgroundColor: "#D9D9D9",
-                    borderRadius: "5px",
-                    lineHeight: "0.25",
-                  }}
-                ></input>
-              </div>
-              <div className="col-2">
-                <Button
-                  href="/room-management/add"
-                  style={{ width: "fit-content" }}
-                >
-                  Add Room
-                </Button>
-              </div>
-            </div>
             <Table striped bordered hover>
               <thead>
                 <tr>
@@ -196,38 +204,54 @@ const RoomManagement = () => {
                 </tr>
               </thead>
               <tbody>
-                {rooms.map((room, index) => (
-                  <tr key={room.id}>
-                    <td> {room.room_number} </td>
-                    <td> {room.type_name}</td>
-                    <td>
-                      <Button
-                        // href=""
-                        onClick={() => {
-                          window.location.href = `/room-management/edit/${room.id}`;
-                        }}
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        variant="danger"
-                        style={{ marginLeft: "1rem" }}
-                        onClick={() => {
-                          setSelectedName(room.room_number);
-                          setSelectedId(room.id);
-                          handleShow();
-                        }}
-                      >
-                        delete
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
+                {rooms === "0" ? (
+                  <>
+                    <tr>
+                      <td colspan={3}>Data Is Empty</td>
+                    </tr>
+                  </>
+                ) : (
+                  <>
+                    {rooms.map((room, index) => (
+                      <tr key={room.id}>
+                        <td> {room.room_number} </td>
+                        <td> {room.type_name}</td>
+                        <td>
+                          <Button
+                            // href=""
+                            onClick={() => {
+                              window.location.href = `/room-management/edit/${room.id}`;
+                            }}
+                          >
+                            Edit
+                          </Button>
+                          <Button
+                            variant="danger"
+                            style={{ marginLeft: "1rem" }}
+                            onClick={() => {
+                              setSelectedName(room.room_number);
+                              setSelectedId(room.id);
+                              handleShow();
+                            }}
+                          >
+                            delete
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </>
+                )}
               </tbody>
             </Table>
-            <div>
-              <Pagination>{items}</Pagination>
-            </div>
+            {rooms === "0" ? (
+              <></>
+            ) : (
+              <>
+                <div>
+                  <Pagination>{items}</Pagination>
+                </div>
+              </>
+            )}
           </>
         )}
       </div>
