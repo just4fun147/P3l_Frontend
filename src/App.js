@@ -63,6 +63,7 @@ import FOAuth from "./components/middleware/FOAuth";
 import GMAuth from "./components/middleware/GMAuth";
 import OwnerAuth from "./components/middleware/OwnerAuth";
 import SMAuth from "./components/middleware/SMAuth";
+import ReportAuth from "./components/middleware/ReportAuth";
 import Guest from "./components/middleware/Guest";
 
 function App() {
@@ -333,9 +334,9 @@ function App() {
             <Route
               path="/report/monthly"
               element={
-                // <AdminAuth>
-                <MonthlyReport />
-                // </AdminAuth>
+                <ReportAuth>
+                  <MonthlyReport />
+                </ReportAuth>
               }
             ></Route>
             <Route

@@ -49,7 +49,7 @@ export const auth = async (email, password) => {
         window.location = "/room-management";
       }
       if (response.data.OUT_DATA.role === process.env.REACT_APP_OWNER) {
-        window.location = "/";
+        window.location = "/report/monthly";
       }
       if (response.data.OUT_DATA.role === process.env.REACT_APP_SM) {
         window.location = "/";
@@ -112,6 +112,7 @@ export const logout = () => {
     .then((response) => {
       cookies.remove("token");
       cookies.remove("name");
+      cookies.remove("role");
       window.location = "/";
     })
     .catch((error) => {
