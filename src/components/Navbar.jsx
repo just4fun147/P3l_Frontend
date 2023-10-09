@@ -4,81 +4,134 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { token, logout, name, role } from "../Api";
+import { token, logout, name, role, headersAuth } from "../Api";
 import React, { useState } from "react";
 import { FaUser } from "react-icons/fa";
 import logo from "../assets/logo.png";
+import Loading from "../assets/loading.gif";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+
 function BasicExample() {
   const [tokens, setTokens] = useState(token());
+  const [loading, setLoading] = useState(false);
   const [names, setNames] = useState(name());
   const [roles, setRoles] = useState(role());
   const [oldPassword, setOldPasswords] = useState("");
   const [newPassword, setNewPasswords] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const path = window.location.pathname === "/login";
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const changePassword = () => {
+    setLoading(true);
+    return new Promise((resolve) => {
+      axios
+        .post(
+          process.env.REACT_APP_BASEURL + "changePassword",
+          {
+            old_password: oldPassword,
+            new_password: newPassword,
+            confirm_new_password: confirmPassword,
+          },
+          {
+            headers: headersAuth,
+          }
+        )
+        .then((response) => {
+          setLoading(false);
+          toast.success(response.data.OUT_MESS, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+          handleClose();
+        })
+        .catch((error) => {
+          setLoading(false);
+          toast.error(error.response.data.OUT_MESS, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+        });
+    });
+  };
   return (
     <>
+      <ToastContainer />
+
       <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Change Your Password</Modal.Title>
-        </Modal.Header>
-        <Modal.Body style={{ justifyContent: "start" }}>
-          <Container>
-            <b>Old Password</b>
-            <input
-              type="password"
-              placeholder="Old Password"
-              className="form-control"
-              onInput={(e) => setOldPasswords(e.target.value)}
-              style={{
-                width: "100%",
-                minWidth: "250px",
-                display: "block",
-                textAlign: "start",
-                marginBottom: "5%",
-              }}
-            ></input>
-            <b>New Password</b>
-            <input
-              type="password"
-              placeholder="New Password"
-              className="form-control"
-              onInput={(e) => setNewPasswords(e.target.value)}
-              style={{
-                width: "100%",
-                minWidth: "250px",
-                display: "block",
-                marginBottom: "5%",
-                textAlign: "start",
-              }}
-            ></input>
-            <b>Confirm New Password</b>
-            <input
-              type="password"
-              placeholder="Confirm New Password"
-              className="form-control"
-              onInput={(e) => setNewPasswords(e.target.value)}
-              style={{
-                width: "100%",
-                minWidth: "250px",
-                display: "block",
-                textAlign: "start",
-              }}
-            ></input>
-          </Container>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Confirm
-          </Button>
-        </Modal.Footer>
+        {loading ? (
+          <>
+            <Modal.Body style={{ textAlign: "center" }}>
+              <img src={Loading} alt="loading" style={{ width: "25%" }}></img>
+            </Modal.Body>
+          </>
+        ) : (
+          <>
+            <Modal.Header closeButton>
+              <Modal.Title>Change Your Password</Modal.Title>
+            </Modal.Header>
+            <Modal.Body style={{ justifyContent: "start" }}>
+              <Container>
+                <b>Old Password</b>
+                <input
+                  type="password"
+                  placeholder="Old Password"
+                  className="form-control"
+                  onInput={(e) => setOldPasswords(e.target.value)}
+                  style={{
+                    width: "100%",
+                    minWidth: "250px",
+                    display: "block",
+                    textAlign: "start",
+                    marginBottom: "5%",
+                  }}
+                ></input>
+                <b>New Password</b>
+                <input
+                  type="password"
+                  placeholder="New Password"
+                  className="form-control"
+                  onInput={(e) => setNewPasswords(e.target.value)}
+                  style={{
+                    width: "100%",
+                    minWidth: "250px",
+                    display: "block",
+                    marginBottom: "5%",
+                    textAlign: "start",
+                  }}
+                ></input>
+                <b>Confirm New Password</b>
+                <input
+                  type="password"
+                  placeholder="Confirm New Password"
+                  className="form-control"
+                  onInput={(e) => setConfirmPassword(e.target.value)}
+                  style={{
+                    width: "100%",
+                    minWidth: "250px",
+                    display: "block",
+                    textAlign: "start",
+                  }}
+                ></input>
+              </Container>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                Close
+              </Button>
+              <Button
+                variant="primary"
+                onClick={() => {
+                  changePassword();
+                }}
+              >
+                Confirm
+              </Button>
+            </Modal.Footer>
+          </>
+        )}
       </Modal>
       <Navbar
         className="shadow"
