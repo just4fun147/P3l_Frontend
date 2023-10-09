@@ -92,6 +92,9 @@ const GuestReport = () => {
                     setSearch(e.target.value);
                   }}
                 >
+                  <option disable hidden>
+                    Please Select Year
+                  </option>
                   {year.map((y) => (
                     <option value={y.year}>{y.year}</option>
                   ))}
@@ -113,6 +116,9 @@ const GuestReport = () => {
                     setMonth(e.target.value);
                   }}
                 >
+                  <option disable hidden>
+                    Please Select Month
+                  </option>
                   <option value="1">Januari</option>
                   <option value="2">Februari</option>
                   <option value="3">Maret</option>

@@ -318,17 +318,17 @@ function App() {
             <Route
               path="/report/new-customer"
               element={
-                // <AdminAuth>
-                <NewCustReport />
-                // </AdminAuth>
+                <ReportAuth>
+                  <NewCustReport />
+                </ReportAuth>
               }
             ></Route>
             <Route
               path="/report/guest"
               element={
-                // <AdminAuth>
-                <GuestReport />
-                // </AdminAuth>
+                <ReportAuth>
+                  <GuestReport />
+                </ReportAuth>
               }
             ></Route>
             <Route
@@ -342,9 +342,9 @@ function App() {
             <Route
               path="/report/loyal-customer"
               element={
-                // <AdminAuth>
-                <LoyalCustReport />
-                // </AdminAuth>
+                <GMAuth>
+                  <LoyalCustReport />
+                </GMAuth>
               }
             ></Route>
             <Route path="*" element={<Navigate replace to="/" />} />

@@ -52,10 +52,10 @@ export const auth = async (email, password) => {
         window.location = "/report/monthly";
       }
       if (response.data.OUT_DATA.role === process.env.REACT_APP_SM) {
-        window.location = "/";
+        window.location = "/report/monthly";
       }
       if (response.data.OUT_DATA.role === process.env.REACT_APP_GM) {
-        window.location = "/";
+        window.location = "/report/monthly";
       }
       if (response.data.OUT_DATA.role === process.env.REACT_APP_FO) {
         window.location = "/";
@@ -97,7 +97,6 @@ export const check = () => {
 };
 
 export const logout = () => {
-  console.log(cookies.get("token"));
   axios
     .post(
       process.env.REACT_APP_BASEURL + "logouts",
@@ -116,7 +115,6 @@ export const logout = () => {
       window.location = "/";
     })
     .catch((error) => {
-      // alert(error.response.data.OUT_STAT);
       console.log(error.response.data.OUT_STAT);
     });
 };

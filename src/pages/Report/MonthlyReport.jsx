@@ -80,6 +80,9 @@ const MonthlyReport = () => {
                     setSelect(true);
                   }}
                 >
+                  <option disable hidden>
+                    Please Select Year
+                  </option>
                   {year.map((y) => (
                     <option value={y.year}>{y.year}</option>
                   ))}

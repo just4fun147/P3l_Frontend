@@ -161,13 +161,13 @@ function BasicExample() {
                 {roles === process.env.REACT_APP_OWNER ? (
                   <Nav className="ml-auto">
                     <NavDropdown title="Report" id="basic-nav-dropdown">
-                      <NavDropdown.Item href="#action/3.1">
+                      <NavDropdown.Item href="/report/monthly">
                         Income Report
                       </NavDropdown.Item>
-                      <NavDropdown.Item href="#action/3.2">
+                      <NavDropdown.Item href="/report/guest">
                         Guest Report
                       </NavDropdown.Item>
-                      <NavDropdown.Item href="#action/3.2">
+                      <NavDropdown.Item href="/report/new-customer">
                         New Customer Report
                       </NavDropdown.Item>
                     </NavDropdown>
@@ -186,16 +186,16 @@ function BasicExample() {
                         {roles === process.env.REACT_APP_GM ? (
                           <Nav className="ml-auto">
                             <NavDropdown title="Report" id="basic-nav-dropdown">
-                              <NavDropdown.Item href="#action/3.1">
+                              <NavDropdown.Item href="/report/monthly">
                                 Income Report
                               </NavDropdown.Item>
-                              <NavDropdown.Item href="#action/3.2">
+                              <NavDropdown.Item href="/report/guest">
                                 Guest Report
                               </NavDropdown.Item>
-                              <NavDropdown.Item href="#action/3.2">
+                              <NavDropdown.Item href="/report/new-customer">
                                 New Customer Report
                               </NavDropdown.Item>
-                              <NavDropdown.Item href="#action/3.2">
+                              <NavDropdown.Item href="/report/loyal-customer">
                                 Loyal Customer Report
                               </NavDropdown.Item>
                             </NavDropdown>
