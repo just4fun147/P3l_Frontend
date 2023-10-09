@@ -4,12 +4,12 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { headersAuth } from "../../Api";
+import { headersAuth } from "../../../Api";
 import axios from "axios";
-import Loading from "../../components/Loading";
+import Loading from "../../../components/Loading";
 import { toast, ToastContainer } from "react-toastify";
 
-const Edit = () => {
+const EditRoomType = () => {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
   const [ids, setIds] = useState(useParams().id);
@@ -24,11 +24,11 @@ const Edit = () => {
 
   const showModal = () => {
     if (roomNumber == null || roomNumber === "") {
-      toast.error("Invalid Room Number!", {
+      toast.error("Invalid Room Type!", {
         position: toast.POSITION.TOP_RIGHT,
       });
     } else if (typeName == null || typeName === "") {
-      toast.error("Invalid Room Type!", {
+      toast.error("Invalid Price!", {
         position: toast.POSITION.TOP_RIGHT,
       });
     } else if (isSmoking == null || isSmoking === "") {
@@ -39,39 +39,19 @@ const Edit = () => {
       handleShow();
     }
   };
-
   const getRoomType = () => {
     return new Promise((resolve) => {
       axios
         .post(
           process.env.REACT_APP_BASEURL + "rooms-type",
-          { room_number: null },
-          {
-            headers: headersAuth,
-          }
-        )
-        .then((response) => {
-          setRooms(response.data.OUT_DATA);
-          setTypeName(response.data.OUT_DATA[0].type_name);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    });
-  };
-  const getRoom = () => {
-    return new Promise((resolve) => {
-      axios
-        .post(
-          process.env.REACT_APP_BASEURL + "rooms",
           { id: ids },
           {
             headers: headersAuth,
           }
         )
         .then((response) => {
-          setRoomNumber(response.data.OUT_DATA[0].room_number);
-          setTypeName(response.data.OUT_DATA[0].type_name);
+          setRoomNumber(response.data.OUT_DATA[0].type_name);
+          setTypeName(response.data.OUT_DATA[0].price);
           if (response.data.OUT_DATA[0].is_smoking) {
             setIsSmoking("1");
           } else {
@@ -109,11 +89,11 @@ const Edit = () => {
     return new Promise((resolve) => {
       axios
         .post(
-          process.env.REACT_APP_BASEURL + "rooms/edit",
+          process.env.REACT_APP_BASEURL + "rooms-type/edit",
           {
             id: ids,
-            room_number: roomNumber,
-            type_name: typeName,
+            type_name: roomNumber,
+            price: typeName,
             is_smoking: s,
             is_double: d,
           },
@@ -126,22 +106,18 @@ const Edit = () => {
             position: toast.POSITION.TOP_RIGHT,
           });
           setLoading(true);
-          setTimeout((window.location.href = "/room-management"), 5000);
+          setTimeout((window.location.href = "/room-type-management"), 5000);
         })
         .catch((error) => {
           toast.error(error.response.data.OUT_MESS, {
             position: toast.POSITION.TOP_RIGHT,
           });
-          reset();
+          getFunction();
         });
     });
   };
-  const reset = () => {
-    getFunction();
-  };
   const getFunction = async () => {
     getRoomType();
-    getRoom();
   };
   useEffect(() => {
     getFunction();
@@ -157,10 +133,10 @@ const Edit = () => {
         </Modal.Header>
         <Modal.Body>
           <p>
-            Room Number : <b>{roomNumber}</b>
+            Room Type : <b>{roomNumber}</b>
           </p>
           <p>
-            Room Type : <b>{typeName}</b>
+            Price : <b>{typeName}</b>
           </p>
           <p>
             {isSmoking === "1" ? <b>Smoking Room</b> : <b>Non Smoking Room</b>}
@@ -171,12 +147,7 @@ const Edit = () => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button
-            style={{ marginLeft: "1rem" }}
-            onClick={() => {
-              editRoom();
-            }}
-          >
+          <Button style={{ marginLeft: "1rem" }} onClick={() => editRoom()}>
             Confirm
           </Button>
         </Modal.Footer>
@@ -193,13 +164,14 @@ const Edit = () => {
                 padding: "3rem",
               }}
             >
-              <h4>Edit Room</h4>
+              <h4>Edit Room Type</h4>
               <hr />
-              <p style={{ textAlign: "left" }}>Room Number</p>
+              <p style={{ textAlign: "left" }}>Room Type</p>
               <input
                 type="text"
-                placeholder="A123"
+                placeholder="Superior"
                 className="form-control mb-3"
+                onInput={(e) => setRoomNumber(e.target.value)}
                 style={{
                   width: "100%",
                   minWidth: "250px",
@@ -211,10 +183,13 @@ const Edit = () => {
                   lineHeight: "0.25",
                 }}
                 value={roomNumber}
-                onInput={(e) => setRoomNumber(e.target.value)}
               ></input>
-              <p style={{ textAlign: "left" }}>Room Type</p>
-              <select
+              <p style={{ textAlign: "left" }}>Price</p>
+              <input
+                type="text"
+                placeholder="1000000"
+                className="form-control mb-3"
+                onInput={(e) => setTypeName(e.target.value)}
                 style={{
                   width: "100%",
                   minWidth: "250px",
@@ -225,14 +200,8 @@ const Edit = () => {
                   borderRadius: "5px",
                   lineHeight: "0.25",
                 }}
-                onChange={(e) => setTypeName(e.target.value)}
-              >
-                <option value={typeName}>{typeName}</option>
-                {rooms.map((room) => (
-                  <option value={room.type_name}>{room.type_name}</option>
-                ))}
-              </select>
-
+                value={typeName}
+              ></input>
               <Form className="mt-4" style={{ textAlign: "start" }}>
                 <div key="inline-radio" className="mb-3">
                   <Form.Check
@@ -291,7 +260,9 @@ const Edit = () => {
                   Cancel
                 </Button>
                 <Button
-                  onClick={showModal}
+                  onClick={() => {
+                    showModal();
+                  }}
                   style={{ width: "fit-content", marginLeft: "1rem" }}
                 >
                   Confirm
@@ -305,4 +276,4 @@ const Edit = () => {
   );
 };
 
-export default Edit;
+export default EditRoomType;

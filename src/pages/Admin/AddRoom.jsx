@@ -21,15 +21,15 @@ const AddRoom = () => {
   const [isDouble, setIsDouble] = useState("0");
 
   const showModal = () => {
-    if (roomNumber == null) {
+    if (roomNumber == null || roomNumber === "") {
       toast.error("Invalid Room Number!", {
         position: toast.POSITION.TOP_RIGHT,
       });
-    } else if (typeName == null) {
+    } else if (typeName == null || typeName === "") {
       toast.error("Invalid Room Type!", {
         position: toast.POSITION.TOP_RIGHT,
       });
-    } else if (isSmoking == null) {
+    } else if (isSmoking == null || isSmoking === "") {
       toast.error("Invalid Smoking Room Type!", {
         position: toast.POSITION.TOP_RIGHT,
       });
@@ -46,7 +46,7 @@ const AddRoom = () => {
       s = false;
     }
     if (isDouble !== "1") {
-      s = false;
+      d = false;
     }
     return new Promise((resolve) => {
       axios

@@ -3,17 +3,16 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import React, { useEffect, useState } from "react";
-import Loading from "../../components/Loading";
+import Loading from "../../../components/Loading";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
-import { headersAuth } from "../../Api";
+import { headersAuth } from "../../../Api";
 import { useDebounce } from "use-debounce";
 
-const RoomManagement = () => {
+const RoomTypeManagement = () => {
   const [show, setShow] = useState(false);
   const [loadings, setLoadings] = useState(true);
   const [rooms, setRooms] = useState();
-  const [items, setItems] = useState([]);
   const [selectedName, setSelectedName] = useState("");
   const [selectedId, setSelectedId] = useState("");
   const [search, setSearch] = useState("");
@@ -22,81 +21,20 @@ const RoomManagement = () => {
 
   const [debounceValue] = useDebounce(search, 2000);
 
-  const changePage = (search, url) => {
-    setLoadings(true);
-    return new Promise((resolve) => {
-      axios
-        .post(
-          url,
-          { room_number: search },
-          {
-            headers: headersAuth,
-          }
-        )
-        .then((response) => {
-          setRooms(response.data.OUT_DATA.data);
-          let temp = [];
-          let active = response.data.OUT_DATA.current_page;
-          for (
-            let number = 1;
-            number <= response.data.OUT_DATA.last_page;
-            number++
-          ) {
-            temp.push(
-              <Pagination.Item
-                key={number}
-                active={number === active}
-                onClick={() =>
-                  changePage(search, response.data.OUT_DATA.links[number].url)
-                }
-              >
-                {number}
-              </Pagination.Item>
-            );
-          }
-          setItems(temp);
-          setLoadings(false);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    });
-  };
-
   const getRoom = () => {
     setLoadings(true);
     setRooms();
     return new Promise((resolve) => {
       axios
         .post(
-          process.env.REACT_APP_BASEURL + "rooms",
-          { room_number: search },
+          process.env.REACT_APP_BASEURL + "rooms-type",
+          { id: -1, type_name: search },
           {
             headers: headersAuth,
           }
         )
         .then((response) => {
-          setRooms(response.data.OUT_DATA.data);
-          let temp = [];
-          let active = response.data.OUT_DATA.current_page;
-          for (
-            let number = 1;
-            number <= response.data.OUT_DATA.last_page;
-            number++
-          ) {
-            temp.push(
-              <Pagination.Item
-                key={number}
-                active={number === active}
-                onClick={() =>
-                  changePage(search, response.data.OUT_DATA.links[number].url)
-                }
-              >
-                {number}
-              </Pagination.Item>
-            );
-          }
-          setItems(temp);
+          setRooms(response.data.OUT_DATA);
           setLoadings(false);
         })
         .catch((error) => {
@@ -115,7 +53,7 @@ const RoomManagement = () => {
     return new Promise((resolve) => {
       axios
         .post(
-          process.env.REACT_APP_BASEURL + "rooms/delete",
+          process.env.REACT_APP_BASEURL + "rooms-type/delete",
           {
             id: selectedId,
           },
@@ -161,10 +99,10 @@ const RoomManagement = () => {
       </Modal>
       <div className="container mt-5">
         <div className="row mb-3">
-          <div className="col-9">
+          <div className="col-10">
             <input
               type="text"
-              placeholder="Search Room By Name"
+              placeholder="Search Room Type By Name"
               className="form-control mb-3"
               style={{
                 width: "100%",
@@ -180,18 +118,12 @@ const RoomManagement = () => {
               value={search}
             ></input>
           </div>
-          <div className="col-3">
+          <div className="col-2">
             <Button
-              href="/room-management/add"
+              href="/room-type-management/add"
               style={{ width: "fit-content" }}
             >
-              Add Room
-            </Button>
-            <Button
-              href="/room-type-management"
-              style={{ width: "fit-content", marginLeft: "1rem" }}
-            >
-              Room Type
+              Add Room Type
             </Button>
           </div>
         </div>
@@ -204,8 +136,8 @@ const RoomManagement = () => {
             <Table striped bordered hover>
               <thead>
                 <tr>
-                  <th>Room Number</th>
-                  <th>Type</th>
+                  <th>Room Type</th>
+                  <th>Bed Type</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -220,13 +152,18 @@ const RoomManagement = () => {
                   <>
                     {rooms.map((room, index) => (
                       <tr key={room.id}>
-                        <td> {room.room_number} </td>
-                        <td> {room.type_name}</td>
+                        <td style={{ textAlign: "start" }}>
+                          <div className="row">
+                            <div className="col-3"></div>
+                            <div className="col-8">{room.type_name}</div>
+                          </div>
+                        </td>
+                        <td> {room.bed}</td>
                         <td>
                           <Button
                             // href=""
                             onClick={() => {
-                              window.location.href = `/room-management/edit/${room.id}`;
+                              window.location.href = `/room-type-management/edit/${room.id}`;
                             }}
                           >
                             Edit
@@ -235,7 +172,7 @@ const RoomManagement = () => {
                             variant="danger"
                             style={{ marginLeft: "1rem" }}
                             onClick={() => {
-                              setSelectedName(room.room_number);
+                              setSelectedName(room.type_name);
                               setSelectedId(room.id);
                               handleShow();
                             }}
@@ -249,15 +186,6 @@ const RoomManagement = () => {
                 )}
               </tbody>
             </Table>
-            {rooms === "0" ? (
-              <></>
-            ) : (
-              <>
-                <div>
-                  <Pagination>{items}</Pagination>
-                </div>
-              </>
-            )}
           </>
         )}
       </div>
@@ -265,4 +193,4 @@ const RoomManagement = () => {
   );
 };
 
-export default RoomManagement;
+export default RoomTypeManagement;

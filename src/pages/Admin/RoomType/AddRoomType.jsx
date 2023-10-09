@@ -2,33 +2,30 @@ import { Button } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
+import { headersAuth } from "../../../Api";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { headersAuth } from "../../Api";
 import axios from "axios";
-import Loading from "../../components/Loading";
+import Loading from "../../../components/Loading";
 import { toast, ToastContainer } from "react-toastify";
 
-const Edit = () => {
+const AddRoomType = () => {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [ids, setIds] = useState(useParams().id);
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
+  const [rooms, setRooms] = useState();
   const [roomNumber, setRoomNumber] = useState();
   const [typeName, setTypeName] = useState();
   const [isSmoking, setIsSmoking] = useState();
   const [isDouble, setIsDouble] = useState("0");
-  const [rooms, setRooms] = useState();
-  const [search, setSearch] = useState("");
 
   const showModal = () => {
     if (roomNumber == null || roomNumber === "") {
-      toast.error("Invalid Room Number!", {
+      toast.error("Invalid Type Name!", {
         position: toast.POSITION.TOP_RIGHT,
       });
     } else if (typeName == null || typeName === "") {
-      toast.error("Invalid Room Type!", {
+      toast.error("Invalid Price!", {
         position: toast.POSITION.TOP_RIGHT,
       });
     } else if (isSmoking == null || isSmoking === "") {
@@ -39,63 +36,7 @@ const Edit = () => {
       handleShow();
     }
   };
-
-  const getRoomType = () => {
-    return new Promise((resolve) => {
-      axios
-        .post(
-          process.env.REACT_APP_BASEURL + "rooms-type",
-          { room_number: null },
-          {
-            headers: headersAuth,
-          }
-        )
-        .then((response) => {
-          setRooms(response.data.OUT_DATA);
-          setTypeName(response.data.OUT_DATA[0].type_name);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    });
-  };
-  const getRoom = () => {
-    return new Promise((resolve) => {
-      axios
-        .post(
-          process.env.REACT_APP_BASEURL + "rooms",
-          { id: ids },
-          {
-            headers: headersAuth,
-          }
-        )
-        .then((response) => {
-          setRoomNumber(response.data.OUT_DATA[0].room_number);
-          setTypeName(response.data.OUT_DATA[0].type_name);
-          if (response.data.OUT_DATA[0].is_smoking) {
-            setIsSmoking("1");
-          } else {
-            setIsSmoking("0");
-          }
-          if (response.data.OUT_DATA[0].is_double) {
-            setIsDouble("1");
-          } else {
-            setIsDouble("0");
-          }
-          setLoading(false);
-          if (isSmoking === "1") {
-            document.getElementById("inline-radio-1").checked = true;
-          } else {
-            document.getElementById("inline-radio-2").checked = true;
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    });
-  };
-
-  const editRoom = () => {
+  const createRoom = () => {
     handleClose();
     setLoading(true);
     let s = true;
@@ -109,11 +50,10 @@ const Edit = () => {
     return new Promise((resolve) => {
       axios
         .post(
-          process.env.REACT_APP_BASEURL + "rooms/edit",
+          process.env.REACT_APP_BASEURL + "rooms-type/create",
           {
-            id: ids,
-            room_number: roomNumber,
-            type_name: typeName,
+            type_name: roomNumber,
+            price: typeName,
             is_smoking: s,
             is_double: d,
           },
@@ -126,7 +66,7 @@ const Edit = () => {
             position: toast.POSITION.TOP_RIGHT,
           });
           setLoading(true);
-          setTimeout((window.location.href = "/room-management"), 5000);
+          setTimeout((window.location.href = "/room-type-management"), 5000);
         })
         .catch((error) => {
           toast.error(error.response.data.OUT_MESS, {
@@ -136,15 +76,36 @@ const Edit = () => {
         });
     });
   };
+  const getRoomType = (search) => {
+    return new Promise((resolve) => {
+      axios
+        .post(
+          process.env.REACT_APP_BASEURL + "rooms-type",
+          { room_number: search },
+          {
+            headers: headersAuth,
+          }
+        )
+        .then((response) => {
+          setRooms(response.data.OUT_DATA);
+          setTypeName(response.data.OUT_DATA[0].type_name);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
+  };
   const reset = () => {
-    getFunction();
-  };
-  const getFunction = async () => {
+    setRoomNumber();
+    setTypeName();
+    setIsSmoking();
+    setIsDouble("0");
     getRoomType();
-    getRoom();
   };
+
   useEffect(() => {
-    getFunction();
+    getRoomType();
   }, []);
 
   return (
@@ -157,10 +118,10 @@ const Edit = () => {
         </Modal.Header>
         <Modal.Body>
           <p>
-            Room Number : <b>{roomNumber}</b>
+            Room Type : <b>{roomNumber}</b>
           </p>
           <p>
-            Room Type : <b>{typeName}</b>
+            Room Price : <b>{typeName}</b>
           </p>
           <p>
             {isSmoking === "1" ? <b>Smoking Room</b> : <b>Non Smoking Room</b>}
@@ -171,12 +132,7 @@ const Edit = () => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button
-            style={{ marginLeft: "1rem" }}
-            onClick={() => {
-              editRoom();
-            }}
-          >
+          <Button style={{ marginLeft: "1rem" }} onClick={() => createRoom()}>
             Confirm
           </Button>
         </Modal.Footer>
@@ -193,28 +149,14 @@ const Edit = () => {
                 padding: "3rem",
               }}
             >
-              <h4>Edit Room</h4>
+              <h4>Create Room Type</h4>
               <hr />
-              <p style={{ textAlign: "left" }}>Room Number</p>
+              <p style={{ textAlign: "left" }}>Room Type</p>
               <input
                 type="text"
-                placeholder="A123"
+                placeholder="Superior"
                 className="form-control mb-3"
-                style={{
-                  width: "100%",
-                  minWidth: "250px",
-                  display: "block",
-                  marginRight: "auto",
-                  marginLeft: "auto",
-                  backgroundColor: "#D9D9D9",
-                  borderRadius: "5px",
-                  lineHeight: "0.25",
-                }}
-                value={roomNumber}
                 onInput={(e) => setRoomNumber(e.target.value)}
-              ></input>
-              <p style={{ textAlign: "left" }}>Room Type</p>
-              <select
                 style={{
                   width: "100%",
                   minWidth: "250px",
@@ -225,14 +167,24 @@ const Edit = () => {
                   borderRadius: "5px",
                   lineHeight: "0.25",
                 }}
-                onChange={(e) => setTypeName(e.target.value)}
-              >
-                <option value={typeName}>{typeName}</option>
-                {rooms.map((room) => (
-                  <option value={room.type_name}>{room.type_name}</option>
-                ))}
-              </select>
-
+              ></input>
+              <p style={{ textAlign: "left" }}>Price</p>
+              <input
+                type="text"
+                placeholder="1000000"
+                className="form-control mb-3"
+                onInput={(e) => setTypeName(e.target.value)}
+                style={{
+                  width: "100%",
+                  minWidth: "250px",
+                  display: "block",
+                  marginRight: "auto",
+                  marginLeft: "auto",
+                  backgroundColor: "#D9D9D9",
+                  borderRadius: "5px",
+                  lineHeight: "0.25",
+                }}
+              ></input>
               <Form className="mt-4" style={{ textAlign: "start" }}>
                 <div key="inline-radio" className="mb-3">
                   <Form.Check
@@ -267,17 +219,8 @@ const Edit = () => {
                 }}
                 onChange={(e) => setIsDouble(e.target.value)}
               >
-                {isDouble === "0" ? (
-                  <>
-                    <option value="0">Single</option>
-                    <option value="1">Double</option>
-                  </>
-                ) : (
-                  <>
-                    <option value="1">Double</option>
-                    <option value="0">Single</option>
-                  </>
-                )}
+                <option value="0">Single</option>
+                <option value="1">Double</option>
               </select>
               <div
                 className="row mt-3"
@@ -291,7 +234,9 @@ const Edit = () => {
                   Cancel
                 </Button>
                 <Button
-                  onClick={showModal}
+                  onClick={() => {
+                    showModal();
+                  }}
                   style={{ width: "fit-content", marginLeft: "1rem" }}
                 >
                   Confirm
@@ -305,4 +250,4 @@ const Edit = () => {
   );
 };
 
-export default Edit;
+export default AddRoomType;

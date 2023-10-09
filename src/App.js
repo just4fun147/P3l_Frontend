@@ -29,6 +29,9 @@ import GroupBill from "./pages/Customer/Receipt/GroupBill";
 import RoomManagement from "./pages/Admin/Room";
 import AddRoom from "./pages/Admin/AddRoom";
 import EditRoom from "./pages/Admin/EditRoom";
+import RoomTypeManagement from "./pages/Admin/RoomType/RoomType";
+import AddRoomType from "./pages/Admin/RoomType/AddRoomType";
+import EditRoomType from "./pages/Admin/RoomType/EditRoomType";
 // SM Season
 import SeasonManagement from "./pages/SM/Season/Season";
 import AddSeason from "./pages/SM/Season/AddSeason";
@@ -186,6 +189,30 @@ function App() {
               element={
                 <AdminAuth>
                   <EditRoom />
+                </AdminAuth>
+              }
+            ></Route>
+            <Route
+              path="/room-type-management"
+              element={
+                <AdminAuth>
+                  <RoomTypeManagement />
+                </AdminAuth>
+              }
+            ></Route>
+            <Route
+              path="/room-type-management/add"
+              element={
+                <AdminAuth>
+                  <AddRoomType />
+                </AdminAuth>
+              }
+            ></Route>
+            <Route
+              path="/room-type-management/edit/:id"
+              element={
+                <AdminAuth>
+                  <EditRoomType />
                 </AdminAuth>
               }
             ></Route>
