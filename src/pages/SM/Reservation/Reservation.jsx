@@ -2,19 +2,134 @@ import Pagination from "react-bootstrap/Pagination";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import React, { useState } from "react";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
+import axios from "axios";
+import { headersAuth } from "../../../Api";
+import React, { useEffect, useState } from "react";
+import Loading from "../../../components/Loading";
+import { useDebounce } from "use-debounce";
 
 const ReservationManagement = () => {
   const [isGroup, setIsGroup] = useState(true);
+  const [isOpen, setIsOpen] = useState(true);
+  const [data, setData] = useState();
   const [selectedName, setSelectedName] = useState("");
+  const [search, setSearch] = useState("");
+  const [total, setTotal] = useState(0);
   const [selectedId, setSelectedId] = useState("");
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const handleShowConfirm = () => setShowConfirm(true);
   const handleCloseConfirm = () => setShowConfirm(false);
+
+  const [debounceValue] = useDebounce(search, 2000);
+
+  const getReservation = () => {
+    setLoading(true);
+    return new Promise((resolve) => {
+      axios
+        .post(
+          process.env.REACT_APP_BASEURL + "reservation",
+          {
+            id: null,
+            search: search,
+            is_group: isGroup,
+            is_open: isOpen,
+          },
+          {
+            headers: headersAuth,
+          }
+        )
+        .then((response) => {
+          setData(response.data.OUT_DATA.data);
+          setTotal(response.data.OUT_DATA.total);
+          let temp = [];
+          let active = response.data.OUT_DATA.current_page;
+          for (
+            let number = 1;
+            number <= response.data.OUT_DATA.last_page;
+            number++
+          ) {
+            temp.push(
+              <Pagination.Item
+                key={number}
+                active={number === active}
+                onClick={() =>
+                  changePage(search, response.data.OUT_DATA.links[number].url)
+                }
+              >
+                {number}
+              </Pagination.Item>
+            );
+          }
+          setItems(temp);
+          setLoading(false);
+        })
+        .catch((error) => {});
+    });
+  };
+  const changePage = (search, url) => {
+    setLoading(true);
+    return new Promise((resolve) => {
+      axios
+        .post(
+          url,
+          {
+            id: null,
+            search: search,
+            is_group: isGroup,
+            is_open: isOpen,
+          },
+          {
+            headers: headersAuth,
+          }
+        )
+        .then((response) => {
+          setData(response.data.OUT_DATA.data);
+          let temp = [];
+          let active = response.data.OUT_DATA.current_page;
+          for (
+            let number = 1;
+            number <= response.data.OUT_DATA.last_page;
+            number++
+          ) {
+            temp.push(
+              <Pagination.Item
+                key={number}
+                active={number === active}
+                onClick={() =>
+                  changePage(search, response.data.OUT_DATA.links[number].url)
+                }
+              >
+                {number}
+              </Pagination.Item>
+            );
+          }
+          setItems(temp);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
+  };
+  useEffect(() => {
+    getReservation();
+  }, []);
+  useEffect(() => {
+    getReservation();
+  }, [debounceValue]);
+  useEffect(() => {
+    setLoading(true);
+    getReservation();
+  }, [isGroup]);
+  useEffect(() => {
+    getReservation();
+  }, [isOpen]);
   return (
     <>
       <Modal show={show} onHide={handleClose}>
@@ -73,6 +188,7 @@ const ReservationManagement = () => {
                 borderRadius: "5px",
                 lineHeight: "0.25",
               }}
+              onInput={(e) => setSearch(e.target.value)}
             ></input>
           </div>
           {/* type */}
@@ -126,6 +242,7 @@ const ReservationManagement = () => {
               <Button
                 id="open"
                 onClick={() => {
+                  setIsOpen(true);
                   document
                     .getElementById("open")
                     .classList.remove("btn-outline-primary");
@@ -144,6 +261,7 @@ const ReservationManagement = () => {
               <Button
                 id="close"
                 onClick={() => {
+                  setIsOpen(false);
                   document
                     .getElementById("close")
                     .classList.remove("btn-outline-primary");
@@ -172,130 +290,156 @@ const ReservationManagement = () => {
             </Button>
           </div>
         </div>
-        {/* GROUP TABLE */}
-        {isGroup ? (
+        {loading ? (
           <>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>No</th>
-                  <th>Group Name</th>
-                  <th>Group Leader</th>
-                  <th>Start Date</th>
-                  <th>End Date</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td> No </td>
-                  <td> Tadika Mesra</td>
-                  <td> Asep</td>
-                  <td> 19-09-2023</td>
-                  <td> 19-10-2023</td>
-                  <td>
-                    <Button
-                      variant="danger"
-                      onClick={() => {
-                        setSelectedName("Grup Cancel");
-                        handleShow();
-                      }}
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      variant="secondary"
-                      href="/reservation-management/edit-group"
-                      style={{ marginLeft: "1rem" }}
-                    >
-                      Edit
-                    </Button>
-
-                    <Button
-                      onClick={() => {
-                        setSelectedName("Grup Confirm");
-                        handleShowConfirm();
-                      }}
-                      style={{ marginLeft: "1rem" }}
-                    >
-                      Confirm
-                    </Button>
-                  </td>
-                </tr>
-                {/* {users.map((user) => (
-                      <tr key={user.id}>
-                        <td> {user.full_name} </td>
-                        <td> {user.name}</td>
-                        <td> {user.email}</td>
-                        <td> {user.domisili}</td>
-                        <td> {user.pekerjaan}</td>
-                        <td> "test"</td>
-                        <td> "test"</td>
-                      </tr>
-                    ))} */}
-              </tbody>
-            </Table>
+            <Loading />
           </>
         ) : (
           <>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>No</th>
-                  <th>Name Leader</th>
-                  <th>Start Date</th>
-                  <th>End Date</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td> No </td>
-                  <td> Asep</td>
-                  <td> 19-09-2023</td>
-                  <td> 19-10-2023</td>
-                  <td>
-                    <Button
-                      variant="danger"
-                      onClick={() => {
-                        setSelectedName("Pesonal Cancel");
-                        handleShow();
-                      }}
-                    >
-                      Cancel
-                    </Button>
+            {/* GROUP TABLE */}
+            {isGroup ? (
+              <>
+                <Table striped bordered hover>
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Group Name</th>
+                      <th>Group Leader</th>
+                      <th>Start Date</th>
+                      <th>End Date</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {total != 0 ? (
+                      <>
+                        {data.map((d) => (
+                          <tr key={d.id}>
+                            <td> {d.no} </td>
+                            <td style={{ textAlign: "start" }}>
+                              {" "}
+                              {d.group_name}
+                            </td>
+                            <td> {d.full_name}</td>
+                            <td> {d.start_date}</td>
+                            <td> {d.end_date}</td>
+                            <td>
+                              <Button
+                                variant="danger"
+                                onClick={() => {
+                                  setSelectedName("Grup Cancel");
+                                  handleShow();
+                                }}
+                              >
+                                Cancel
+                              </Button>
+                              <Button
+                                variant="secondary"
+                                href="/reservation-management/edit-group"
+                                style={{ marginLeft: "1rem" }}
+                              >
+                                Edit
+                              </Button>
 
-                    <Button variant="secondary" style={{ marginLeft: "1rem" }}>
-                      Edit
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        setSelectedName("Personal Confirm");
-                        handleShowConfirm();
-                      }}
-                      style={{ marginLeft: "1rem" }}
-                    >
-                      Confirm
-                    </Button>
-                  </td>
-                </tr>
-                {/* {users.map((user) => (
-                      <tr key={user.id}>
-                        <td> {user.full_name} </td>
-                        <td> {user.name}</td>
-                        <td> {user.email}</td>
-                        <td> {user.domisili}</td>
-                        <td> {user.pekerjaan}</td>
-                        <td> "test"</td>
-                        <td> "test"</td>
-                      </tr>
-                    ))} */}
-              </tbody>
-            </Table>
+                              <Button
+                                onClick={() => {
+                                  setSelectedName("Grup Confirm");
+                                  handleShowConfirm();
+                                }}
+                                style={{ marginLeft: "1rem" }}
+                              >
+                                Confirm
+                              </Button>
+                            </td>
+                          </tr>
+                        ))}
+                      </>
+                    ) : (
+                      <>
+                        <tr>
+                          <td colSpan={6}>Data Is Empty</td>
+                        </tr>
+                      </>
+                    )}
+                  </tbody>
+                </Table>
+              </>
+            ) : (
+              <>
+                <Table striped bordered hover>
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Name</th>
+                      <th>Start Date</th>
+                      <th>End Date</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {total != 0 ? (
+                      <>
+                        {data.map((d) => (
+                          <tr key={d.id}>
+                            <td> {d.no} </td>
+                            <td style={{ textAlign: "start" }}>
+                              {" "}
+                              {d.full_name}
+                            </td>
+                            <td> {d.start_date}</td>
+                            <td> {d.end_date}</td>
+                            <td>
+                              <Button
+                                variant="danger"
+                                onClick={() => {
+                                  setSelectedName("Pesonal Cancel");
+                                  handleShow();
+                                }}
+                              >
+                                Cancel
+                              </Button>
+
+                              <Button
+                                variant="secondary"
+                                style={{ marginLeft: "1rem" }}
+                              >
+                                Edit
+                              </Button>
+                              <Button
+                                onClick={() => {
+                                  setSelectedName("Personal Confirm");
+                                  handleShowConfirm();
+                                }}
+                                style={{ marginLeft: "1rem" }}
+                              >
+                                Confirm
+                              </Button>
+                            </td>
+                          </tr>
+                        ))}
+                      </>
+                    ) : (
+                      <>
+                        <tr>
+                          <td colSpan={5}>Data Is Empty</td>
+                        </tr>
+                      </>
+                    )}
+                  </tbody>
+                </Table>
+              </>
+            )}
+            {total != 0 ? (
+              <>
+                <div>
+                  <Pagination>{items}</Pagination>
+                </div>
+              </>
+            ) : (
+              <></>
+            )}
           </>
         )}
-
-        <div>{/* <Pagination>{items}</Pagination> */}</div>
       </div>
     </>
   );

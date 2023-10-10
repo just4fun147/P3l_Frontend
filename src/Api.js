@@ -52,7 +52,7 @@ export const auth = async (email, password) => {
         window.location = "/report/monthly";
       }
       if (response.data.OUT_DATA.role === process.env.REACT_APP_SM) {
-        window.location = "/report/monthly";
+        window.location = "/reservation-management";
       }
       if (response.data.OUT_DATA.role === process.env.REACT_APP_GM) {
         window.location = "/report/monthly";

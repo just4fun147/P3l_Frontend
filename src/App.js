@@ -221,97 +221,97 @@ function App() {
             <Route
               path="/season-management"
               element={
-                // <AdminAuth>
-                <SeasonManagement />
-                // </AdminAuth>
+                <SMAuth>
+                  <SeasonManagement />
+                </SMAuth>
               }
             ></Route>
             <Route
               path="/season-management/add"
               element={
-                // <AdminAuth>
-                <AddSeason />
-                // </AdminAuth>
+                <SMAuth>
+                  <AddSeason />
+                </SMAuth>
               }
             ></Route>
             <Route
               path="/season-management/edit"
               element={
-                // <AdminAuth>
-                <EditSeason />
-                // </AdminAuth>
+                <SMAuth>
+                  <EditSeason />
+                </SMAuth>
               }
             ></Route>
             <Route
               path="/promo-management"
               element={
-                // <AdminAuth>
-                <PromoManagement />
-                // </AdminAuth>
+                <SMAuth>
+                  <PromoManagement />
+                </SMAuth>
               }
             ></Route>
             <Route
               path="/promo-management/add"
               element={
-                // <AdminAuth>
-                <AddPromo />
-                // </AdminAuth>
+                <SMAuth>
+                  <AddPromo />
+                </SMAuth>
               }
             ></Route>
             <Route
               path="/promo-management/edit"
               element={
-                // <AdminAuth>
-                <EditPromo />
-                // </AdminAuth>
+                <SMAuth>
+                  <EditPromo />
+                </SMAuth>
               }
             ></Route>
             <Route
               path="/facility-management"
               element={
-                // <AdminAuth>
-                <FacilityManagement />
-                // </AdminAuth>
+                <SMAuth>
+                  <FacilityManagement />
+                </SMAuth>
               }
             ></Route>
             <Route
               path="/facility-management/add"
               element={
-                // <AdminAuth>
-                <AddFacility />
-                // </AdminAuth>
+                <SMAuth>
+                  <AddFacility />
+                </SMAuth>
               }
             ></Route>
             <Route
               path="/facility-management/edit"
               element={
-                // <AdminAuth>
-                <EditFacility />
-                // </AdminAuth>
+                <SMAuth>
+                  <EditFacility />
+                </SMAuth>
               }
             ></Route>
             <Route
               path="/reservation-management"
               element={
-                // <AdminAuth>
-                <ReservationManagement />
-                // </AdminAuth>
+                <SMAuth>
+                  <ReservationManagement />
+                </SMAuth>
               }
             ></Route>
             <Route
               path="/reservation-management/add-group"
               element={
-                // <AdminAuth>
-                <AddReservationGroup />
-                // </AdminAuth>
+                <SMAuth>
+                  <AddReservationGroup />
+                </SMAuth>
               }
             ></Route>
             <Route
               path="/reservation-management/edit-group"
               element={
-                // <AdminAuth>
-                <EditReservationGroup />
-                // </AdminAuth>
+                <SMAuth>
+                  <EditReservationGroup />
+                </SMAuth>
               }
             ></Route>
             {/* Owner */}
