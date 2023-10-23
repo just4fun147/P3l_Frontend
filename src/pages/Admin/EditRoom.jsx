@@ -83,10 +83,11 @@ const Edit = () => {
             setIsDouble("0");
           }
           setLoading(false);
-          if (isSmoking === "1") {
-            document.getElementById("inline-radio-1").checked = true;
+          let temp = document.getElementsByName("group1");
+          if (isSmoking == "1") {
+            temp[0].checked = true;
           } else {
-            document.getElementById("inline-radio-2").checked = true;
+            temp[1].checked = true;
           }
         })
         .catch((error) => {
@@ -227,7 +228,9 @@ const Edit = () => {
                 }}
                 onChange={(e) => setTypeName(e.target.value)}
               >
-                <option value={typeName}>{typeName}</option>
+                <option value={typeName} hidden>
+                  {typeName}
+                </option>
                 {rooms.map((room) => (
                   <option value={room.type_name}>{room.type_name}</option>
                 ))}

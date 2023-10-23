@@ -8,6 +8,7 @@ import { headersAuth } from "../../../Api";
 import React, { useEffect, useState } from "react";
 import Loading from "../../../components/Loading";
 import { useDebounce } from "use-debounce";
+import { toast, ToastContainer } from "react-toastify";
 
 const ReservationManagement = () => {
   const [isGroup, setIsGroup] = useState(true);
@@ -130,8 +131,37 @@ const ReservationManagement = () => {
   useEffect(() => {
     getReservation();
   }, [isOpen]);
+
+  const cancelReservation = () => {
+    handleClose();
+    setLoading(true);
+    return new Promise((resolve) => {
+      axios
+        .post(
+          process.env.REACT_APP_BASEURL + "reservation/cancel",
+          {
+            id: selectedId,
+          },
+          {
+            headers: headersAuth,
+          }
+        )
+        .then((response) => {
+          toast.success(response.data.OUT_MESS, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+          getReservation();
+        })
+        .catch((error) => {
+          toast.error(error.response.data.OUT_MESS, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+        });
+    });
+  };
   return (
     <>
+      <ToastContainer />
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>
@@ -145,7 +175,9 @@ const ReservationManagement = () => {
           <Button
             variant="danger"
             style={{ marginLeft: "1rem" }}
-            onClick={handleClose}
+            onClick={() => {
+              cancelReservation();
+            }}
           >
             Confirm
           </Button>
@@ -324,15 +356,23 @@ const ReservationManagement = () => {
                             <td> {d.start_date}</td>
                             <td> {d.end_date}</td>
                             <td>
-                              <Button
-                                variant="danger"
-                                onClick={() => {
-                                  setSelectedName("Grup Cancel");
-                                  handleShow();
-                                }}
-                              >
-                                Cancel
-                              </Button>
+                              {d.status != 1 ? (
+                                <></>
+                              ) : (
+                                <>
+                                  <Button
+                                    variant="danger"
+                                    onClick={() => {
+                                      setSelectedName(d.group_name);
+                                      setSelectedId(d.id);
+                                      handleShow();
+                                    }}
+                                  >
+                                    Cancel
+                                  </Button>
+                                </>
+                              )}
+
                               <Button
                                 variant="secondary"
                                 href="/reservation-management/edit-group"
@@ -389,15 +429,22 @@ const ReservationManagement = () => {
                             <td> {d.start_date}</td>
                             <td> {d.end_date}</td>
                             <td>
-                              <Button
-                                variant="danger"
-                                onClick={() => {
-                                  setSelectedName("Pesonal Cancel");
-                                  handleShow();
-                                }}
-                              >
-                                Cancel
-                              </Button>
+                              {d.status != 1 ? (
+                                <></>
+                              ) : (
+                                <>
+                                  <Button
+                                    variant="danger"
+                                    onClick={() => {
+                                      setSelectedName(d.full_name);
+                                      setSelectedId(d.id);
+                                      handleShow();
+                                    }}
+                                  >
+                                    Cancel
+                                  </Button>
+                                </>
+                              )}
 
                               <Button
                                 variant="secondary"
@@ -405,15 +452,22 @@ const ReservationManagement = () => {
                               >
                                 Edit
                               </Button>
-                              <Button
-                                onClick={() => {
-                                  setSelectedName("Personal Confirm");
-                                  handleShowConfirm();
-                                }}
-                                style={{ marginLeft: "1rem" }}
-                              >
-                                Confirm
-                              </Button>
+                              {d.status != 1 && d.status != 2 ? (
+                                <></>
+                              ) : (
+                                <>
+                                  <Button
+                                    onClick={() => {
+                                      setSelectedName(d.full_name);
+                                      setSelectedId(d.id);
+                                      handleShowConfirm();
+                                    }}
+                                    style={{ marginLeft: "1rem" }}
+                                  >
+                                    Confirm
+                                  </Button>
+                                </>
+                              )}
                             </td>
                           </tr>
                         ))}

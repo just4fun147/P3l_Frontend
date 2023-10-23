@@ -12,6 +12,9 @@ function Guest(props) {
   if (roles === process.env.REACT_APP_ADMIN) {
     return <Navigate to="/room-management" state={{ from: location }} />;
   }
+  if (roles === process.env.REACT_APP_SM) {
+    return <Navigate to="/reservation-management" state={{ from: location }} />;
+  }
   if (
     roles === process.env.REACT_APP_OWNER ||
     roles === process.env.REACT_APP_GM

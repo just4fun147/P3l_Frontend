@@ -115,7 +115,10 @@ export const logout = () => {
       window.location = "/";
     })
     .catch((error) => {
-      console.log(error.response.data.OUT_STAT);
+      cookies.remove("token");
+      cookies.remove("name");
+      cookies.remove("role");
+      window.location = "/";
     });
 };
 

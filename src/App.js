@@ -193,31 +193,31 @@ function App() {
                 </AdminAuth>
               }
             ></Route>
+            {/* SM */}
             <Route
               path="/room-type-management"
               element={
-                <AdminAuth>
+                <SMAuth>
                   <RoomTypeManagement />
-                </AdminAuth>
+                </SMAuth>
               }
             ></Route>
             <Route
               path="/room-type-management/add"
               element={
-                <AdminAuth>
+                <SMAuth>
                   <AddRoomType />
-                </AdminAuth>
+                </SMAuth>
               }
             ></Route>
             <Route
               path="/room-type-management/edit/:id"
               element={
-                <AdminAuth>
+                <SMAuth>
                   <EditRoomType />
-                </AdminAuth>
+                </SMAuth>
               }
             ></Route>
-            {/* SM */}
             <Route
               path="/season-management"
               element={

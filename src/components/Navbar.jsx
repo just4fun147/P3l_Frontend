@@ -176,8 +176,9 @@ function BasicExample() {
                   <>
                     {roles === process.env.REACT_APP_SM ? (
                       <Nav className="ml-auto">
-                        <Nav.Link href="/room">Season</Nav.Link>
+                        <Nav.Link href="/season-management">Season</Nav.Link>
                         <Nav.Link href="/test">Facility</Nav.Link>
+                        <Nav.Link href="/room-type-management">Price</Nav.Link>
                         <Nav.Link href="/test">Promo</Nav.Link>
                         <Nav.Link href="/test">Reservation</Nav.Link>
                       </Nav>

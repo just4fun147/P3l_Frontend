@@ -161,7 +161,7 @@ const RoomManagement = () => {
       </Modal>
       <div className="container mt-5">
         <div className="row mb-3">
-          <div className="col-9">
+          <div className="col-10">
             <input
               type="text"
               placeholder="Search Room By Name"
@@ -180,18 +180,12 @@ const RoomManagement = () => {
               value={search}
             ></input>
           </div>
-          <div className="col-3">
+          <div className="col-2">
             <Button
               href="/room-management/add"
               style={{ width: "fit-content" }}
             >
               Add Room
-            </Button>
-            <Button
-              href="/room-type-management"
-              style={{ width: "fit-content", marginLeft: "1rem" }}
-            >
-              Room Type
             </Button>
           </div>
         </div>

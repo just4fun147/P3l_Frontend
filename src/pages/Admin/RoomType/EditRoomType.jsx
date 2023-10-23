@@ -52,12 +52,12 @@ const EditRoomType = () => {
         .then((response) => {
           setRoomNumber(response.data.OUT_DATA[0].type_name);
           setTypeName(response.data.OUT_DATA[0].price);
-          if (response.data.OUT_DATA[0].is_smoking) {
+          if (response.data.OUT_DATA[0].is_smoking == true) {
             setIsSmoking("1");
           } else {
             setIsSmoking("0");
           }
-          if (response.data.OUT_DATA[0].is_double) {
+          if (response.data.OUT_DATA[0].is_double == true) {
             setIsDouble("1");
           } else {
             setIsDouble("0");
