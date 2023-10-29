@@ -1,12 +1,79 @@
 import logo from ".././assets/logo.png";
-import { auth } from "../Api";
 import { useState } from "react";
+import axios from "axios";
+import Cookies from "universal-cookie";
+import {
+  browserName,
+  osName,
+  deviceType,
+  osVersion,
+} from "react-device-detect";
+import LoadingButton from "../components/common/LoadingButton";
+import { toast, ToastContainer } from "react-toastify";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const cookies = new Cookies();
+  const headers = {
+    "Content-Type": "application/json",
+    apikey: "1234567890",
+  };
+  const auth = async (email, password) => {
+    setLoading(true);
+    axios
+      .post(
+        process.env.REACT_APP_BASEURL + "logins",
+        {
+          email: email,
+          password: password,
+          user_agent:
+            browserName + " " + osName + " " + osVersion + " " + deviceType,
+        },
+        {
+          headers: headers,
+        }
+      )
+      .then((response) => {
+        setLoading(false);
+        toast.success(response.data.OUT_MESS, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        cookies.set("token", response.data.OUT_DATA.token);
+        cookies.set("name", response.data.OUT_DATA.name);
+        cookies.set("role", response.data.OUT_DATA.role);
+
+        if (response.data.OUT_DATA.role === process.env.REACT_APP_CONSUMEN) {
+          window.location = "/";
+        }
+        if (response.data.OUT_DATA.role === process.env.REACT_APP_ADMIN) {
+          window.location = "/room-management";
+        }
+        if (response.data.OUT_DATA.role === process.env.REACT_APP_OWNER) {
+          window.location = "/report/monthly";
+        }
+        if (response.data.OUT_DATA.role === process.env.REACT_APP_SM) {
+          window.location = "/reservation-management";
+        }
+        if (response.data.OUT_DATA.role === process.env.REACT_APP_GM) {
+          window.location = "/report/monthly";
+        }
+        if (response.data.OUT_DATA.role === process.env.REACT_APP_FO) {
+          window.location = "/";
+        }
+      })
+      .catch((error) => {
+        toast.error(error.response.data.OUT_MESS, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        setLoading(false);
+      });
+  };
+
   return (
     <>
+      <ToastContainer />
       <div style={{ padding: "2% 5% 0 5%", width: "100%" }}>
         <div className="row mb-5 d-flex ">
           <div
@@ -92,20 +159,28 @@ const Login = () => {
                   </p>
                 </a>
               </div>
-              <button
-                onClick={() => auth(email, password)}
-                className="btn btn-primary rounded-pill mb-2"
-                name="login"
-                style={{
-                  width: "50%",
-                  minWidth: "250px",
-                  backgroundColor: "#0C1738",
-                  fontFamily: "Ubuntu",
-                  fontWeight: "bold",
-                }}
-              >
-                Login
-              </button>
+              {loading ? (
+                <>
+                  <LoadingButton />
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={() => auth(email, password)}
+                    className="btn btn-primary rounded-pill mb-2"
+                    name="login"
+                    style={{
+                      width: "50%",
+                      minWidth: "250px",
+                      backgroundColor: "#0C1738",
+                      fontFamily: "Ubuntu",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Login
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>

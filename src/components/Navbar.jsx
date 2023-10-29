@@ -4,13 +4,20 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { token, logout, name, role, headersAuth } from "../Api";
+import { token, name, role, headersAuth } from "../Api";
 import React, { useState } from "react";
 import { FaUser } from "react-icons/fa";
 import logo from "../assets/logo.png";
 import Loading from "../assets/loading.gif";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
+import {
+  browserName,
+  osName,
+  deviceType,
+  osVersion,
+} from "react-device-detect";
+import Cookies from "universal-cookie";
 
 function BasicExample() {
   const [tokens, setTokens] = useState(token());
@@ -25,7 +32,33 @@ function BasicExample() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const cookies = new Cookies();
 
+  const logout = async () => {
+    axios
+      .post(
+        process.env.REACT_APP_BASEURL + "logouts",
+        {
+          user_agent:
+            browserName + " " + osName + " " + osVersion + " " + deviceType,
+        },
+        {
+          headers: headersAuth,
+        }
+      )
+      .then((response) => {
+        cookies.remove("token");
+        cookies.remove("name");
+        cookies.remove("role");
+        window.location = "/";
+      })
+      .catch((error) => {
+        cookies.remove("token");
+        cookies.remove("name");
+        cookies.remove("role");
+        window.location = "/";
+      });
+  };
   const changePassword = () => {
     setLoading(true);
     return new Promise((resolve) => {
@@ -177,7 +210,9 @@ function BasicExample() {
                     {roles === process.env.REACT_APP_SM ? (
                       <Nav className="ml-auto">
                         <Nav.Link href="/season-management">Season</Nav.Link>
-                        <Nav.Link href="/test">Facility</Nav.Link>
+                        <Nav.Link href="/facility-management">
+                          Facility
+                        </Nav.Link>
                         <Nav.Link href="/room-type-management">Price</Nav.Link>
                         <Nav.Link href="/test">Promo</Nav.Link>
                         <Nav.Link href="/test">Reservation</Nav.Link>
@@ -251,9 +286,7 @@ function BasicExample() {
                     Change Password
                   </NavDropdown.Item>
                   <NavDropdown.Divider />
-                  <NavDropdown.Item onClick={() => logout()}>
-                    Logout
-                  </NavDropdown.Item>
+                  <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
                 </NavDropdown>
               </Nav>
             ) : (

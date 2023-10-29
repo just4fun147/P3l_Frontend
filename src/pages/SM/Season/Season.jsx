@@ -216,24 +216,30 @@ const SeasonManagement = () => {
                         <td> {s.start_date}</td>
                         <td> {s.end_date}</td>
                         <td>
-                          <Button
-                            onClick={() => {
-                              window.location.href = `/season-management/edit/${s.id}`;
-                            }}
-                          >
-                            Edit
-                          </Button>
-                          <Button
-                            variant="danger"
-                            style={{ marginLeft: "1rem" }}
-                            onClick={() => {
-                              setSelectedName(s.season_name);
-                              setSelectedId(s.id);
-                              handleShow();
-                            }}
-                          >
-                            delete
-                          </Button>
+                          {s.action ? (
+                            <>
+                              <Button
+                                onClick={() => {
+                                  window.location.href = `/season-management/edit/${s.id}`;
+                                }}
+                              >
+                                Edit
+                              </Button>
+                              <Button
+                                variant="danger"
+                                style={{ marginLeft: "1rem" }}
+                                onClick={() => {
+                                  setSelectedName(s.season_name);
+                                  setSelectedId(s.id);
+                                  handleShow();
+                                }}
+                              >
+                                delete
+                              </Button>
+                            </>
+                          ) : (
+                            <></>
+                          )}
                         </td>
                       </tr>
                     ))}

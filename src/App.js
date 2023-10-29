@@ -283,7 +283,7 @@ function App() {
               }
             ></Route>
             <Route
-              path="/facility-management/edit"
+              path="/facility-management/edit/:id"
               element={
                 <SMAuth>
                   <EditFacility />

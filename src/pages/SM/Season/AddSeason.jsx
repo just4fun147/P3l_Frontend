@@ -14,7 +14,8 @@ const AddSeason = () => {
   const [allType, setAllType] = useState();
   const [roomType, setRoomType] = useState();
   const [seasonName, setSeasonName] = useState();
-  const [capacity, setCapacity] = useState();
+  const [capacity, setCapacity] = useState(0);
+  const [capacityType, setCapacityType] = useState();
   const [price, setPrice] = useState();
   const [priceType, setPriceType] = useState();
   const [startDate, setStartDate] = useState();
@@ -32,11 +33,13 @@ const AddSeason = () => {
         position: toast.POSITION.TOP_RIGHT,
       });
       return false;
-    } else if (capacity == null || capacity < 0 || capacity == "") {
-      toast.error("Invalid Capacity!", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      return false;
+    } else if (capacityType) {
+      if (capacity == null || capacity <= 0 || capacity == "") {
+        toast.error("Invalid Capacity!", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        return false;
+      }
     } else if (priceType == null || priceType == "") {
       toast.error("Invalid Price Type!", {
         position: toast.POSITION.TOP_RIGHT,
@@ -74,12 +77,11 @@ const AddSeason = () => {
     const validates = await validate();
     if (validates == true) {
       var months;
-      months =
-        startDate.getMonth() * 30 -
-        now.getMonth() * 30 +
-        (startDate.getFullYear() - now.getFullYear()) * 12 * 30 +
-        startDate.getDate() -
-        now.getDate();
+      months = (startDate.getFullYear() - now.getFullYear()) * 12 * 30;
+      months -= now.getMonth() * 30;
+      months += startDate.getMonth() * 30;
+      months -= now.getDate() + 1;
+      months += startDate.getDate();
       if (months < 60) {
         toast.error("The season starts in less than 2 months!", {
           position: toast.POSITION.TOP_RIGHT,
@@ -101,7 +103,16 @@ const AddSeason = () => {
       axios
         .post(
           process.env.REACT_APP_BASEURL + "/seasons/create",
-          {},
+          {
+            season_name: seasonName,
+            capacity: capacity,
+            capacity_type: capacityType,
+            price: price,
+            price_type: priceType,
+            start_date: startDate,
+            end_date: endDate,
+            data: roomType,
+          },
           {
             headers: headersAuth,
           }
@@ -205,7 +216,7 @@ const AddSeason = () => {
               <p style={{ textAlign: "left" }}>Season Name</p>
               <input
                 type="text"
-                placeholder="A123"
+                placeholder="Lebaran"
                 className="form-control mb-3"
                 style={{
                   width: "100%",
@@ -220,25 +231,55 @@ const AddSeason = () => {
                 onInput={(e) => setSeasonName(e.target.value)}
                 value={seasonName}
               ></input>
-              <p style={{ textAlign: "left" }}>Capacity</p>
-              <input
-                type="number"
-                placeholder="50"
-                className="form-control mb-3"
-                style={{
-                  width: "100%",
-                  minWidth: "250px",
-                  display: "block",
-                  marginRight: "auto",
-                  marginLeft: "auto",
-                  backgroundColor: "#D9D9D9",
-                  borderRadius: "5px",
-                  lineHeight: "0.25",
-                }}
-                onInput={(e) => setCapacity(e.target.value)}
-                value={capacity}
-              ></input>
-
+              <p style={{ textAlign: "left" }}>Have Capacity</p>
+              <Form style={{ textAlign: "start" }}>
+                <div key="inline-radio" className="mb-3">
+                  <Form.Check
+                    inline
+                    label="Yes"
+                    name="group1"
+                    type="radio"
+                    id="inline-radio-1"
+                    onClick={() => {
+                      setCapacityType(true);
+                    }}
+                  />
+                  <Form.Check
+                    inline
+                    label="No"
+                    name="group1"
+                    type="radio"
+                    id="inline-radio-2"
+                    onClick={() => {
+                      setCapacityType(false);
+                    }}
+                  />
+                </div>
+              </Form>
+              {capacityType ? (
+                <>
+                  <p style={{ textAlign: "left" }}>Capacity</p>
+                  <input
+                    type="number"
+                    placeholder="50"
+                    className="form-control mb-3"
+                    style={{
+                      width: "100%",
+                      minWidth: "250px",
+                      display: "block",
+                      marginRight: "auto",
+                      marginLeft: "auto",
+                      backgroundColor: "#D9D9D9",
+                      borderRadius: "5px",
+                      lineHeight: "0.25",
+                    }}
+                    onInput={(e) => setCapacity(e.target.value)}
+                    value={capacity}
+                  ></input>
+                </>
+              ) : (
+                <></>
+              )}
               <p style={{ textAlign: "left" }}>Price Type</p>
               <select
                 style={{
@@ -258,7 +299,7 @@ const AddSeason = () => {
                 <option value="2">Potongan</option>
                 <option value="3">Harga</option>
               </select>
-              <div className="row">
+              <div className="row mt-3">
                 <div className="col-6">
                   <p style={{ textAlign: "left" }}>Start Date</p>
                   <input

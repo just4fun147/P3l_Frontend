@@ -7,7 +7,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Loading from "../../components/Loading";
 import { toast, ToastContainer } from "react-toastify";
-import { type } from "@testing-library/user-event/dist/type";
 
 const AddRoom = () => {
   const [show, setShow] = useState(false);
@@ -93,15 +92,13 @@ const AddRoom = () => {
           setLoading(false);
         })
         .catch((error) => {
-          console.log(error);
+          toast.error("Something Went Wrong!", {
+            position: toast.POSITION.TOP_RIGHT,
+          });
         });
     });
   };
   const reset = () => {
-    setRoomNumber();
-    setTypeName();
-    setIsSmoking();
-    setIsDouble("0");
     getRoomType();
   };
 
@@ -157,6 +154,7 @@ const AddRoom = () => {
                 type="text"
                 placeholder="A123"
                 className="form-control mb-3"
+                value={roomNumber}
                 onInput={(e) => setRoomNumber(e.target.value)}
                 style={{
                   width: "100%",
@@ -183,6 +181,16 @@ const AddRoom = () => {
                 }}
                 onChange={(e) => setTypeName(e.target.value)}
               >
+                {typeName ? (
+                  <>
+                    <option value={typeName} hidden>
+                      {typeName}
+                    </option>
+                  </>
+                ) : (
+                  <></>
+                )}
+
                 {rooms.map((room) => (
                   <option value={room.type_name}>{room.type_name}</option>
                 ))}
@@ -190,22 +198,47 @@ const AddRoom = () => {
 
               <Form className="mt-4" style={{ textAlign: "start" }}>
                 <div key="inline-radio" className="mb-3">
-                  <Form.Check
-                    inline
-                    label="Smoking Room"
-                    name="group1"
-                    type="radio"
-                    id="inline-radio-1"
-                    onClick={() => setIsSmoking("1")}
-                  />
-                  <Form.Check
-                    inline
-                    label="Non Smoking Room"
-                    name="group1"
-                    type="radio"
-                    id="inline-radio-2"
-                    onClick={() => setIsSmoking("0")}
-                  />
+                  {isSmoking === "1" ? (
+                    <>
+                      <Form.Check
+                        inline
+                        label="Smoking Room"
+                        name="group1"
+                        type="radio"
+                        checked
+                        id="inline-radio-1"
+                        onClick={() => setIsSmoking("1")}
+                      />
+                      <Form.Check
+                        inline
+                        label="Non Smoking Room"
+                        name="group1"
+                        type="radio"
+                        id="inline-radio-2"
+                        onClick={() => setIsSmoking("0")}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <Form.Check
+                        inline
+                        label="Smoking Room"
+                        name="group1"
+                        type="radio"
+                        id="inline-radio-1"
+                        onClick={() => setIsSmoking("1")}
+                      />
+                      <Form.Check
+                        inline
+                        label="Non Smoking Room"
+                        name="group1"
+                        type="radio"
+                        id="inline-radio-2"
+                        checked
+                        onClick={() => setIsSmoking("0")}
+                      />
+                    </>
+                  )}
                 </div>
               </Form>
               <p style={{ textAlign: "left" }}>Bed Type</p>

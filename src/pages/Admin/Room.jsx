@@ -164,7 +164,7 @@ const RoomManagement = () => {
           <div className="col-10">
             <input
               type="text"
-              placeholder="Search Room By Name"
+              placeholder="Search Room By Room Number"
               className="form-control mb-3"
               style={{
                 width: "100%",
