@@ -1,4 +1,3 @@
-import logo from ".././assets/apple_logo_10-t2.jpg";
 import { headersAuth } from "../Api";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -13,9 +12,9 @@ import Button from "react-bootstrap/Button";
 const Profile = () => {
   const [users, setUser] = useState();
   const [images, setImages] = useState();
-  const [loaded, setLoades] = useState(true);
+  const [loaded, setLoades] = useState(false);
   const [waiting, setWaiting] = useState(true);
-  const base = process.env.REACT_APP_BASEIMGUSERURL;
+  // const base = process.env.REACT_APP_BASEIMGUSERURL;
   const [namalengkap, setNamaLengkap] = useState("Nama Lengkap");
   const [photo, setPhotos] = useState("");
   const [email, setEmail] = useState("Email");
@@ -29,48 +28,37 @@ const Profile = () => {
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
 
-  // const UpdateProfile = (
-  //   name,
-  //   full_name,
-  //   domisili,
-  //   tgl_lahir,
-  //   email,
-  //   no_handphone,
-  //   password,
-  //   pekerjaan,
-  //   sosmed,
-  //   image
-  // ) => {
-  //   axios
-  //     .post(
-  //       process.env.REACT_APP_EDITUSER,
-  //       {
-  //         name: name,
-  //         full_name: full_name,
-  //         domisili: domisili,
-  //         tgl_lahir: tgl_lahir,
-  //         email: email,
-  //         no_handphone: no_handphone,
-  //         password: password,
-  //         pekerjaan: pekerjaan,
-  //         sosmed: sosmed,
-  //         image: image,
-  //       },
-  //       {
-  //         headers: headersAuth,
-  //       }
-  //     )
-  //     .then((response) => {
-  //       toast.success("Update Profile Success!", {
-  //         position: toast.POSITION.TOP_RIGHT,
-  //       });
-  //     })
-  //     .catch((error) => {
-  //       toast.error("Update Profile Failed!", {
-  //         position: toast.POSITION.TOP_RIGHT,
-  //       });
-  //     });
-  // };
+  const UpdateProfile = async () => {
+    handleClose();
+    setLoades(false);
+    axios
+      .post(
+        process.env.REACT_APP_BASEURL + "editProfile",
+        {
+          email: email,
+          full_name: namalengkap,
+          phone_number: noHp,
+          identity: ktp,
+          address: alamat,
+          image: "",
+        },
+        {
+          headers: headersAuth,
+        }
+      )
+      .then((response) => {
+        toast.success("Update Profile Success!", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        setTimeout((window.location.href = "/"), 5000);
+      })
+      .catch((error) => {
+        toast.error(error.response.data.OUT_MESS, {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        setLoades(true);
+      });
+  };
 
   // useEffect(() => {
   //   if (!selectedFile) {
@@ -84,23 +72,32 @@ const Profile = () => {
   //   return () => URL.revokeObjectURL(objectUrl);
   // }, [selectedFile]);
 
-  // const getUser = () => {
-  //   return new Promise((resolve) => {
-  //     axios
-  //       .post(
-  //         process.env.REACT_APP_AUTHUSER,
-  //         {},
-  //         {
-  //           headers: headersAuth,
-  //         }
-  //       )
-  //       .then((response) => {
-  //         setUser(response.data.OUT_DATA[0]);
-  //         setWaiting(true);
-  //       })
-  //       .catch((error) => {});
-  //   });
-  // };
+  const getUser = () => {
+    return new Promise((resolve) => {
+      axios
+        .post(
+          process.env.REACT_APP_BASEURL + "authUser",
+          {},
+          {
+            headers: headersAuth,
+          }
+        )
+        .then((response) => {
+          setUser(response.data.OUT_DATA[0]);
+          setNamaLengkap(response.data.OUT_DATA[0].full_name);
+          setKtp(response.data.OUT_DATA[0].identity);
+          setEmail(response.data.OUT_DATA[0].email);
+          setAlamat(response.data.OUT_DATA[0].address);
+          setNoHp(response.data.OUT_DATA[0].phone_number);
+          setWaiting(true);
+          setLoades(true);
+        })
+        .catch((error) => {});
+    });
+  };
+  useEffect(() => {
+    getUser();
+  }, []);
   // useEffect(() => {
   //   if (waiting) {
   //     if (users["image"]) {
@@ -163,7 +160,10 @@ const Profile = () => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button style={{ marginLeft: "1rem" }} onClick={handleClose}>
+          <Button
+            style={{ marginLeft: "1rem" }}
+            onClick={() => UpdateProfile()}
+          >
             Confirm
           </Button>
         </Modal.Body>
@@ -320,7 +320,7 @@ const Profile = () => {
                         borderRadius: "5px",
                       }}
                     ></input>
-                    <p style={{ textAlign: "left" }}>Birth Of Date</p>
+                    {/* <p style={{ textAlign: "left" }}>Birth Of Date</p>
                     <input
                       type="date"
                       onInput={(e) => setTgl_Lahir(e.target.value)}
@@ -335,7 +335,7 @@ const Profile = () => {
                         backgroundColor: "#D9D9D9",
                         borderRadius: "5px",
                       }}
-                    ></input>
+                    ></input> */}
                   </div>
                 </div>
               </div>

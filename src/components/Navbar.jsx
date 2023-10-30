@@ -35,29 +35,10 @@ function BasicExample() {
   const cookies = new Cookies();
 
   const logout = async () => {
-    axios
-      .post(
-        process.env.REACT_APP_BASEURL + "logouts",
-        {
-          user_agent:
-            browserName + " " + osName + " " + osVersion + " " + deviceType,
-        },
-        {
-          headers: headersAuth,
-        }
-      )
-      .then((response) => {
-        cookies.remove("token");
-        cookies.remove("name");
-        cookies.remove("role");
-        window.location = "/";
-      })
-      .catch((error) => {
-        cookies.remove("token");
-        cookies.remove("name");
-        cookies.remove("role");
-        window.location = "/";
-      });
+    cookies.remove("token");
+    cookies.remove("name");
+    cookies.remove("role");
+    setTimeout((window.location = "/"), 5000);
   };
   const changePassword = () => {
     setLoading(true);
@@ -249,7 +230,7 @@ function BasicExample() {
                                     className="ml-auto"
                                     style={{ width: "100%" }}
                                   >
-                                    <Nav.Link href="/room">
+                                    <Nav.Link href="/my-reservation/p">
                                       My Reservation
                                     </Nav.Link>
                                   </Nav>
@@ -286,7 +267,13 @@ function BasicExample() {
                     Change Password
                   </NavDropdown.Item>
                   <NavDropdown.Divider />
-                  <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
+                  <NavDropdown.Item
+                    onClick={() => {
+                      logout();
+                    }}
+                  >
+                    Logout
+                  </NavDropdown.Item>
                 </NavDropdown>
               </Nav>
             ) : (

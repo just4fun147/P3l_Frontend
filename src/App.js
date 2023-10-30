@@ -29,9 +29,9 @@ import GroupBill from "./pages/Customer/Receipt/GroupBill";
 import RoomManagement from "./pages/Admin/Room";
 import AddRoom from "./pages/Admin/AddRoom";
 import EditRoom from "./pages/Admin/EditRoom";
-import RoomTypeManagement from "./pages/Admin/RoomType/RoomType";
-import AddRoomType from "./pages/Admin/RoomType/AddRoomType";
-import EditRoomType from "./pages/Admin/RoomType/EditRoomType";
+import RoomTypeManagement from "./pages/SM/RoomType/RoomType";
+import AddRoomType from "./pages/SM/RoomType/AddRoomType";
+import EditRoomType from "./pages/SM/RoomType/EditRoomType";
 // SM Season
 import SeasonManagement from "./pages/SM/Season/Season";
 import AddSeason from "./pages/SM/Season/AddSeason";
@@ -121,9 +121,9 @@ function App() {
             <Route
               path="/my-reservation/p"
               element={
-                // <Authenticated>
-                <MyReservation />
-                // </Authenticated>
+                <Authenticated>
+                  <MyReservation />
+                </Authenticated>
               }
             ></Route>
             <Route

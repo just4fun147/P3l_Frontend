@@ -63,11 +63,6 @@ const EditRoomType = () => {
             setIsDouble("0");
           }
           setLoading(false);
-          if (isSmoking === "1") {
-            document.getElementById("inline-radio-1").checked = true;
-          } else {
-            document.getElementById("inline-radio-2").checked = true;
-          }
         })
         .catch((error) => {
           console.log(error);
@@ -202,6 +197,28 @@ const EditRoomType = () => {
                 }}
                 value={typeName}
               ></input>
+              {isSmoking == "1" ?<>
+              <Form className="mt-4" style={{ textAlign: "start" }}>
+                <div key="inline-radio" className="mb-3">
+                  <Form.Check
+                    inline
+                    label="Smoking Room"
+                    name="group1"
+                    type="radio"
+                    id="inline-radio-1"
+                    onClick={() => setIsSmoking("1")}
+                    checked
+                  />
+                  <Form.Check
+                    inline
+                    label="Non Smoking Room"
+                    name="group1"
+                    type="radio"
+                    id="inline-radio-2"
+                    onClick={() => setIsSmoking("0")}
+                  />
+                </div>
+              </Form></> :<>
               <Form className="mt-4" style={{ textAlign: "start" }}>
                 <div key="inline-radio" className="mb-3">
                   <Form.Check
@@ -219,9 +236,10 @@ const EditRoomType = () => {
                     type="radio"
                     id="inline-radio-2"
                     onClick={() => setIsSmoking("0")}
+                    checked
                   />
                 </div>
-              </Form>
+              </Form></>}
               <p style={{ textAlign: "left" }}>Bed Type</p>
               <select
                 style={{

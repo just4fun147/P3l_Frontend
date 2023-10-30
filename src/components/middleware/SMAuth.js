@@ -11,7 +11,7 @@ function SMAuth(props) {
   const location = useLocation();
 
   if (roles != process.env.REACT_APP_SM || tokens === undefined) {
-    return <Navigate to="/reservation-management" state={{ from: location }} />;
+    return <Navigate to="/" state={{ from: location }} />;
   }
   return props.children;
 }
