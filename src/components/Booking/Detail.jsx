@@ -18,7 +18,9 @@ const Detail = (props) => {
             gap: "2px",
           }}
         >
-          <p style={{ margin: "0" }}>{props.text}</p>
+          <p style={{ margin: "0" }}>
+            ({props.total}x){props.text}
+          </p>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
           <p style={{ margin: "0" }}>{props.price}</p>

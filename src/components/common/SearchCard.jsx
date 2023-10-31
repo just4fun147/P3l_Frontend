@@ -11,6 +11,9 @@ import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
+import { toast, ToastContainer } from "react-toastify";
+import axios from "axios";
+import { headersAuth } from "../../Api";
 
 const SearchCard = () => {
   // date

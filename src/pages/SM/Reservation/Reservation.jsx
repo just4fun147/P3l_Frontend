@@ -380,6 +380,15 @@ const ReservationManagement = () => {
                               >
                                 Edit
                               </Button>
+                              <Button
+                                variant="secondary"
+                                onClick={() => {
+                                  window.location.href = `/reservation-management/g/${d.id}`;
+                                }}
+                                style={{ marginLeft: "1rem" }}
+                              >
+                                View
+                              </Button>
 
                               <Button
                                 onClick={() => {

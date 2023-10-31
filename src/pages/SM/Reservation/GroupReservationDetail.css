@@ -1,0 +1,22 @@
+.Dropdown-placeholder {
+  text-align: center;
+  margin-left: 15%;
+  background-color: #0b5ed7;
+  color: white;
+}
+.is-selected {
+  text-transform: uppercase;
+}
+.Dropdown-root {
+  background-color: #0b5ed7;
+}
+
+.Dropdown-control {
+  background-color: #0b5ed7;
+}
+.Dropdown-arrow-wrapper {
+  background-color: #0b5ed7;
+}
+.Dropdown-option {
+  text-transform: uppercase;
+}

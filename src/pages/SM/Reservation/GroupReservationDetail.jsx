@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import Loading from "../../../components/Loading";
 import Summary from "../../../components/Booking/Summary";
 import Detail from "../../../components/Booking/Detail";
-import "./MyReservasionDetail.css";
+import "./GroupReservationDetail.css";
 import { useParams } from "react-router-dom";
 
 const GroupReservationDetail = () => {
@@ -24,7 +24,7 @@ const GroupReservationDetail = () => {
           {
             id: ids,
             search: null,
-            is_group: false,
+            is_group: true,
             is_open: true,
             is_paid: true,
           },
@@ -124,6 +124,8 @@ const GroupReservationDetail = () => {
                     borderBottom: "1px solid var(--N100,#DBDEE2)",
                   }}
                 >
+                  <Summary text="Group Name" price={data.group_name}></Summary>
+                  <Summary text="Leader Name" price={data.full_name}></Summary>
                   <Summary text="Start Date" price={data.start_date}></Summary>
                   <Summary text="End Date" price={data.end_date}></Summary>
                   <Summary text="Adult" price={data.adult}></Summary>

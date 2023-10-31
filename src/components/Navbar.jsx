@@ -35,10 +35,39 @@ function BasicExample() {
   const cookies = new Cookies();
 
   const logout = async () => {
-    cookies.remove("token");
-    cookies.remove("name");
-    cookies.remove("role");
-    setTimeout((window.location = "/"), 5000);
+    axios
+      .post(
+        process.env.REACT_APP_BASEURL + "logouts",
+        {
+          user_agent:
+            browserName + " " + osName + " " + osVersion + " " + deviceType,
+        },
+        {
+          headers: headersAuth,
+        }
+      )
+      .then((response) => {
+        document.cookie.split(";").forEach(function (c) {
+          document.cookie = c
+            .replace(/^ +/, "")
+            .replace(
+              /=.*/,
+              "=;expires=" + new Date().toUTCString() + ";path=/"
+            );
+        });
+        window.location = "/";
+      })
+      .catch((error) => {
+        document.cookie.split(";").forEach(function (c) {
+          document.cookie = c
+            .replace(/^ +/, "")
+            .replace(
+              /=.*/,
+              "=;expires=" + new Date().toUTCString() + ";path=/"
+            );
+        });
+        window.location = "/";
+      });
   };
   const changePassword = () => {
     setLoading(true);

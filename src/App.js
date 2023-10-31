@@ -22,6 +22,7 @@ import RoomDetail from "./pages/RoomDetail";
 // CUSTOMER
 import Booking from "./pages/Customer/Booking/Booking";
 import MyReservation from "./pages/Customer/Reservation/MyReservation";
+import MyReservationDetail from "./pages/Customer/Reservation/MyReservationDetail";
 import Receipt from "./pages/Customer/Receipt/Receipt";
 import Bill from "./pages/Customer/Receipt/Bill";
 import GroupBill from "./pages/Customer/Receipt/GroupBill";
@@ -46,6 +47,7 @@ import AddFacility from "./pages/SM/Facility/AddFacility";
 import EditFacility from "./pages/SM/Facility/EditFacility";
 // SM Reservation
 import ReservationManagement from "./pages/SM/Reservation/Reservation";
+import GroupReservationDetail from "./pages/SM/Reservation/GroupReservationDetail";
 import AddReservationGroup from "./pages/SM/Reservation/AddReservationGroup";
 import EditReservationGroup from "./pages/SM/Reservation/EditReservationGroup";
 
@@ -123,6 +125,14 @@ function App() {
               element={
                 <Authenticated>
                   <MyReservation />
+                </Authenticated>
+              }
+            ></Route>
+            <Route
+              path="/my-reservation/p/:id"
+              element={
+                <Authenticated>
+                  <MyReservationDetail />
                 </Authenticated>
               }
             ></Route>
@@ -295,6 +305,14 @@ function App() {
               element={
                 <SMAuth>
                   <ReservationManagement />
+                </SMAuth>
+              }
+            ></Route>
+            <Route
+              path="/reservation-management/g/:id"
+              element={
+                <SMAuth>
+                  <GroupReservationDetail />
                 </SMAuth>
               }
             ></Route>
