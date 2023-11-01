@@ -6,7 +6,7 @@ const MyReservationItem = (props) => {
         className="container"
         style={{ cursor: "pointer" }}
         onClick={() => {
-          window.location.href = `/`;
+          window.location.href = `/my-reservation/p/${props.id}`;
         }}
       >
         <div className="row" style={{ width: "100%", textAlign: "start" }}>

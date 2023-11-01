@@ -11,25 +11,25 @@ import {
 import LoadingButton from "../components/common/LoadingButton";
 import { toast, ToastContainer } from "react-toastify";
 
-const Login = () => {
+const ResetPassword = () => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [loading, setLoading] = useState(false);
   const cookies = new Cookies();
   const headers = {
     "Content-Type": "application/json",
     apikey: "1234567890",
   };
-  const auth = async (email, password) => {
+  const auth = async () => {
     setLoading(true);
     axios
       .post(
-        process.env.REACT_APP_BASEURL + "logins",
+        process.env.REACT_APP_BASEURL + "users/reset",
         {
           email: email,
-          password: password,
-          user_agent:
-            browserName + " " + osName + " " + osVersion + " " + deviceType,
+          full_name: fullName,
+          phone_number: phoneNumber,
         },
         {
           headers: headers,
@@ -40,28 +40,7 @@ const Login = () => {
         toast.success(response.data.OUT_MESS, {
           position: toast.POSITION.TOP_RIGHT,
         });
-        cookies.set("token", response.data.OUT_DATA.token);
-        cookies.set("name", response.data.OUT_DATA.name);
-        cookies.set("role", response.data.OUT_DATA.role);
-
-        if (response.data.OUT_DATA.role === process.env.REACT_APP_CONSUMEN) {
-          window.location = "/";
-        }
-        if (response.data.OUT_DATA.role === process.env.REACT_APP_ADMIN) {
-          window.location = "/room-management";
-        }
-        if (response.data.OUT_DATA.role === process.env.REACT_APP_OWNER) {
-          window.location = "/report/monthly";
-        }
-        if (response.data.OUT_DATA.role === process.env.REACT_APP_SM) {
-          window.location = "/reservation-management";
-        }
-        if (response.data.OUT_DATA.role === process.env.REACT_APP_GM) {
-          window.location = "/report/monthly";
-        }
-        if (response.data.OUT_DATA.role === process.env.REACT_APP_FO) {
-          window.location = "/";
-        }
+        setTimeout((window.location.href = "/login"), 5000);
       })
       .catch((error) => {
         toast.error(error.response.data.OUT_MESS, {
@@ -108,7 +87,7 @@ const Login = () => {
           >
             <div className="mb-5" style={{ width: "100%" }}>
               <p style={{ color: "white" }}>Welcome</p>
-              <p style={{ color: "white" }}>Please Login To Continue</p>
+              <p style={{ color: "white" }}>Please Authenticate Yourself</p>
               <input
                 type="text"
                 placeholder="Email"
@@ -125,13 +104,30 @@ const Login = () => {
                 }}
               ></input>
               <input
-                type="password"
-                placeholder="Password"
-                className="form-control rounded-pill mt-2"
-                onInput={(e) => setPassword(e.target.value)}
+                type="text"
+                placeholder="Full Name"
+                className="form-control rounded-pill"
+                onInput={(e) => setFullName(e.target.value)}
                 style={{
                   width: "50%",
                   minWidth: "250px",
+                  display: "block",
+                  marginRight: "auto",
+                  marginLeft: "auto",
+                  marginTop: "1rem",
+                  backgroundColor: "#D9D9D9",
+                  textAlign: "center",
+                }}
+              ></input>
+              <input
+                type="text"
+                placeholder="Phone Number"
+                className="form-control rounded-pill"
+                onInput={(e) => setPhoneNumber(e.target.value)}
+                style={{
+                  width: "50%",
+                  minWidth: "250px",
+                  marginTop: "1rem",
                   display: "block",
                   marginRight: "auto",
                   marginLeft: "auto",
@@ -141,7 +137,7 @@ const Login = () => {
               ></input>
               <div className="mt-2">
                 <a
-                  href="/reset-password"
+                  href="/signup"
                   style={{
                     textDecoration: "none",
                   }}
@@ -155,7 +151,7 @@ const Login = () => {
                       fontSize: "0.75rem",
                     }}
                   >
-                    Forgot Password
+                    Didn't have account?
                   </p>
                 </a>
               </div>
@@ -166,7 +162,7 @@ const Login = () => {
               ) : (
                 <>
                   <button
-                    onClick={() => auth(email, password)}
+                    onClick={() => auth()}
                     className="btn btn-primary rounded-pill mb-2"
                     name="login"
                     style={{
@@ -177,7 +173,7 @@ const Login = () => {
                       fontWeight: "bold",
                     }}
                   >
-                    Login
+                    Reset Password
                   </button>
                 </>
               )}
@@ -189,4 +185,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ResetPassword;

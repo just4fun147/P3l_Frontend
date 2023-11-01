@@ -36,12 +36,10 @@ const RoomGroupCard = (props) => {
           >
             <div className="row">
               <p style={{ fontWeight: "bolder", fontSize: "1.5rem" }}>
-                Room Name
+                {props.room}
               </p>
             </div>
-            <div className="row" style={{ fontWeight: "normal" }}>
-              <p>Shower Message</p>
-            </div>
+            <div className="row" style={{ fontWeight: "normal" }}></div>
           </div>
           <div
             className="col-2 border-start"
@@ -51,7 +49,7 @@ const RoomGroupCard = (props) => {
               paddingBottom: "1rem",
             }}
           >
-            <div
+            {/* <div
               className="row"
               style={{
                 textAlign: "end",
@@ -60,9 +58,9 @@ const RoomGroupCard = (props) => {
               }}
             >
               <h5>Rp.1.200.000</h5>
-            </div>
+            </div> */}
             <div className="row" style={{ textAlign: "end" }}>
-              <h4>Rp 1.200.000</h4>
+              <h4>{props.price}</h4>
             </div>
             <div className="row" style={{ justifyContent: "end" }}>
               {total > 0 ? (
@@ -102,19 +100,37 @@ const RoomGroupCard = (props) => {
               >
                 <b style={{ textAlign: "center" }}>{total}</b>
               </Button>
-              <Button
-                style={{
-                  backgroundColor: "#FBBC05",
-                  color: "#0C1738",
-                  width: "fit-content",
-                  marginLeft: "1rem",
-                }}
-                onClick={() => {
-                  setTotal(total + 1);
-                }}
-              >
-                <b>+</b>
-              </Button>
+              {total < props.total ? (
+                <>
+                  <Button
+                    style={{
+                      backgroundColor: "#FBBC05",
+                      color: "#0C1738",
+                      width: "fit-content",
+                      marginLeft: "1rem",
+                    }}
+                    onClick={() => {
+                      setTotal(total + 1);
+                    }}
+                  >
+                    <b>+</b>
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    style={{
+                      backgroundColor: "#FBBC05",
+                      color: "#0C1738",
+                      width: "fit-content",
+                      marginLeft: "1rem",
+                    }}
+                    disabled
+                  >
+                    <b>+</b>
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>

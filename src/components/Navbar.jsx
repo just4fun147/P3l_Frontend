@@ -224,6 +224,7 @@ function BasicExample() {
                           Facility
                         </Nav.Link>
                         <Nav.Link href="/room-type-management">Price</Nav.Link>
+                        <Nav.Link href="/customer-management">User</Nav.Link>
                         <Nav.Link href="/test">Promo</Nav.Link>
                         <Nav.Link href="/test">Reservation</Nav.Link>
                       </Nav>

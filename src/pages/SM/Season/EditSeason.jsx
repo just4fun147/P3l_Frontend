@@ -2,108 +2,285 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
-import React, { useState } from "react";
+import axios from "axios";
+import { headersAuth } from "../../../Api";
+import { toast, ToastContainer } from "react-toastify";
+import React, { useEffect, useState } from "react";
 import Accordion from "react-bootstrap/Accordion";
+import Loading from "../../../components/Loading";
+import { useParams } from "react-router-dom";
 
 const EditSeason = () => {
-  const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
+  const [show, setShow] = useState(false);
+  const [allType, setAllType] = useState();
+  const [data, setData] = useState();
+  const [seasonName, setSeasonName] = useState();
+  const [capacity, setCapacity] = useState(0);
+  const [roomType, setRoomType] = useState(0);
+  const [capacityType, setCapacityType] = useState();
+  const [price, setPrice] = useState(0);
+  const [priceType, setPriceType] = useState();
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+  const [finStartDate, setFinStartDate] = useState();
+  const [finEndDate, setFinEndDate] = useState();
+  const [loading, setLoading] = useState(true);
+  const [ids, setIds] = useState(useParams().id);
+
+  const now = new Date();
+  const [loadings, setLoadings] = useState(true);
+  const getSeason = () => {
+    setLoadings(true);
+
+    return new Promise((resolve) => {
+      axios
+        .post(
+          process.env.REACT_APP_BASEURL + "seasons",
+          { id: ids },
+          {
+            headers: headersAuth,
+          }
+        )
+        .then((response) => {
+          setSeasonName(response.data.OUT_DATA[0].season_name);
+          setCapacity(response.data.OUT_DATA[0].capacity);
+          setStartDate(response.data.OUT_DATA[0].start_date);
+          setEndDate(response.data.OUT_DATA[0].end_date);
+          if (capacity == 0 || capacity == null) {
+            setCapacityType(false);
+          } else {
+            setCapacityType(true);
+          }
+          setPriceType(response.data.OUT_DATA[0].price_type);
+          if (
+            response.data.OUT_DATA[0].price != 0 &&
+            response.data.OUT_DATA[0].price != null
+          ) {
+            setPrice(response.data.OUT_DATA[0].price);
+            setData(roomType);
+            setAllType(true);
+          } else {
+            setAllType(false);
+            setData(response.data.OUT_DATA[0].data);
+            console.log(data);
+          }
+          if (response.data.OUT_DATA[0].data[0] == undefined) {
+          }
+          setLoadings(false);
+        })
+        .catch((error) => {
+          setLoadings(false);
+        });
+    });
+  };
+  const validate = async () => {
+    if (seasonName == null || seasonName == "") {
+      toast.error("Invalid Season Name!", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      return false;
+    } else if (capacityType) {
+      if (capacity == null || capacity <= 0 || capacity == "") {
+        toast.error("Invalid Capacity!", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        return false;
+      }
+    } else if (priceType == null || priceType == "") {
+      toast.error("Invalid Price Type!", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      return false;
+    } else if (startDate == null || startDate == "") {
+      toast.error("Invalid Start Date!", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      return false;
+    } else if (endDate == null || startDate > endDate || endDate == "") {
+      toast.error("Invalid End Date!", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      return false;
+    } else if (allType == null) {
+      toast.error("Please Select Room Type!", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      return false;
+    } else if (allType) {
+      if (price == null || price == "") {
+        toast.error("Invalid Price!", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return true;
+    }
+  };
+  const showModal = async () => {
+    const validates = await validate();
+    if (validates == true) {
+      var months;
+      months = (startDate.getFullYear() - now.getFullYear()) * 12 * 30;
+      months -= now.getMonth() * 30;
+      months += startDate.getMonth() * 30;
+      months -= now.getDate() + 1;
+      months += startDate.getDate();
+      if (months < 60) {
+        toast.error("The season starts in less than 2 months!", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
+      } else {
+        var dd = String(startDate.getDate()).padStart(2, "0");
+        var mm = String(startDate.getMonth() + 1).padStart(2, "0");
+        setFinStartDate(startDate.getFullYear() + "-" + mm + "-" + dd);
+        var dd = String(endDate.getDate()).padStart(2, "0");
+        var mm = String(endDate.getMonth() + 1).padStart(2, "0");
+        setFinEndDate(endDate.getFullYear() + "-" + mm + "-" + dd);
+        handleShow();
+      }
+    }
+  };
+  const getRoomType = (search) => {
+    return new Promise((resolve) => {
+      axios
+        .post(
+          process.env.REACT_APP_BASEURL + "rooms-type",
+          {},
+          {
+            headers: headersAuth,
+          }
+        )
+        .then((response) => {
+          setRoomType(response.data.OUT_DATA);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
+  };
+  const editSeason = () => {
+    setLoading(true);
+    handleClose();
+    var temp;
+    if (allType) {
+      temp = roomType;
+    } else {
+      temp = data;
+    }
+    return new Promise((resolve) => {
+      axios
+        .post(
+          process.env.REACT_APP_BASEURL + "seasons/edit",
+          {
+            id: ids,
+            season_name: seasonName,
+            capacity: capacity,
+            capacity_type: capacityType,
+            apply_all: allType,
+            price: price,
+            price_type: priceType,
+            start_date: startDate,
+            end_date: endDate,
+            data: temp,
+          },
+          {
+            headers: headersAuth,
+          }
+        )
+        .then((response) => {
+          setRoomType(response.data.OUT_DATA);
+          toast.success(response.data.OUT_MESS, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+          setLoading(true);
+          setTimeout((window.location.href = "/season-management"), 5000);
+        })
+        .catch((error) => {
+          toast.error(error.response.data.OUT_MESS, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+          setLoading(false);
+        });
+    });
+  };
+  useEffect(() => {
+    getRoomType();
+    getSeason();
+  }, []);
   return (
     <>
+      <ToastContainer />
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Are You Sure The Data Is Correct?</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <p>
-            Season Name : <b>Summer</b>
+            Season Name : <b>{seasonName}</b>
           </p>
           <p>
-            Capacity : <b>50</b>
+            Capacity : <b>{capacity}</b>
           </p>
           <p>
-            Price Type : <b>Discount</b>
+            Price Type :{" "}
+            <b>
+              {priceType == "1" ? (
+                <>Discount</>
+              ) : (
+                <>
+                  {priceType == 2 ? (
+                    <>Potongan</>
+                  ) : (
+                    <>{priceType == 3 ? <>Harga</> : <></>}</>
+                  )}
+                </>
+              )}
+            </b>
           </p>
           <p>
-            Start Date : <b>19-09-2023</b>
+            Start Date : <b>{finStartDate}</b>
           </p>
           <p>
-            End Date : <b>19-09-2023</b>
+            End Date : <b>{finEndDate}</b>
           </p>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button style={{ marginLeft: "1rem" }} onClick={handleClose}>
+          <Button
+            style={{ marginLeft: "1rem" }}
+            onClick={() => {
+              editSeason();
+            }}
+          >
             Confirm
           </Button>
         </Modal.Footer>
       </Modal>
       <div className="container mt-3 mb-3">
-        <Card
-          style={{
-            padding: "3rem",
-          }}
-        >
-          <h4>Edit Season</h4>
-          <hr />
-          <p style={{ textAlign: "left" }}>Season Name</p>
-          <input
-            type="text"
-            placeholder="A123"
-            className="form-control mb-3"
-            style={{
-              width: "100%",
-              minWidth: "250px",
-              display: "block",
-              marginRight: "auto",
-              marginLeft: "auto",
-              backgroundColor: "#D9D9D9",
-              borderRadius: "5px",
-              lineHeight: "0.25",
-            }}
-          ></input>
-          <p style={{ textAlign: "left" }}>Capacity</p>
-          <input
-            type="number"
-            placeholder="50"
-            className="form-control mb-3"
-            style={{
-              width: "100%",
-              minWidth: "250px",
-              display: "block",
-              marginRight: "auto",
-              marginLeft: "auto",
-              backgroundColor: "#D9D9D9",
-              borderRadius: "5px",
-              lineHeight: "0.25",
-            }}
-          ></input>
-
-          <p style={{ textAlign: "left" }}>Price Type</p>
-          <select
-            style={{
-              width: "100%",
-              minWidth: "250px",
-              display: "block",
-              marginRight: "auto",
-              marginLeft: "auto",
-              backgroundColor: "#D9D9D9",
-              borderRadius: "5px",
-              lineHeight: "0.25",
-            }}
-          >
-            <option value="">Discount</option>
-            <option value="">Potongan</option>
-            <option value="">Harga</option>
-          </select>
-          <div className="row">
-            <div className="col-6">
-              <p style={{ textAlign: "left" }}>Start Date</p>
+        {loadings ? (
+          <>
+            <Loading />
+          </>
+        ) : (
+          <>
+            <Card
+              style={{
+                padding: "3rem",
+              }}
+            >
+              <h4>Create Season</h4>
+              <hr />
+              <p style={{ textAlign: "left" }}>Season Name</p>
               <input
-                type="date"
+                type="text"
+                placeholder="Lebaran"
                 className="form-control mb-3"
                 style={{
                   width: "100%",
@@ -113,14 +290,122 @@ const EditSeason = () => {
                   marginLeft: "auto",
                   backgroundColor: "#D9D9D9",
                   borderRadius: "5px",
+                  lineHeight: "0.25",
                 }}
+                onInput={(e) => setSeasonName(e.target.value)}
+                value={seasonName}
               ></input>
-            </div>
-            <div className="col-6">
-              <p style={{ textAlign: "left" }}>End Date</p>
-              <input
-                type="date"
-                className="form-control mb-3"
+              <p style={{ textAlign: "left" }}>Have Capacity</p>
+              {capacityType == false ? (
+                <>
+                  <Form style={{ textAlign: "start" }}>
+                    <div key="inline-radio" className="mb-3">
+                      <Form.Check
+                        inline
+                        label="Yes"
+                        name="group1"
+                        type="radio"
+                        id="inline-radio-1"
+                        onClick={() => {
+                          setCapacityType(true);
+                        }}
+                      />
+                      <Form.Check
+                        inline
+                        label="No"
+                        name="group1"
+                        type="radio"
+                        id="inline-radio-2"
+                        onClick={() => {
+                          setCapacityType(false);
+                        }}
+                        checked
+                      />
+                    </div>
+                  </Form>
+                </>
+              ) : capacityType == true ? (
+                <>
+                  <Form style={{ textAlign: "start" }}>
+                    <div key="inline-radio" className="mb-3">
+                      <Form.Check
+                        inline
+                        label="Yes"
+                        name="group1"
+                        type="radio"
+                        id="inline-radio-1"
+                        onClick={() => {
+                          setCapacityType(true);
+                        }}
+                        checked
+                      />
+                      <Form.Check
+                        inline
+                        label="No"
+                        name="group1"
+                        type="radio"
+                        id="inline-radio-2"
+                        onClick={() => {
+                          setCapacityType(false);
+                        }}
+                      />
+                    </div>
+                  </Form>
+                </>
+              ) : (
+                <>
+                  <Form style={{ textAlign: "start" }}>
+                    <div key="inline-radio" className="mb-3">
+                      <Form.Check
+                        inline
+                        label="Yes"
+                        name="group1"
+                        type="radio"
+                        id="inline-radio-1"
+                        onClick={() => {
+                          setCapacityType(true);
+                        }}
+                      />
+                      <Form.Check
+                        inline
+                        label="No"
+                        name="group1"
+                        type="radio"
+                        id="inline-radio-2"
+                        onClick={() => {
+                          setCapacityType(false);
+                        }}
+                      />
+                    </div>
+                  </Form>
+                </>
+              )}
+              {capacityType ? (
+                <>
+                  <p style={{ textAlign: "left" }}>Capacity</p>
+                  <input
+                    type="number"
+                    placeholder="50"
+                    className="form-control mb-3"
+                    style={{
+                      width: "100%",
+                      minWidth: "250px",
+                      display: "block",
+                      marginRight: "auto",
+                      marginLeft: "auto",
+                      backgroundColor: "#D9D9D9",
+                      borderRadius: "5px",
+                      lineHeight: "0.25",
+                    }}
+                    onInput={(e) => setCapacity(e.target.value)}
+                    value={capacity}
+                  ></input>
+                </>
+              ) : (
+                <></>
+              )}
+              <p style={{ textAlign: "left" }}>Price Type</p>
+              <select
                 style={{
                   width: "100%",
                   minWidth: "250px",
@@ -129,36 +414,134 @@ const EditSeason = () => {
                   marginLeft: "auto",
                   backgroundColor: "#D9D9D9",
                   borderRadius: "5px",
+                  lineHeight: "0.25",
                 }}
-              ></input>
-            </div>
-          </div>
-          <p style={{ textAlign: "left" }}>Apply For All Room Type</p>
-          <Form style={{ textAlign: "start" }}>
-            <div key="inline-radio" className="mb-3">
-              <Form.Check
-                inline
-                label="Yes"
-                name="group1"
-                type="radio"
-                id="inline-radio-1"
-              />
-              <Form.Check
-                inline
-                label="No"
-                name="group1"
-                type="radio"
-                id="inline-radio-2"
-              />
-            </div>
-          </Form>
-          <div>
-            <p style={{ textAlign: "left" }}>Room Type</p>
-
-            <Accordion defaultActiveKey="0">
-              <Accordion.Item eventKey="0">
-                <Accordion.Header>Superior</Accordion.Header>
-                <Accordion.Body>
+                onChange={(e) => setPriceType(e.target.value)}
+              >
+                <option hidden>Select Price Type</option>
+                <option value="1">Discount</option>
+                <option value="2">Potongan</option>
+                <option value="3">Harga</option>
+              </select>
+              <div className="row mt-3">
+                <div className="col-6">
+                  <p style={{ textAlign: "left" }}>Start Date</p>
+                  <input
+                    type="date"
+                    className="form-control mb-3"
+                    style={{
+                      width: "100%",
+                      minWidth: "250px",
+                      display: "block",
+                      marginRight: "auto",
+                      marginLeft: "auto",
+                      backgroundColor: "#D9D9D9",
+                      borderRadius: "5px",
+                    }}
+                    onChange={(e) => {
+                      setStartDate(new Date(e.target.value));
+                    }}
+                  ></input>
+                </div>
+                <div className="col-6">
+                  <p style={{ textAlign: "left" }}>End Date</p>
+                  <input
+                    type="date"
+                    className="form-control mb-3"
+                    style={{
+                      width: "100%",
+                      minWidth: "250px",
+                      display: "block",
+                      marginRight: "auto",
+                      marginLeft: "auto",
+                      backgroundColor: "#D9D9D9",
+                      borderRadius: "5px",
+                    }}
+                    onChange={(e) => {
+                      setEndDate(new Date(e.target.value));
+                    }}
+                  ></input>
+                </div>
+              </div>
+              <p style={{ textAlign: "left" }}>Apply For All Room Type</p>
+              <Form style={{ textAlign: "start" }}>
+                <div key="inline-radio" className="mb-3">
+                  {allType == true ? (
+                    <>
+                      <Form.Check
+                        inline
+                        label="Yes"
+                        name="group1"
+                        type="radio"
+                        id="inline-radio-1"
+                        onClick={() => {
+                          setAllType(true);
+                        }}
+                        checked
+                      />
+                      <Form.Check
+                        inline
+                        label="No"
+                        name="group1"
+                        type="radio"
+                        id="inline-radio-2"
+                        onClick={() => {
+                          setAllType(false);
+                        }}
+                      />
+                    </>
+                  ) : allType == false ? (
+                    <>
+                      <Form.Check
+                        inline
+                        label="Yes"
+                        name="group1"
+                        type="radio"
+                        id="inline-radio-1"
+                        onClick={() => {
+                          setAllType(true);
+                        }}
+                      />
+                      <Form.Check
+                        inline
+                        label="No"
+                        name="group1"
+                        type="radio"
+                        id="inline-radio-2"
+                        onClick={() => {
+                          setAllType(false);
+                        }}
+                        checked
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <Form.Check
+                        inline
+                        label="Yes"
+                        name="group1"
+                        type="radio"
+                        id="inline-radio-1"
+                        onClick={() => {
+                          setAllType(true);
+                        }}
+                      />
+                      <Form.Check
+                        inline
+                        label="No"
+                        name="group1"
+                        type="radio"
+                        id="inline-radio-2"
+                        onClick={() => {
+                          setAllType(false);
+                        }}
+                      />
+                    </>
+                  )}
+                </div>
+              </Form>
+              {allType ? (
+                <>
                   <p style={{ textAlign: "left" }}>Price</p>
                   <input
                     type="number"
@@ -173,50 +556,74 @@ const EditSeason = () => {
                       backgroundColor: "#D9D9D9",
                       borderRadius: "5px",
                     }}
+                    onInput={(e) => setPrice(e.target.value)}
+                    value={price}
                   ></input>
-                </Accordion.Body>
-              </Accordion.Item>
-              <Accordion.Item eventKey="1">
-                <Accordion.Header>Junior Suite</Accordion.Header>
-                <Accordion.Body>
-                  <p style={{ textAlign: "left" }}>Price</p>
-                  <input
-                    type="number"
-                    placeholder="123"
-                    className="form-control mb-3"
-                    style={{
-                      width: "100%",
-                      minWidth: "250px",
-                      display: "block",
-                      marginRight: "auto",
-                      marginLeft: "auto",
-                      backgroundColor: "#D9D9D9",
-                      borderRadius: "5px",
-                    }}
-                  ></input>
-                </Accordion.Body>
-              </Accordion.Item>
-            </Accordion>
-          </div>
-          <div
-            className="row mt-3"
-            style={{ justifyContent: "end", marginRight: "0.25rem" }}
-          >
-            <Button
-              href="javascript:history.back()"
-              variant="warning"
-              style={{ width: "fit-content" }}
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleShow}
-              style={{ width: "fit-content", marginLeft: "1rem" }}
-            >
-              Confirm
-            </Button>
-          </div>
-        </Card>
+                </>
+              ) : (
+                <>
+                  {allType == false ? (
+                    <>
+                      <div>
+                        <p style={{ textAlign: "left" }}>Room Type</p>
+
+                        <Accordion defaultActiveKey="0">
+                          {data.map((rt, index) => (
+                            <Accordion.Item eventKey={index}>
+                              <Accordion.Header>
+                                {rt.type_name}
+                              </Accordion.Header>
+                              <Accordion.Body>
+                                <p style={{ textAlign: "left" }}>Price</p>
+                                <input
+                                  type="number"
+                                  placeholder="123"
+                                  className="form-control mb-3"
+                                  style={{
+                                    width: "100%",
+                                    minWidth: "250px",
+                                    display: "block",
+                                    marginRight: "auto",
+                                    marginLeft: "auto",
+                                    backgroundColor: "#D9D9D9",
+                                    borderRadius: "5px",
+                                  }}
+                                  defaultValue={rt.price}
+                                  onInput={(e) => (rt.price = e.target.value)}
+                                ></input>
+                              </Accordion.Body>
+                            </Accordion.Item>
+                          ))}
+                        </Accordion>
+                      </div>
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                </>
+              )}
+
+              <div
+                className="row mt-3"
+                style={{ justifyContent: "end", marginRight: "0.25rem" }}
+              >
+                <Button
+                  href="javascript:history.back()"
+                  variant="warning"
+                  style={{ width: "fit-content" }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={showModal}
+                  style={{ width: "fit-content", marginLeft: "1rem" }}
+                >
+                  Confirm
+                </Button>
+              </div>
+            </Card>
+          </>
+        )}
       </div>
     </>
   );

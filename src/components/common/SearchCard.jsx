@@ -14,6 +14,7 @@ import Button from "react-bootstrap/Button";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import { headersAuth } from "../../Api";
+import Cookies from "universal-cookie";
 
 const SearchCard = () => {
   // date
@@ -22,8 +23,9 @@ const SearchCard = () => {
     new Date(new Date(now).setDate(now.getDate() + 1)).toDateString()
   );
   const [startDate, setStartDate] = useState(now);
-
+  const [night, setNight] = useState(1);
   const handleDateChange = (e) => {
+    setNight(document.getElementById("night").value);
     const temp = new Date(document.getElementById("date-input").value);
     setEndDate(
       new Date(
@@ -35,6 +37,8 @@ const SearchCard = () => {
     setStartDate(document.getElementById("date-input").value);
   };
   useEffect(() => {
+    if (adult != 0) {
+    }
     document.getElementById("date-input").valueAsDate = startDate;
   }, []);
 
@@ -231,7 +235,9 @@ const SearchCard = () => {
           <div className="col-4">
             <div className="mt-3">
               <Button
-                href="/signup"
+                onClick={() => {
+                  window.location.href = `/search/date_start=${startDate}&night=${night}&adult=${adult}&child=${child}`;
+                }}
                 style={{
                   backgroundColor: "#FBBC05",
                   color: "#0C1738",

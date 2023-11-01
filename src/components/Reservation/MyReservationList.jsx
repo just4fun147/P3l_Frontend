@@ -18,6 +18,7 @@ const MyReservationList = (props) => {
               adult={data.adult}
               child={data.child}
               identifier={data.status}
+              id={data.id}
             />
           ))}
           <div>

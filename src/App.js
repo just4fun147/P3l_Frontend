@@ -15,6 +15,7 @@ import Footer from "./components/Footer";
 // PAGES
 import LandingPage from "./pages/landingpage/LandingPage";
 import Login from "./pages/Login";
+import ResetPassword from "./pages/ResetPassword";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
@@ -50,7 +51,10 @@ import ReservationManagement from "./pages/SM/Reservation/Reservation";
 import GroupReservationDetail from "./pages/SM/Reservation/GroupReservationDetail";
 import AddReservationGroup from "./pages/SM/Reservation/AddReservationGroup";
 import EditReservationGroup from "./pages/SM/Reservation/EditReservationGroup";
-
+// SM USer
+import CustomerManagement from "./pages/SM/Customer/User";
+import AddUser from "./pages/SM/Customer/AddUser";
+import EditUser from "./pages/SM/Customer/EditUser";
 // Report
 import NewCustReport from "./pages/Report/NewCustReport";
 import GuestReport from "./pages/Report/GuestReport";
@@ -95,7 +99,7 @@ function App() {
               }
             />
             <Route
-              path="/search"
+              path="/search/:searchParam"
               element={
                 <Universal>
                   <Home />
@@ -171,6 +175,14 @@ function App() {
               }
             ></Route>
             <Route
+              path="/reset-password"
+              element={
+                <Guest>
+                  <ResetPassword />
+                </Guest>
+              }
+            ></Route>
+            <Route
               path="/signup"
               element={
                 <Guest>
@@ -204,6 +216,30 @@ function App() {
               }
             ></Route>
             {/* SM */}
+            <Route
+              path="/customer-management"
+              element={
+                <SMAuth>
+                  <CustomerManagement />
+                </SMAuth>
+              }
+            ></Route>
+            <Route
+              path="/customer-management/add"
+              element={
+                <SMAuth>
+                  <AddUser />
+                </SMAuth>
+              }
+            ></Route>
+            <Route
+              path="/customer-management/edit/:id"
+              element={
+                <SMAuth>
+                  <EditUser />
+                </SMAuth>
+              }
+            ></Route>
             <Route
               path="/room-type-management"
               element={
@@ -245,7 +281,7 @@ function App() {
               }
             ></Route>
             <Route
-              path="/season-management/edit"
+              path="/season-management/edit/:id"
               element={
                 <SMAuth>
                   <EditSeason />

@@ -16,7 +16,7 @@ const AddSeason = () => {
   const [seasonName, setSeasonName] = useState();
   const [capacity, setCapacity] = useState(0);
   const [capacityType, setCapacityType] = useState();
-  const [price, setPrice] = useState();
+  const [price, setPrice] = useState(0);
   const [priceType, setPriceType] = useState();
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
@@ -99,14 +99,16 @@ const AddSeason = () => {
   };
   const createSeason = () => {
     setLoading(true);
+    handleClose();
     return new Promise((resolve) => {
       axios
         .post(
-          process.env.REACT_APP_BASEURL + "/seasons/create",
+          process.env.REACT_APP_BASEURL + "seasons/create",
           {
             season_name: seasonName,
             capacity: capacity,
             capacity_type: capacityType,
+            apply_all: allType,
             price: price,
             price_type: priceType,
             start_date: startDate,
@@ -119,10 +121,17 @@ const AddSeason = () => {
         )
         .then((response) => {
           setRoomType(response.data.OUT_DATA);
-          setLoading(false);
+          setLoading(true);
+          toast.success(response.data.OUT_MESS, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+          setTimeout((window.location.href = "/season-management"), 5000);
         })
         .catch((error) => {
-          console.log(error);
+          toast.error(error.response.data.OUT_MESS, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+          setLoading(false);
         });
     });
   };
@@ -232,30 +241,90 @@ const AddSeason = () => {
                 value={seasonName}
               ></input>
               <p style={{ textAlign: "left" }}>Have Capacity</p>
-              <Form style={{ textAlign: "start" }}>
-                <div key="inline-radio" className="mb-3">
-                  <Form.Check
-                    inline
-                    label="Yes"
-                    name="group1"
-                    type="radio"
-                    id="inline-radio-1"
-                    onClick={() => {
-                      setCapacityType(true);
-                    }}
-                  />
-                  <Form.Check
-                    inline
-                    label="No"
-                    name="group1"
-                    type="radio"
-                    id="inline-radio-2"
-                    onClick={() => {
-                      setCapacityType(false);
-                    }}
-                  />
-                </div>
-              </Form>
+              {capacityType == false ? (
+                <>
+                  <Form style={{ textAlign: "start" }}>
+                    <div key="inline-radio" className="mb-3">
+                      <Form.Check
+                        inline
+                        label="Yes"
+                        name="group1"
+                        type="radio"
+                        id="inline-radio-1"
+                        onClick={() => {
+                          setCapacityType(true);
+                        }}
+                      />
+                      <Form.Check
+                        inline
+                        label="No"
+                        name="group1"
+                        type="radio"
+                        id="inline-radio-2"
+                        onClick={() => {
+                          setCapacityType(false);
+                        }}
+                        checked
+                      />
+                    </div>
+                  </Form>
+                </>
+              ) : capacityType == true ? (
+                <>
+                  <Form style={{ textAlign: "start" }}>
+                    <div key="inline-radio" className="mb-3">
+                      <Form.Check
+                        inline
+                        label="Yes"
+                        name="group1"
+                        type="radio"
+                        id="inline-radio-1"
+                        onClick={() => {
+                          setCapacityType(true);
+                        }}
+                        checked
+                      />
+                      <Form.Check
+                        inline
+                        label="No"
+                        name="group1"
+                        type="radio"
+                        id="inline-radio-2"
+                        onClick={() => {
+                          setCapacityType(false);
+                        }}
+                      />
+                    </div>
+                  </Form>
+                </>
+              ) : (
+                <>
+                  <Form style={{ textAlign: "start" }}>
+                    <div key="inline-radio" className="mb-3">
+                      <Form.Check
+                        inline
+                        label="Yes"
+                        name="group1"
+                        type="radio"
+                        id="inline-radio-1"
+                        onClick={() => {
+                          setCapacityType(true);
+                        }}
+                      />
+                      <Form.Check
+                        inline
+                        label="No"
+                        name="group1"
+                        type="radio"
+                        id="inline-radio-2"
+                        onClick={() => {
+                          setCapacityType(false);
+                        }}
+                      />
+                    </div>
+                  </Form>
+                </>
+              )}
               {capacityType ? (
                 <>
                   <p style={{ textAlign: "left" }}>Capacity</p>
@@ -342,26 +411,78 @@ const AddSeason = () => {
               <p style={{ textAlign: "left" }}>Apply For All Room Type</p>
               <Form style={{ textAlign: "start" }}>
                 <div key="inline-radio" className="mb-3">
-                  <Form.Check
-                    inline
-                    label="Yes"
-                    name="group1"
-                    type="radio"
-                    id="inline-radio-1"
-                    onClick={() => {
-                      setAllType(true);
-                    }}
-                  />
-                  <Form.Check
-                    inline
-                    label="No"
-                    name="group1"
-                    type="radio"
-                    id="inline-radio-2"
-                    onClick={() => {
-                      setAllType(false);
-                    }}
-                  />
+                  {allType == true ? (
+                    <>
+                      <Form.Check
+                        inline
+                        label="Yes"
+                        name="group1"
+                        type="radio"
+                        id="inline-radio-1"
+                        onClick={() => {
+                          setAllType(true);
+                        }}
+                        checked
+                      />
+                      <Form.Check
+                        inline
+                        label="No"
+                        name="group1"
+                        type="radio"
+                        id="inline-radio-2"
+                        onClick={() => {
+                          setAllType(false);
+                        }}
+                      />
+                    </>
+                  ) : allType == false ? (
+                    <>
+                      <Form.Check
+                        inline
+                        label="Yes"
+                        name="group1"
+                        type="radio"
+                        id="inline-radio-1"
+                        onClick={() => {
+                          setAllType(true);
+                        }}
+                      />
+                      <Form.Check
+                        inline
+                        label="No"
+                        name="group1"
+                        type="radio"
+                        id="inline-radio-2"
+                        onClick={() => {
+                          setAllType(false);
+                        }}
+                        checked
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <Form.Check
+                        inline
+                        label="Yes"
+                        name="group1"
+                        type="radio"
+                        id="inline-radio-1"
+                        onClick={() => {
+                          setAllType(true);
+                        }}
+                      />
+                      <Form.Check
+                        inline
+                        label="No"
+                        name="group1"
+                        type="radio"
+                        id="inline-radio-2"
+                        onClick={() => {
+                          setAllType(false);
+                        }}
+                      />
+                    </>
+                  )}
                 </div>
               </Form>
               {allType ? (
@@ -412,6 +533,7 @@ const AddSeason = () => {
                                     backgroundColor: "#D9D9D9",
                                     borderRadius: "5px",
                                   }}
+                                  value={rt.price}
                                   onInput={(e) => (rt.price = e.target.value)}
                                 ></input>
                               </Accordion.Body>
