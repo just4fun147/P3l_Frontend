@@ -6,10 +6,11 @@ import React, { useEffect, useState } from "react";
 import Loading from "../Loading";
 
 const NewCust = (props) => {
-  const [loadings, setLoadings] = useState(false);
+  const [loadings, setLoadings] = useState(true);
   const [total, setTotal] = useState();
   const [today, setToday] = useState();
   const [data, setData] = useState();
+  const [month, setMonth] = useState();
   const getData = () => {
     setLoadings(true);
     return new Promise((resolve) => {
@@ -25,6 +26,7 @@ const NewCust = (props) => {
           setData(response.data.OUT_DATA.data);
           setTotal(response.data.OUT_DATA.total);
           setToday(response.data.OUT_DATA.today);
+          setMonth(response.data.OUT_DATA.month);
           setLoadings(false);
         })
         .catch((error) => {
@@ -34,7 +36,7 @@ const NewCust = (props) => {
   };
   useEffect(() => {
     getData();
-  }, []);
+  }, [props.search]);
   return (
     <>
       {!loadings ? (
@@ -62,7 +64,7 @@ const NewCust = (props) => {
             <p style={{ fontSize: "1.2rem" }}>Tahun : {props.search}</p>
           </div>
           <div className="container row" style={{ textAlign: "start" }}>
-            <p style={{ fontSize: "1.2rem" }}>Bulan : {props.month}</p>
+            <p style={{ fontSize: "1.2rem" }}>Bulan : {month}</p>
           </div>
           <div className="container mb-5">
             <Table
