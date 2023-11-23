@@ -159,6 +159,35 @@ const ReservationManagement = () => {
         });
     });
   };
+
+  const confirm = () => {
+    handleCloseConfirm();
+    setLoading(true);
+    return new Promise((resolve) => {
+      axios
+        .post(
+          process.env.REACT_APP_BASEURL + "reservation/confirm",
+          {
+            id: selectedId,
+          },
+          {
+            headers: headersAuth,
+          }
+        )
+        .then((response) => {
+          toast.success(response.data.OUT_MESS, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+          getReservation();
+        })
+        .catch((error) => {
+          toast.error(error.response.data.OUT_MESS, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+        });
+    });
+  };
+
   return (
     <>
       <ToastContainer />
@@ -196,7 +225,7 @@ const ReservationManagement = () => {
           <Button
             variant="danger"
             style={{ marginLeft: "1rem" }}
-            onClick={handleCloseConfirm}
+            onClick={() => confirm()}
           >
             Confirm
           </Button>
@@ -208,7 +237,7 @@ const ReservationManagement = () => {
           <div className="col-8">
             <input
               type="text"
-              placeholder="Search Reservation By Name"
+              placeholder="Search Reservation By Name or Id Booking"
               className="form-control mb-3"
               style={{
                 width: "100%",
@@ -339,6 +368,7 @@ const ReservationManagement = () => {
                       <th>Group Leader</th>
                       <th>Start Date</th>
                       <th>End Date</th>
+                      <th>Status</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -356,9 +386,41 @@ const ReservationManagement = () => {
                             <td> {d.start_date}</td>
                             <td> {d.end_date}</td>
                             <td>
-                              {d.status != 1 ? (
-                                <></>
+                              {d.status == 1 || d.status == 2 ? (
+                                <>
+                                  <Button variant="danger">Not Paid</Button>
+                                </>
                               ) : (
+                                <>
+                                  {d.status == 3 || d.status == 4 ? (
+                                    <>
+                                      <Button variant="info">Paid</Button>
+                                    </>
+                                  ) : (
+                                    <>
+                                      {d.status == 5 ? (
+                                        <>
+                                          <Button variant="success">
+                                            Success
+                                          </Button>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <Button variant="warning">
+                                            Cancel
+                                          </Button>
+                                        </>
+                                      )}
+                                    </>
+                                  )}
+                                </>
+                              )}
+                            </td>
+                            <td>
+                              {d.status != 4 &&
+                              d.status != 5 &&
+                              d.status != 6 &&
+                              isOpen ? (
                                 <>
                                   <Button
                                     variant="danger"
@@ -371,6 +433,8 @@ const ReservationManagement = () => {
                                     Cancel
                                   </Button>
                                 </>
+                              ) : (
+                                <></>
                               )}
 
                               <Button
@@ -390,15 +454,28 @@ const ReservationManagement = () => {
                                 View
                               </Button>
 
-                              <Button
-                                onClick={() => {
-                                  setSelectedName("Grup Confirm");
-                                  handleShowConfirm();
-                                }}
-                                style={{ marginLeft: "1rem" }}
-                              >
-                                Confirm
-                              </Button>
+                              {d.status == 1 || d.status == 2 ? (
+                                <>
+                                  {isOpen ? (
+                                    <>
+                                      <Button
+                                        onClick={() => {
+                                          setSelectedName(d.group_name);
+                                          setSelectedId(d.id);
+                                          handleShowConfirm();
+                                        }}
+                                        style={{ marginLeft: "1rem" }}
+                                      >
+                                        Confirm
+                                      </Button>
+                                    </>
+                                  ) : (
+                                    <></>
+                                  )}
+                                </>
+                              ) : (
+                                <></>
+                              )}
                             </td>
                           </tr>
                         ))}
@@ -422,6 +499,7 @@ const ReservationManagement = () => {
                       <th>Name</th>
                       <th>Start Date</th>
                       <th>End Date</th>
+                      <th>Status</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -438,9 +516,41 @@ const ReservationManagement = () => {
                             <td> {d.start_date}</td>
                             <td> {d.end_date}</td>
                             <td>
-                              {d.status != 1 ? (
-                                <></>
+                              {d.status == 1 || d.status == 2 ? (
+                                <>
+                                  <Button variant="danger">Not Paid</Button>
+                                </>
                               ) : (
+                                <>
+                                  {d.status == 3 || d.status == 4 ? (
+                                    <>
+                                      <Button variant="info">Paid</Button>
+                                    </>
+                                  ) : (
+                                    <>
+                                      {d.status == 5 ? (
+                                        <>
+                                          <Button variant="success">
+                                            Success
+                                          </Button>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <Button variant="warning">
+                                            Cancel
+                                          </Button>
+                                        </>
+                                      )}
+                                    </>
+                                  )}
+                                </>
+                              )}
+                            </td>
+                            <td>
+                              {d.status != 4 &&
+                              d.status != 5 &&
+                              d.status != 6 &&
+                              isOpen ? (
                                 <>
                                   <Button
                                     variant="danger"
@@ -453,29 +563,48 @@ const ReservationManagement = () => {
                                     Cancel
                                   </Button>
                                 </>
+                              ) : (
+                                <></>
                               )}
 
                               <Button
                                 variant="secondary"
+                                href="/reservation-management/edit-group"
                                 style={{ marginLeft: "1rem" }}
                               >
                                 Edit
                               </Button>
-                              {d.status != 1 && d.status != 2 ? (
-                                <></>
-                              ) : (
+                              <Button
+                                variant="secondary"
+                                onClick={() => {
+                                  window.location.href = `/reservation-management/g/${d.id}`;
+                                }}
+                                style={{ marginLeft: "1rem" }}
+                              >
+                                View
+                              </Button>
+
+                              {d.status == 1 || d.status == 2 ? (
                                 <>
-                                  <Button
-                                    onClick={() => {
-                                      setSelectedName(d.full_name);
-                                      setSelectedId(d.id);
-                                      handleShowConfirm();
-                                    }}
-                                    style={{ marginLeft: "1rem" }}
-                                  >
-                                    Confirm
-                                  </Button>
+                                  {isOpen ? (
+                                    <>
+                                      <Button
+                                        onClick={() => {
+                                          setSelectedName(d.full_name);
+                                          setSelectedId(d.id);
+                                          handleShowConfirm();
+                                        }}
+                                        style={{ marginLeft: "1rem" }}
+                                      >
+                                        Confirm
+                                      </Button>
+                                    </>
+                                  ) : (
+                                    <></>
+                                  )}
                                 </>
+                              ) : (
+                                <></>
                               )}
                             </td>
                           </tr>

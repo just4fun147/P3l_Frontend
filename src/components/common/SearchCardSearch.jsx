@@ -11,19 +11,17 @@ import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
-import { toast, ToastContainer } from "react-toastify";
-import axios from "axios";
-import { headersAuth } from "../../Api";
-import Cookies from "universal-cookie";
 
-const SearchCard = () => {
+const SearchCardSearch = (props) => {
   // date
-  const now = new Date();
+  const now = new Date(props.date);
   const [endDate, setEndDate] = useState(
-    new Date(new Date(now).setDate(now.getDate() + 1)).toDateString()
+    new Date(
+      new Date(now).setDate(now.getDate() + parseInt(props.night))
+    ).toDateString()
   );
   const [startDate, setStartDate] = useState(now);
-  const [night, setNight] = useState(1);
+  const [night, setNight] = useState(props.night);
   const handleDateChange = (e) => {
     setNight(document.getElementById("night").value);
     const temp = new Date(document.getElementById("date-input").value);
@@ -37,14 +35,12 @@ const SearchCard = () => {
     setStartDate(document.getElementById("date-input").value);
   };
   useEffect(() => {
-    if (adult != 0) {
-    }
     document.getElementById("date-input").valueAsDate = startDate;
   }, []);
 
   // person
-  const [adult, setAdult] = useState(0);
-  const [child, setChild] = useState(0);
+  const [adult, setAdult] = useState(parseInt(props.adult));
+  const [child, setChild] = useState(parseInt(props.child));
 
   return (
     <div style={{ width: "80%", marginRight: "auto", marginLeft: "auto" }}>
@@ -106,6 +102,7 @@ const SearchCard = () => {
                 }}
                 onChange={(e) => handleDateChange(e)}
               >
+                <option value={props.night}>{props.night} Night</option>
                 <option value="1">1 Night</option>
                 <option value="2">2 Night</option>
                 <option value="3">3 Night</option>
@@ -256,4 +253,4 @@ const SearchCard = () => {
   );
 };
 
-export default SearchCard;
+export default SearchCardSearch;

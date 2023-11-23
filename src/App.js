@@ -91,7 +91,7 @@ function App() {
               }
             />
             <Route
-              path="/room-detail"
+              path="/room-detail/:id/:start/:end/:adult/:child/:night"
               element={
                 <Universal>
                   <RoomDetail />{" "}
@@ -99,7 +99,7 @@ function App() {
               }
             />
             <Route
-              path="/search/:searchParam"
+              path="/search/:date/:night/:adult/:child"
               element={
                 <Universal>
                   <Home />
@@ -111,17 +111,17 @@ function App() {
             <Route
               path="/profile"
               element={
-                // <Authenticated>
-                <Profile />
-                // </Authenticated>
+                <Authenticated>
+                  <Profile />
+                </Authenticated>
               }
             ></Route>
             <Route
               path="/booking-confirmation"
               element={
-                // <Authenticated>
-                <Booking />
-                // </Authenticated>
+                <Authenticated>
+                  <Booking />
+                </Authenticated>
               }
             ></Route>
             <Route
@@ -135,9 +135,9 @@ function App() {
             <Route
               path="/my-reservation/p/:id"
               element={
-                <Authenticated>
-                  <MyReservationDetail />
-                </Authenticated>
+                // <Authenticated>
+                <MyReservationDetail />
+                // </Authenticated>
               }
             ></Route>
             <Route
@@ -148,22 +148,8 @@ function App() {
                 // </Authenticated>
               }
             ></Route>
-            <Route
-              path="/my-bill/p"
-              element={
-                // <Authenticated>
-                <Bill />
-                // </Authenticated>
-              }
-            ></Route>
-            <Route
-              path="/my-bill/g"
-              element={
-                // <Authenticated>
-                <GroupBill />
-                // </Authenticated>
-              }
-            ></Route>
+            <Route path="/my-bill/p/:id" element={<Bill />}></Route>
+            <Route path="/group-bill/:id" element={<GroupBill />}></Route>
 
             {/* GUEST */}
             <Route

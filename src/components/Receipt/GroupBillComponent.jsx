@@ -1,7 +1,7 @@
 import logo from "../../assets/fhdtrans.png";
 import Table from "react-bootstrap/Table";
 import React from "react";
-const GroupBillComponent = () => {
+const GroupBillComponent = (props) => {
   return (
     <>
       <div className="container" style={{ alignItems: "center" }}>
@@ -26,14 +26,14 @@ const GroupBillComponent = () => {
           ID Booking
         </div>
         <div className="col-2" style={{ textAlign: "start" }}>
-          P150123-141
+          {props.data.id_booking}
         </div>
         <div className="col-3"></div>
         <div className="col-2" style={{ textAlign: "end" }}>
           Tanggal
         </div>
         <div className="col-2" style={{ textAlign: "end" }}>
-          15/Jan/2023
+          {props.data.now}
         </div>
       </div>
       {/* booking detail */}
@@ -42,17 +42,17 @@ const GroupBillComponent = () => {
           <p>PIC</p>
         </div>
         <div className="col-2">
-          <p>Brandon</p>
+          <p>{props.data.pic_name}</p>
         </div>
       </div>
       <div className="container row" style={{ textAlign: "start" }}></div>
       <div className="container row" style={{ textAlign: "start" }}>
         <div className="col-3">Nama</div>
-        <div className="col-4">Daenerys Targaryen</div>
+        <div className="col-4">{props.data.full_name}</div>
       </div>
       <div className="container row" style={{ textAlign: "start" }}>
         <div className="col-3">Alamat</div>
-        <div className="col-4">Dragonstone Castle, Westeros</div>
+        <div className="col-4">{props.data.address}</div>
       </div>
       {/*  */}
       <hr style={{ border: "3px solid black" }} />
@@ -61,23 +61,23 @@ const GroupBillComponent = () => {
       {/* DETAIL */}
       <div className="container row" style={{ textAlign: "start" }}>
         <div className="col-3">Check In</div>
-        <div className="col-4">29/Jan/2023</div>
+        <div className="col-4">{props.data.start_date}</div>
       </div>
       <div className="container row" style={{ textAlign: "start" }}>
         <div className="col-3">Check Out</div>
-        <div className="col-4">30/Jan/2023</div>
+        <div className="col-4">{props.data.end_date}</div>
       </div>
       <div className="container row" style={{ textAlign: "start" }}>
         <div className="col-3">Dewasa</div>
-        <div className="col-4">5</div>
+        <div className="col-4">{props.data.adult}</div>
       </div>
       <div className="container row" style={{ textAlign: "start" }}>
         <div className="col-3">Anak-anak</div>
-        <div className="col-4">0</div>
+        <div className="col-4">{props.data.child}</div>
       </div>
       <div className="container row" style={{ textAlign: "start" }}>
         <div className="col-3">Tanggal Pembayaran</div>
-        <div className="col-4">14/Jan/2023</div>
+        <div className="col-4">{props.data.paid_at}</div>
       </div>
       {/*  */}
       <hr style={{ border: "3px solid black" }} />
@@ -108,36 +108,25 @@ const GroupBillComponent = () => {
             </tr>
           </thead>
           <tbody style={{ borderColor: "black", border: "3px solid" }}>
-            <tr style={{ borderColor: "black", border: "1px solid" }}>
-              <td style={{ borderColor: "black", border: "1px solid" }}>
-                Superior
-              </td>
-              <td style={{ borderColor: "black", border: "1px solid" }}>
-                Twin
-              </td>
-              <td style={{ borderColor: "black", border: "1px solid" }}>1</td>
-              <td style={{ borderColor: "black", border: "1px solid" }}>
-                Rp400.000
-              </td>
-              <td style={{ borderColor: "black", border: "1px solid" }}>
-                Rp400.000
-              </td>
-            </tr>
-            <tr style={{ borderColor: "black", border: "1px solid" }}>
-              <td style={{ borderColor: "black", border: "1px solid" }}>
-                Double Deluxe
-              </td>
-              <td style={{ borderColor: "black", border: "1px solid" }}>
-                Double
-              </td>
-              <td style={{ borderColor: "black", border: "1px solid" }}>1</td>
-              <td style={{ borderColor: "black", border: "1px solid" }}>
-                Rp450.000
-              </td>
-              <td style={{ borderColor: "black", border: "1px solid" }}>
-                Rp450.000
-              </td>
-            </tr>
+            {props.data.summary.map((room, index) => (
+              <tr style={{ borderColor: "black", border: "1px solid" }}>
+                <td style={{ borderColor: "black", border: "1px solid" }}>
+                  {room.type_name}
+                </td>
+                <td style={{ borderColor: "black", border: "1px solid" }}>
+                  {room.bed}
+                </td>
+                <td style={{ borderColor: "black", border: "1px solid" }}>
+                  {room.total}
+                </td>
+                <td style={{ borderColor: "black", border: "1px solid" }}>
+                  {room.actual_price}
+                </td>
+                <td style={{ borderColor: "black", border: "1px solid" }}>
+                  {room.price}
+                </td>
+              </tr>
+            ))}
 
             <tr style={{ borderColor: "black", border: "1px solid" }}>
               <td
@@ -151,20 +140,9 @@ const GroupBillComponent = () => {
                 Total
               </td>
               <td style={{ borderColor: "black", border: "1px solid" }}>
-                Rp850.000
+                {props.data.total_price}
               </td>
             </tr>
-            {/* {users.map((user) => (
-                      <tr key={user.id}>
-                        <td> {user.full_name} </td>
-                        <td> {user.name}</td>
-                        <td> {user.email}</td>
-                        <td> {user.domisili}</td>
-                        <td> {user.pekerjaan}</td>
-                        <td> {user.no_telp}</td>
-                        <td> {user.sosmed}</td>
-                      </tr>
-                    ))} */}
           </tbody>
         </Table>
       </div>
@@ -174,14 +152,17 @@ const GroupBillComponent = () => {
           <p>Uang Jaminan</p>
         </div>
         <div className="col-2" style={{ textAlign: "start" }}>
-          <b>Rp5.000.000</b>
+          <b>{props.data.jaminan}</b>
         </div>
       </div>
       <div className="container row" style={{ marginRight: "1rem" }}>
         <div className="col-9" style={{ textAlign: "start" }}>
           <p>Permintaan Khusus :</p>
-          <p>- 1 ekstra bed</p>
-          <p>- Massage</p>
+          {props.data.addon.map((a, index) => (
+            <p>
+              - {a.total} {a.add_on_name}
+            </p>
+          ))}
         </div>
       </div>
     </>

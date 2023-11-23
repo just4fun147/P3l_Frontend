@@ -1,4 +1,4 @@
-const Summary = (props) => {
+const DetailAddOn = (props) => {
   return (
     <>
       <div
@@ -7,6 +7,7 @@ const Summary = (props) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          fontWeight: "normal",
         }}
       >
         <div
@@ -17,7 +18,9 @@ const Summary = (props) => {
             gap: "2px",
           }}
         >
-          <p style={{ margin: "0" }}>{props.text}</p>
+          <p style={{ margin: "0" }}>
+            ({props.total}x) {props.text}
+          </p>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
           <p style={{ margin: "0" }}>
@@ -29,4 +32,4 @@ const Summary = (props) => {
   );
 };
 
-export default Summary;
+export default DetailAddOn;

@@ -4,10 +4,12 @@ import axios from "axios";
 import { headersAuth } from "../../../Api";
 import React, { useEffect, useState } from "react";
 import Loading from "../../../components/Loading";
+import SummaryGroup from "../../../components/Booking/SummaryGroup";
 import Summary from "../../../components/Booking/Summary";
 import Detail from "../../../components/Booking/Detail";
 import "./GroupReservationDetail.css";
 import { useParams } from "react-router-dom";
+import Button from "react-bootstrap/Button";
 
 const GroupReservationDetail = () => {
   const [ids, setIds] = useState(useParams().id);
@@ -93,7 +95,10 @@ const GroupReservationDetail = () => {
                     ))}
                   </div>
                   <div className="row">
-                    <Summary text="Total" price={data.total_price}></Summary>
+                    <SummaryGroup
+                      text="Total"
+                      price={data.total_price}
+                    ></SummaryGroup>
                   </div>
                 </div>
               </div>
@@ -124,12 +129,24 @@ const GroupReservationDetail = () => {
                     borderBottom: "1px solid var(--N100,#DBDEE2)",
                   }}
                 >
-                  <Summary text="Group Name" price={data.group_name}></Summary>
-                  <Summary text="Leader Name" price={data.full_name}></Summary>
-                  <Summary text="Start Date" price={data.start_date}></Summary>
-                  <Summary text="End Date" price={data.end_date}></Summary>
-                  <Summary text="Adult" price={data.adult}></Summary>
-                  <Summary text="Child" price={data.child}></Summary>
+                  <SummaryGroup
+                    text="Group Name"
+                    price={data.group_name}
+                  ></SummaryGroup>
+                  <SummaryGroup
+                    text="Leader Name"
+                    price={data.full_name}
+                  ></SummaryGroup>
+                  <SummaryGroup
+                    text="Start Date"
+                    price={data.start_date}
+                  ></SummaryGroup>
+                  <SummaryGroup
+                    text="End Date"
+                    price={data.end_date}
+                  ></SummaryGroup>
+                  <SummaryGroup text="Adult" price={data.adult}></SummaryGroup>
+                  <SummaryGroup text="Child" price={data.child}></SummaryGroup>
                 </div>
                 <div
                   style={{
@@ -137,7 +154,7 @@ const GroupReservationDetail = () => {
                     padding: "16px",
                   }}
                 >
-                  <Summary
+                  <SummaryGroup
                     text="Status"
                     price={
                       data.status == 0
@@ -150,7 +167,20 @@ const GroupReservationDetail = () => {
                         ? "Success"
                         : "Cancel"
                     }
-                  ></Summary>
+                  ></SummaryGroup>
+                  {data.status == 3 || data.status == 4 ? (
+                    <>
+                      <Button
+                        onClick={() => {
+                          window.location.href = `/group-bill/${ids}`;
+                        }}
+                      >
+                        Bill
+                      </Button>
+                    </>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </div>
             </div>

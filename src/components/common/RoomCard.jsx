@@ -2,11 +2,12 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import superior from "../../assets/superior.jpg";
 import double from "../../assets/double.jpg";
+import { FaWifi, FaTv, FaBed, FaShower } from "react-icons/fa";
 
 const RoomCard = (props) => {
   return (
     <div
-      className="shadow bg-white rounded"
+      className="shadow bg-white rounded mb-3"
       style={{ width: "80%", marginRight: "auto", marginLeft: "auto" }}
     >
       <Card style={{ borderRadius: "10px", paddingRight: "3%" }}>
@@ -33,11 +34,26 @@ const RoomCard = (props) => {
           >
             <div className="row">
               <p style={{ fontWeight: "bolder", fontSize: "1.5rem" }}>
-                Room Name
+                {props.name}
               </p>
             </div>
             <div className="row" style={{ fontWeight: "normal" }}>
-              <p>Shower Message</p>
+              <div className="col-1" style={{ textAlign: "center" }}>
+                <FaWifi style={{ fontSize: "2rem" }} /> Wifi
+              </div>
+              <div className="col-1" style={{ textAlign: "center" }}>
+                <FaTv style={{ fontSize: "2rem" }} />
+                Tv
+              </div>
+              <div className="col-1" style={{ textAlign: "center" }}>
+                <FaBed style={{ fontSize: "2rem" }} /> Bed
+              </div>
+              <div
+                className="col"
+                style={{ maxWidth: "100px", textAlign: "center" }}
+              >
+                <FaShower style={{ fontSize: "2rem" }} /> Shower
+              </div>
             </div>
           </div>
           <div
@@ -56,14 +72,22 @@ const RoomCard = (props) => {
                 opacity: "0.75",
               }}
             >
-              <h5>Rp.1.200.000</h5>
+              {props.normal != 0 ? (
+                <>
+                  <h5>{props.normal}</h5>
+                </>
+              ) : (
+                <></>
+              )}
             </div>
             <div className="row" style={{ textAlign: "end" }}>
-              <h4>Rp 1.200.000</h4>
+              <h4>{props.price}</h4>
             </div>
             <div className="row" style={{ justifyContent: "end" }}>
               <Button
-                href="/room-detail"
+                onClick={() => {
+                  window.location.href = `/room-detail/${props.uid}/${props.start}/${props.end}/${props.adult}/${props.child}/${props.night}`;
+                }}
                 style={{
                   backgroundColor: "#FBBC05",
                   color: "#0C1738",

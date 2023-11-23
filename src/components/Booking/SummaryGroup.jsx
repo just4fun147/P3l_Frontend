@@ -1,4 +1,4 @@
-const Summary = (props) => {
+const SummaryGroup = (props) => {
   return (
     <>
       <div
@@ -20,13 +20,11 @@ const Summary = (props) => {
           <p style={{ margin: "0" }}>{props.text}</p>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-          <p style={{ margin: "0" }}>
-            Rp {props.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          </p>
+          <p style={{ margin: "0" }}>{props.price}</p>
         </div>
       </div>
     </>
   );
 };
 
-export default Summary;
+export default SummaryGroup;

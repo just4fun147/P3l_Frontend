@@ -36,11 +36,8 @@ const AddOnCard = (props) => {
           >
             <div className="row">
               <p style={{ fontWeight: "bolder", fontSize: "1.5rem" }}>
-                Add ON Name
+                {props.name}
               </p>
-            </div>
-            <div className="row" style={{ fontWeight: "normal" }}>
-              <p>Add On Desc</p>
             </div>
           </div>
           <div
@@ -51,18 +48,11 @@ const AddOnCard = (props) => {
               paddingBottom: "1rem",
             }}
           >
-            <div
-              className="row"
-              style={{
-                textAlign: "end",
-                textDecoration: "line-through",
-                opacity: "0.75",
-              }}
-            >
-              <h5>Rp.1.200.000</h5>
-            </div>
             <div className="row" style={{ textAlign: "end" }}>
-              <h4>Rp 1.200.000</h4>
+              <h4>
+                Rp{" "}
+                {props.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              </h4>
             </div>
             <div className="row" style={{ justifyContent: "end" }}>
               {total > 0 ? (

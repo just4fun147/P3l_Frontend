@@ -9,7 +9,7 @@ import {
   osVersion,
 } from "react-device-detect";
 
-const headers = {
+export const headers = {
   "Content-Type": "application/json",
   apikey: "1234567890",
 };

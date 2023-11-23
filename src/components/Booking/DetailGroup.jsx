@@ -1,4 +1,4 @@
-const Summary = (props) => {
+const Detail = (props) => {
   return (
     <>
       <div
@@ -7,6 +7,7 @@ const Summary = (props) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          fontWeight: "normal",
         }}
       >
         <div
@@ -17,16 +18,16 @@ const Summary = (props) => {
             gap: "2px",
           }}
         >
-          <p style={{ margin: "0" }}>{props.text}</p>
+          <p style={{ margin: "0" }}>
+            ({props.total}x{props.night}) {props.text}
+          </p>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-          <p style={{ margin: "0" }}>
-            Rp {props.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          </p>
+          <p style={{ margin: "0" }}>{props.price.toString()}</p>
         </div>
       </div>
     </>
   );
 };
 
-export default Summary;
+export default Detail;

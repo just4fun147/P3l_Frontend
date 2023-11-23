@@ -9,10 +9,14 @@ import axios from "axios";
 import { headersAuth } from "../../../Api";
 import React, { useEffect, useState } from "react";
 import Loading from "../../../components/Loading";
+import Modal from "react-bootstrap/Modal";
+import { useDebounce } from "use-debounce";
+
 const MyReservation = () => {
   const [status, setStatus] = useState(0);
   const [itemsUnpaid, setItemsUnpaid] = useState([]);
   const [dataUnpaid, setDataUnpaid] = useState();
+  const [search, setSearch] = useState();
   const [totalUnpaid, setTotalUnpaid] = useState(0);
   const [itemsPaid, setItemsPaid] = useState([]);
   const [dataPaid, setDataPaid] = useState();
@@ -20,8 +24,18 @@ const MyReservation = () => {
   const [itemsFinished, setItemsFinished] = useState([]);
   const [dataFinished, setDataFinished] = useState();
   const [totalFinished, setTotalFinished] = useState(0);
-
+  const [debounceValue] = useDebounce(search, 2000);
+  const [selectedId, setSelectedId] = useState("");
+  const [selectedName, setSelectedName] = useState("");
+  const handleShowConfirm = () => setShowConfirm(true);
+  const handleCloseConfirm = () => setShowConfirm(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    getReservationUnpaid();
+    getReservationPaid();
+    getReservationFinished();
+  }, [debounceValue]);
   const getReservationUnpaid = () => {
     setLoading(true);
     return new Promise((resolve) => {
@@ -30,7 +44,7 @@ const MyReservation = () => {
           process.env.REACT_APP_BASEURL + "reservation",
           {
             id: null,
-            search: null,
+            search: search,
             is_group: false,
             is_open: true,
             is_paid: false,
@@ -75,7 +89,7 @@ const MyReservation = () => {
           url,
           {
             id: null,
-            search: null,
+            search: search,
             is_group: false,
             is_open: true,
             is_paid: false,
@@ -121,7 +135,7 @@ const MyReservation = () => {
           process.env.REACT_APP_BASEURL + "reservation",
           {
             id: null,
-            search: null,
+            search: search,
             is_group: false,
             is_open: true,
             is_paid: true,
@@ -295,6 +309,7 @@ const MyReservation = () => {
         });
     });
   };
+
   useEffect(() => {
     getReservationUnpaid();
     getReservationPaid();
@@ -302,7 +317,6 @@ const MyReservation = () => {
   }, []);
   return (
     <>
-      <ToastContainer />
       <div className="container mt-5">
         {loading ? (
           <>
@@ -311,172 +325,209 @@ const MyReservation = () => {
         ) : (
           <>
             <div className="row">
-              <div className="col-3" style={{ textAlign: "start" }}>
-                <Button
-                  id="unpaid"
-                  onClick={() => {
-                    setStatus(0);
-                    document
-                      .getElementById("unpaid")
-                      .classList.remove("btn-outline-primary");
-                    document.getElementById("unpaid").style.color = "white";
-                    document
-                      .getElementById("paid")
-                      .classList.remove("btn-primary");
-                    document
-                      .getElementById("finished")
-                      .classList.remove("btn-primary");
-                    document
-                      .getElementById("unpaid")
-                      .classList.add("btn-primary");
-                    document
-                      .getElementById("paid")
-                      .classList.add("btn-outline-primary");
-                    document
-                      .getElementById("finished")
-                      .classList.add("btn-outline-primary");
-                    document.getElementById("paid").style.color =
-                      "rgba(104,113,118,1.00)";
-                    document.getElementById("finished").style.color =
-                      "rgba(104,113,118,1.00)";
-                  }}
-                  variant="primary"
+              <div className="col-8">
+                <input
+                  type="text"
+                  placeholder="Search Reservation By Id Booking"
+                  className="form-control mb-3"
                   style={{
                     width: "100%",
-                    border: "none",
-                    color: "white",
-                    textAlign: "start",
-                    fontSize: "1.25rem",
+                    minWidth: "250px",
+                    display: "block",
+                    marginRight: "auto",
+                    marginLeft: "auto",
+                    backgroundColor: "#D9D9D9",
+                    borderRadius: "5px",
+                    lineHeight: "0.25",
                   }}
-                >
-                  <span>
-                    <FaDollarSign
-                      style={{ marginRight: "1rem", fontSize: "1.5rem" }}
-                    />
-                  </span>
-                  Unpaid
-                </Button>
-                <Button
-                  id="paid"
-                  onClick={() => {
-                    setStatus(1);
-                    document
-                      .getElementById("paid")
-                      .classList.remove("btn-outline-primary");
-                    document.getElementById("paid").style.color = "white";
-                    document
-                      .getElementById("unpaid")
-                      .classList.remove("btn-primary");
-                    document
-                      .getElementById("finished")
-                      .classList.remove("btn-primary");
-                    document
-                      .getElementById("paid")
-                      .classList.add("btn-primary");
-                    document
-                      .getElementById("unpaid")
-                      .classList.add("btn-outline-primary");
-                    document
-                      .getElementById("finished")
-                      .classList.add("btn-outline-primary");
-                    document.getElementById("unpaid").style.color =
-                      "rgba(104,113,118,1.00)";
-                    document.getElementById("finished").style.color =
-                      "rgba(104,113,118,1.00)";
-                  }}
-                  variant="outline-primary"
-                  style={{
-                    width: "100%",
-                    border: "none",
-                    color: "rgba(104,113,118,1.00)",
-                    textAlign: "start",
-                    fontSize: "1.25rem",
-                  }}
-                >
-                  <span>
-                    <FaMoneyBill
-                      style={{ marginRight: "1rem", fontSize: "1.5rem" }}
-                    />
-                  </span>
-                  Paid
-                </Button>
-                <Button
-                  id="finished"
-                  onClick={() => {
-                    setStatus(2);
-                    document
-                      .getElementById("finished")
-                      .classList.remove("btn-outline-primary");
-                    document.getElementById("finished").style.color = "white";
-                    document
-                      .getElementById("unpaid")
-                      .classList.remove("btn-primary");
-                    document
-                      .getElementById("paid")
-                      .classList.remove("btn-primary");
-                    document
-                      .getElementById("finished")
-                      .classList.add("btn-primary");
-                    document
-                      .getElementById("unpaid")
-                      .classList.add("btn-outline-primary");
-                    document
-                      .getElementById("paid")
-                      .classList.add("btn-outline-primary");
-                    document.getElementById("unpaid").style.color =
-                      "rgba(104,113,118,1.00)";
-                    document.getElementById("paid").style.color =
-                      "rgba(104,113,118,1.00)";
-                  }}
-                  variant="outline-primary"
-                  style={{
-                    width: "100%",
-                    border: "none",
-                    color: "rgba(104,113,118,1.00)",
-                    textAlign: "start",
-                    fontSize: "1.25rem",
-                  }}
-                >
-                  <span>
-                    <FaHistory
-                      style={{ marginRight: "1rem", fontSize: "1.5rem" }}
-                    />
-                  </span>
-                  Finished
-                </Button>
-              </div>
-              <div className="col-9 mb-3">
-                <Card
-                  style={{
-                    padding: "1rem",
-                  }}
-                >
-                  {status == 0 ? (
-                    <MyReservationList
-                      data={dataUnpaid}
-                      total={totalUnpaid}
-                      item={itemsUnpaid}
-                    />
-                  ) : (
-                    <>
-                      {status == 1 ? (
-                        <MyReservationList
-                          data={dataPaid}
-                          total={totalPaid}
-                          item={itemsPaid}
-                        />
-                      ) : (
-                        <MyReservationList
-                          data={dataFinished}
-                          total={totalFinished}
-                          item={itemsFinished}
-                        />
-                      )}
-                    </>
-                  )}
-                </Card>
+                  value={search}
+                  onInput={(e) => setSearch(e.target.value)}
+                ></input>
               </div>
             </div>
+            {search != null || search != "" ? (
+              <>
+                <div className="row">
+                  <div className="col-3" style={{ textAlign: "start" }}>
+                    <Button
+                      id="unpaid"
+                      onClick={() => {
+                        setStatus(0);
+                        document
+                          .getElementById("unpaid")
+                          .classList.remove("btn-outline-primary");
+                        document.getElementById("unpaid").style.color = "white";
+                        document
+                          .getElementById("paid")
+                          .classList.remove("btn-primary");
+                        document
+                          .getElementById("finished")
+                          .classList.remove("btn-primary");
+                        document
+                          .getElementById("unpaid")
+                          .classList.add("btn-primary");
+                        document
+                          .getElementById("paid")
+                          .classList.add("btn-outline-primary");
+                        document
+                          .getElementById("finished")
+                          .classList.add("btn-outline-primary");
+                        document.getElementById("paid").style.color =
+                          "rgba(104,113,118,1.00)";
+                        document.getElementById("finished").style.color =
+                          "rgba(104,113,118,1.00)";
+                      }}
+                      variant="primary"
+                      style={{
+                        width: "100%",
+                        border: "none",
+                        color: "white",
+                        textAlign: "start",
+                        fontSize: "1.25rem",
+                      }}
+                    >
+                      <span>
+                        <FaDollarSign
+                          style={{ marginRight: "1rem", fontSize: "1.5rem" }}
+                        />
+                      </span>
+                      Unpaid
+                    </Button>
+                    <Button
+                      id="paid"
+                      onClick={() => {
+                        setStatus(1);
+                        document
+                          .getElementById("paid")
+                          .classList.remove("btn-outline-primary");
+                        document.getElementById("paid").style.color = "white";
+                        document
+                          .getElementById("unpaid")
+                          .classList.remove("btn-primary");
+                        document
+                          .getElementById("finished")
+                          .classList.remove("btn-primary");
+                        document
+                          .getElementById("paid")
+                          .classList.add("btn-primary");
+                        document
+                          .getElementById("unpaid")
+                          .classList.add("btn-outline-primary");
+                        document
+                          .getElementById("finished")
+                          .classList.add("btn-outline-primary");
+                        document.getElementById("unpaid").style.color =
+                          "rgba(104,113,118,1.00)";
+                        document.getElementById("finished").style.color =
+                          "rgba(104,113,118,1.00)";
+                      }}
+                      variant="outline-primary"
+                      style={{
+                        width: "100%",
+                        border: "none",
+                        color: "rgba(104,113,118,1.00)",
+                        textAlign: "start",
+                        fontSize: "1.25rem",
+                      }}
+                    >
+                      <span>
+                        <FaMoneyBill
+                          style={{ marginRight: "1rem", fontSize: "1.5rem" }}
+                        />
+                      </span>
+                      Paid
+                    </Button>
+                    <Button
+                      id="finished"
+                      onClick={() => {
+                        setStatus(2);
+                        document
+                          .getElementById("finished")
+                          .classList.remove("btn-outline-primary");
+                        document.getElementById("finished").style.color =
+                          "white";
+                        document
+                          .getElementById("unpaid")
+                          .classList.remove("btn-primary");
+                        document
+                          .getElementById("paid")
+                          .classList.remove("btn-primary");
+                        document
+                          .getElementById("finished")
+                          .classList.add("btn-primary");
+                        document
+                          .getElementById("unpaid")
+                          .classList.add("btn-outline-primary");
+                        document
+                          .getElementById("paid")
+                          .classList.add("btn-outline-primary");
+                        document.getElementById("unpaid").style.color =
+                          "rgba(104,113,118,1.00)";
+                        document.getElementById("paid").style.color =
+                          "rgba(104,113,118,1.00)";
+                      }}
+                      variant="outline-primary"
+                      style={{
+                        width: "100%",
+                        border: "none",
+                        color: "rgba(104,113,118,1.00)",
+                        textAlign: "start",
+                        fontSize: "1.25rem",
+                      }}
+                    >
+                      <span>
+                        <FaHistory
+                          style={{ marginRight: "1rem", fontSize: "1.5rem" }}
+                        />
+                      </span>
+                      Finished
+                    </Button>
+                  </div>
+                  <div className="col-9 mb-3">
+                    <Card
+                      style={{
+                        padding: "1rem",
+                      }}
+                    >
+                      {status == 0 ? (
+                        <MyReservationList
+                          data={dataUnpaid}
+                          total={totalUnpaid}
+                          item={itemsUnpaid}
+                          show={handleShowConfirm}
+                          selectedId={setSelectedId}
+                          selectedName={setSelectedName}
+                        />
+                      ) : (
+                        <>
+                          {status == 1 ? (
+                            <MyReservationList
+                              data={dataPaid}
+                              total={totalPaid}
+                              item={itemsPaid}
+                              show={showConfirm}
+                              selectedId={selectedId}
+                              selectedName={selectedName}
+                            />
+                          ) : (
+                            <MyReservationList
+                              data={dataFinished}
+                              total={totalFinished}
+                              item={itemsFinished}
+                              show={showConfirm}
+                              selectedId={selectedId}
+                              selectedName={selectedName}
+                            />
+                          )}
+                        </>
+                      )}
+                    </Card>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <></>
+            )}
           </>
         )}
       </div>

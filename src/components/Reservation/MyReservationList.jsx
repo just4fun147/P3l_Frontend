@@ -19,6 +19,7 @@ const MyReservationList = (props) => {
               child={data.child}
               identifier={data.status}
               id={data.id}
+              show={props.id_booking}
             />
           ))}
           <div>
