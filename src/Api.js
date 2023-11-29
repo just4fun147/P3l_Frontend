@@ -58,7 +58,7 @@ export const auth = async (email, password) => {
         window.location = "/report/monthly";
       }
       if (response.data.OUT_DATA.role === process.env.REACT_APP_FO) {
-        window.location = "/";
+        window.location = "/reservation/f";
       }
     })
     .catch((error) => {

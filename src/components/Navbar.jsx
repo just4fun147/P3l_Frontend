@@ -253,7 +253,9 @@ function BasicExample() {
                           <>
                             {roles === process.env.REACT_APP_FO ? (
                               <Nav className="ml-auto">
-                                <Nav.Link href="/room">Reservation</Nav.Link>
+                                <Nav.Link href="/reservation/f">
+                                  Reservation
+                                </Nav.Link>
                               </Nav>
                             ) : (
                               <>

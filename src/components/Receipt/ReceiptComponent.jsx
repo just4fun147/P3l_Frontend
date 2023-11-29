@@ -1,7 +1,7 @@
 import logo from "../../assets/fhdtrans.png";
 import Table from "react-bootstrap/Table";
 import React from "react";
-const ReceiptComponent = () => {
+const ReceiptComponent = (props) => {
   return (
     <>
       <div className="container" style={{ alignItems: "center" }}>
@@ -36,28 +36,28 @@ const ReceiptComponent = () => {
         </div>
         <div className="col-2" style={{ paddingRight: "1.25rem" }}>
           <div className="row" style={{ textAlign: "end" }}>
-            <p>30/Jan/2023</p>
+            <p>{props.data.now}</p>
           </div>
           <div className="row" style={{ textAlign: "end" }}>
-            <p>P300118-024</p>
+            <p>{props.data.invoice_number}</p>
           </div>
           <div className="row" style={{ textAlign: "end" }}>
-            <p>Rickon</p>
+            <p>{props.data.created_by}</p>
           </div>
         </div>
       </div>
       {/* booking detail */}
       <div className="container row" style={{ textAlign: "start" }}>
         <div className="col-2">ID Booking</div>
-        <div className="col-4">P150123-141</div>
+        <div className="col-4">{props.data.id_booking}</div>
       </div>
       <div className="container row" style={{ textAlign: "start" }}>
         <div className="col-2">Nama</div>
-        <div className="col-4">Daenerys Targaryen</div>
+        <div className="col-4">{props.data.name}</div>
       </div>
       <div className="container row" style={{ textAlign: "start" }}>
         <div className="col-2">Alamat</div>
-        <div className="col-4">Dragonstone Castle, Westeros</div>
+        <div className="col-4">{props.data.address}</div>
       </div>
       {/*  */}
       <hr style={{ border: "3px solid black" }} />
@@ -66,19 +66,19 @@ const ReceiptComponent = () => {
       {/* DETAIL */}
       <div className="container row" style={{ textAlign: "start" }}>
         <div className="col-2">Check In</div>
-        <div className="col-4">29/Jan/2023</div>
+        <div className="col-4">{props.data.check_in}</div>
       </div>
       <div className="container row" style={{ textAlign: "start" }}>
         <div className="col-2">Check Out</div>
-        <div className="col-4">30/Jan/2023</div>
+        <div className="col-4">{props.data.check_out}</div>
       </div>
       <div className="container row" style={{ textAlign: "start" }}>
         <div className="col-2">Dewasa</div>
-        <div className="col-4">5</div>
+        <div className="col-4">{props.data.adult}</div>
       </div>
       <div className="container row" style={{ textAlign: "start" }}>
         <div className="col-2">Anak-anak</div>
-        <div className="col-4">0</div>
+        <div className="col-4">{props.data.child}</div>
       </div>
       {/*  */}
       <hr style={{ border: "3px solid black" }} />
@@ -109,36 +109,25 @@ const ReceiptComponent = () => {
             </tr>
           </thead>
           <tbody style={{ borderColor: "black", border: "3px solid" }}>
-            <tr style={{ borderColor: "black", border: "1px solid" }}>
-              <td style={{ borderColor: "black", border: "1px solid" }}>
-                Superior
-              </td>
-              <td style={{ borderColor: "black", border: "1px solid" }}>
-                Twin
-              </td>
-              <td style={{ borderColor: "black", border: "1px solid" }}>1</td>
-              <td style={{ borderColor: "black", border: "1px solid" }}>
-                Rp400.000
-              </td>
-              <td style={{ borderColor: "black", border: "1px solid" }}>
-                Rp400.000
-              </td>
-            </tr>
-            <tr style={{ borderColor: "black", border: "1px solid" }}>
-              <td style={{ borderColor: "black", border: "1px solid" }}>
-                Double Deluxe
-              </td>
-              <td style={{ borderColor: "black", border: "1px solid" }}>
-                Double
-              </td>
-              <td style={{ borderColor: "black", border: "1px solid" }}>1</td>
-              <td style={{ borderColor: "black", border: "1px solid" }}>
-                Rp450.000
-              </td>
-              <td style={{ borderColor: "black", border: "1px solid" }}>
-                Rp450.000
-              </td>
-            </tr>
+            {props.data.summary.map((a, index) => (
+              <tr style={{ borderColor: "black", border: "1px solid" }}>
+                <td style={{ borderColor: "black", border: "1px solid" }}>
+                  {a.type_name}
+                </td>
+                <td style={{ borderColor: "black", border: "1px solid" }}>
+                  {a.bed}
+                </td>
+                <td style={{ borderColor: "black", border: "1px solid" }}>
+                  {a.total}
+                </td>
+                <td style={{ borderColor: "black", border: "1px solid" }}>
+                  {a.actual_price}
+                </td>
+                <td style={{ borderColor: "black", border: "1px solid" }}>
+                  {a.price}
+                </td>
+              </tr>
+            ))}
 
             <tr style={{ borderColor: "black", border: "1px solid" }}>
               <td
@@ -148,20 +137,9 @@ const ReceiptComponent = () => {
                 Total
               </td>
               <td style={{ borderColor: "black", border: "1px solid" }}>
-                Rp850.000
+                {props.data.totalRoom}
               </td>
             </tr>
-            {/* {users.map((user) => (
-                      <tr key={user.id}>
-                        <td> {user.full_name} </td>
-                        <td> {user.name}</td>
-                        <td> {user.email}</td>
-                        <td> {user.domisili}</td>
-                        <td> {user.pekerjaan}</td>
-                        <td> {user.no_telp}</td>
-                        <td> {user.sosmed}</td>
-                      </tr>
-                    ))} */}
           </tbody>
         </Table>
       </div>
@@ -196,37 +174,25 @@ const ReceiptComponent = () => {
             </tr>
           </thead>
           <tbody style={{ borderColor: "black", border: "3px solid" }}>
-            <tr style={{ borderColor: "black", border: "1px solid" }}>
-              <td style={{ borderColor: "black", border: "1px solid" }}>
-                Extra Bed
-              </td>
-              <td style={{ borderColor: "black", border: "1px solid" }}>
-                29/Jan/2023
-              </td>
-              <td style={{ borderColor: "black", border: "1px solid" }}>1</td>
-              <td style={{ borderColor: "black", border: "1px solid" }}>
-                Rp150.000
-              </td>
-              <td style={{ borderColor: "black", border: "1px solid" }}>
-                Rp150.000
-              </td>
-            </tr>
-            <tr style={{ borderColor: "black", border: "1px solid" }}>
-              <td style={{ borderColor: "black", border: "1px solid" }}>
-                Message
-              </td>
-              <td style={{ borderColor: "black", border: "1px solid" }}>
-                29/Jan/2023
-              </td>
-              <td style={{ borderColor: "black", border: "1px solid" }}>1</td>
-              <td style={{ borderColor: "black", border: "1px solid" }}>
-                Rp75.000
-              </td>
-              <td style={{ borderColor: "black", border: "1px solid" }}>
-                Rp75.000
-              </td>
-            </tr>
-
+            {props.data.addon.map((b, index) => (
+              <tr style={{ borderColor: "black", border: "1px solid" }}>
+                <td style={{ borderColor: "black", border: "1px solid" }}>
+                  {b.add_on_name}
+                </td>
+                <td style={{ borderColor: "black", border: "1px solid" }}>
+                  {b.date}
+                </td>
+                <td style={{ borderColor: "black", border: "1px solid" }}>
+                  {b.price}
+                </td>
+                <td style={{ borderColor: "black", border: "1px solid" }}>
+                  {b.price}
+                </td>
+                <td style={{ borderColor: "black", border: "1px solid" }}>
+                  {b.subTotal}
+                </td>
+              </tr>
+            ))}
             <tr style={{ borderColor: "black", border: "1px solid" }}>
               <td
                 colSpan={4}
@@ -235,20 +201,9 @@ const ReceiptComponent = () => {
                 TOTAL
               </td>
               <td style={{ borderColor: "black", border: "1px solid" }}>
-                Rp225.000
+                {props.data.totalAddOn}
               </td>
             </tr>
-            {/* {users.map((user) => (
-                      <tr key={user.id}>
-                        <td> {user.full_name} </td>
-                        <td> {user.name}</td>
-                        <td> {user.email}</td>
-                        <td> {user.domisili}</td>
-                        <td> {user.pekerjaan}</td>
-                        <td> {user.no_telp}</td>
-                        <td> {user.sosmed}</td>
-                      </tr>
-                    ))} */}
           </tbody>
         </Table>
       </div>
@@ -262,11 +217,15 @@ const ReceiptComponent = () => {
           <p style={{ fontWeight: "bold", fontSize: "1.15rem" }}>Cash</p>
         </div>
         <div className="col-2" style={{ textAlign: "end" }}>
-          <p>Rp42.500</p>
-          <p style={{ fontWeight: "bold", fontSize: "1.25rem" }}>Rp42.500</p>
-          <p>Rp42.500</p>
-          <p>Rp42.500</p>
-          <p style={{ fontWeight: "bold", fontSize: "1.15rem" }}>Rp42.500</p>
+          <p>{props.data.tax}</p>
+          <p style={{ fontWeight: "bold", fontSize: "1.25rem" }}>
+            {props.data.grandTotal}
+          </p>
+          <p>{props.data.totalRoom}</p>
+          <p>Rp300,000</p>
+          <p style={{ fontWeight: "bold", fontSize: "1.15rem" }}>
+            {props.data.cash}
+          </p>
         </div>
       </div>
       <p>Thank You For Your Visit!</p>

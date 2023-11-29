@@ -1,7 +1,7 @@
 import logo from "../../assets/fhdtrans.png";
 import Table from "react-bootstrap/Table";
 import axios from "axios";
-import { headersAuth } from "../../Api";
+import { headers } from "../../Api";
 import React, { useEffect, useState } from "react";
 import Loading from "../Loading";
 
@@ -17,9 +17,9 @@ const Monthly = (props) => {
       axios
         .post(
           process.env.REACT_APP_BASEURL + "report/monthly",
-          { year: props.search },
+          { year: parseInt(props.search) },
           {
-            headers: headersAuth,
+            headers: headers,
           }
         )
         .then((response) => {

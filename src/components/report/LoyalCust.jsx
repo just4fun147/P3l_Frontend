@@ -1,7 +1,7 @@
 import logo from "../../assets/fhdtrans.png";
 import Table from "react-bootstrap/Table";
 import axios from "axios";
-import { headersAuth } from "../../Api";
+import { headers } from "../../Api";
 import React, { useEffect, useState } from "react";
 import Loading from "../Loading";
 const LoyalCust = (props) => {
@@ -16,9 +16,9 @@ const LoyalCust = (props) => {
       axios
         .post(
           process.env.REACT_APP_BASEURL + "report/loyal-customer",
-          { year: props.search },
+          { year: parseInt(props.search) },
           {
-            headers: headersAuth,
+            headers: headers,
           }
         )
         .then((response) => {
@@ -43,7 +43,10 @@ const LoyalCust = (props) => {
         </>
       ) : (
         <>
-          <div className="container" style={{ alignItems: "center" }}>
+          <div
+            className="container"
+            style={{ alignItems: "center", textAlign: "center" }}
+          >
             <img
               src={logo}
               alt="logo"
@@ -57,7 +60,7 @@ const LoyalCust = (props) => {
             </p>
             <hr />
           </div>
-          <div className="row">
+          <div className="container row">
             <h3 style={{ fontWeight: "bold", fontSize: "2.5rem" }}>
               LAPORAN 5 CUSTOMER RESERVASI TERBANYAK
             </h3>

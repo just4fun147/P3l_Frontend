@@ -60,6 +60,12 @@ import NewCustReport from "./pages/Report/NewCustReport";
 import GuestReport from "./pages/Report/GuestReport";
 import MonthlyReport from "./pages/Report/MonthlyReport";
 import LoyalCustReport from "./pages/Report/LoyalCustReport";
+// FO
+import ReservationManagementF from "./pages/FO/Reservation";
+// public report
+import LoyalCustReportPublic from "./pages/ReportPublic/LoyalCustReport";
+import MonthlyReportPublic from "./pages/ReportPublic/MonthlyReport";
+import NewCustReportPublic from "./pages/ReportPublic/NewCustReport";
 
 // AUTH
 import Authenticated from "./components/middleware/Authenticated";
@@ -71,6 +77,7 @@ import OwnerAuth from "./components/middleware/OwnerAuth";
 import SMAuth from "./components/middleware/SMAuth";
 import ReportAuth from "./components/middleware/ReportAuth";
 import Guest from "./components/middleware/Guest";
+import ReceiptFOP from "./pages/FO/Receipt";
 
 function App() {
   return (
@@ -141,7 +148,7 @@ function App() {
               }
             ></Route>
             <Route
-              path="/my-receipt/p"
+              path="/my-receipt/p/:id"
               element={
                 // <Authenticated>
                 <Receipt />
@@ -150,7 +157,6 @@ function App() {
             ></Route>
             <Route path="/my-bill/p/:id" element={<Bill />}></Route>
             <Route path="/group-bill/:id" element={<GroupBill />}></Route>
-
             {/* GUEST */}
             <Route
               path="/login"
@@ -385,6 +391,44 @@ function App() {
                 <GMAuth>
                   <LoyalCustReport />
                 </GMAuth>
+              }
+            ></Route>
+            {/* public report*/}
+            <Route
+              path="/report/p/monthly/:year"
+              element={<MonthlyReportPublic />}
+            ></Route>
+            <Route
+              path="/report/p/loyal-customer/:year"
+              element={<LoyalCustReportPublic />}
+            ></Route>
+            <Route
+              path="/report/p/newCust/:year"
+              element={<NewCustReportPublic />}
+            ></Route>
+            {/* FO */}
+            <Route
+              path="/reservation/f"
+              element={
+                <FOAuth>
+                  <ReservationManagementF />
+                </FOAuth>
+              }
+            ></Route>
+            <Route
+              path="/receipt/p/:id"
+              element={
+                <FOAuth>
+                  <ReceiptFOP />
+                </FOAuth>
+              }
+            ></Route>
+            <Route
+              path="/receipt/g/:id"
+              element={
+                <FOAuth>
+                  <Receipt />
+                </FOAuth>
               }
             ></Route>
             <Route path="*" element={<Navigate replace to="/" />} />

@@ -1,6 +1,7 @@
 import JsPDF from "jspdf";
 import Button from "react-bootstrap/Button";
 import Guest from "../../components/report/Guest";
+import GuestBar from "../../components/report/GuestBar";
 import html2canvas from "html2canvas";
 import axios from "axios";
 import { headersAuth } from "../../Api";
@@ -40,6 +41,7 @@ const GuestReport = () => {
   useEffect(() => {
     getYear();
   }, []);
+
   const generatePDF = () => {
     const input = document.getElementById("report");
     html2canvas(input).then((canvas) => {
@@ -160,6 +162,9 @@ const GuestReport = () => {
                     id="report"
                   >
                     <Guest search={search} month={month} />
+                  </div>
+                  <div className="mt-5">
+                    <GuestBar search={search} month={month} />
                   </div>
                 </>
               )}

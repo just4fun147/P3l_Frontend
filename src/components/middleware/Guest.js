@@ -21,6 +21,9 @@ function Guest(props) {
   ) {
     return <Navigate to="/report/monthly" state={{ from: location }} />;
   }
+  if (roles === process.env.REACT_APP_FO) {
+    return <Navigate to="/reservation/f" state={{ from: location }} />;
+  }
   return props.children;
 }
 

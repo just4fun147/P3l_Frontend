@@ -1,6 +1,7 @@
 import JsPDF from "jspdf";
 import Button from "react-bootstrap/Button";
 import Monthly from "../../components/report/Monthly";
+import MonthlyBar from "../../components/report/MonthlyBar";
 import html2canvas from "html2canvas";
 import axios from "axios";
 import { headersAuth } from "../../Api";
@@ -113,6 +114,9 @@ const MonthlyReport = () => {
                     id="report"
                   >
                     <Monthly search={search} />
+                  </div>
+                  <div>
+                    <MonthlyBar search={search} />
                   </div>
                 </>
               )}
